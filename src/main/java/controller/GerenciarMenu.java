@@ -1,7 +1,7 @@
 package controller;
 
-import model.Perfil;
-import model.PerfilDAO;
+import model.Menu;
+import model.MenuDAO;
 import utils.Validacao;
 
 import javax.servlet.*;
@@ -11,76 +11,81 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Stack;
 
-@WebServlet(name = "GerenciarPerfil", value = "/gerenciar_perfil.do")
-public class GerenciarPerfil extends HttpServlet {
+@WebServlet(name = "GerenciarMenu", value = "/gerenciar_menu.do")
+public class GerenciarMenu extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     PrintWriter out = response.getWriter();
-    
+
     String id = request.getParameter("id");
     String deletar = request.getParameter("deletar");
-    Perfil perfil = new Perfil();
-    
+    Menu menu = new Menu();
+
     String idLimpa = id.trim();
     int idParsed = Integer.parseInt(idLimpa);
     try {
-      PerfilDAO perfilDAO = new PerfilDAO();
+      MenuDAO menuDAO = new MenuDAO();
 
       if (deletar == null) {
-        Perfil resultado = perfilDAO.getById(idParsed);
+        Menu resultado = menuDAO.getById(idParsed);
 
-        perfil.setId(resultado.getId());
-        perfil.setNome(resultado.getNome());
+        menu.setId(resultado.getId());
+        menu.setNome(resultado.getNome());
+        menu.setLink(resultado.getLink());
+        menu.setExibir(resultado.getExibir());
 
-        request.getSession().setAttribute("id", perfil.getId());
-        request.getSession().setAttribute("nome", perfil.getNome());
-        response.sendRedirect(request.getContextPath() + "/src/perfil/atualizar-perfil.jsp");
-        
+        request.getSession().setAttribute("menu", menu);
+        response.sendRedirect(request.getContextPath() + "/src/menu/atualizar-menu.jsp");
+
       } else {
         String mensagem;
-        
-        if (perfilDAO.deletar(idParsed)) {
+
+        if (menuDAO.deletar(idParsed)) {
           mensagem = "Deletado com sucesso!";
         } else {
           mensagem = "Erro ao deletar";
         }
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/perfil/listar-perfil.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
       }
-      
+
     } catch (Exception e) {
       out.println(e);
     }
   }
-  
+
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     PrintWriter out = response.getWriter();
     String id = request.getParameter("id");
     String nome = request.getParameter("nome");
-    
+    String link = request.getParameter("link");
+    String exibir = request.getParameter("exibir");
+
     String mensagem;
-    
-    String[] fields = {nome};
-    String[] fieldNames = {"nome"};
-    Perfil perfil = new Perfil();
+
+    String[] fields = {nome, link, exibir};
+    String[] fieldNames = {"nome", "link", "exibir"};
+    Menu menu = new Menu();
     try {
-      PerfilDAO perfilDAO = new PerfilDAO();
+      MenuDAO menuDAO = new MenuDAO();
       Validacao validacao = new Validacao();
       Stack<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
       if (!camposNencontrados.isEmpty()) {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/perfil/listar-perfil.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
         return;
       }
-      
+
       if (!id.isEmpty()) {
-        perfil.setId(Integer.parseInt(id));
+        menu.setId(Integer.parseInt(id));
       }
-      perfil.setNome(nome);
-      
-      if (perfilDAO.gravar(perfil)) {
+      menu.setNome(nome);
+      menu.setLink(link);
+      menu.setExibir(Integer.parseInt(exibir));
+
+      if (menuDAO.gravar(menu)) {
         mensagem = "Gravado com sucesso";
       } else {
         mensagem = "Erro ao gravar no banco de dados";
@@ -90,7 +95,7 @@ public class GerenciarPerfil extends HttpServlet {
       mensagem = "Erro ao executar";
     }
     request.getSession().setAttribute("mensagem", mensagem);
-    response.sendRedirect(request.getContextPath() + "/src/perfil/listar-perfil.jsp");
+    response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
 
   }
 }

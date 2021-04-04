@@ -13,7 +13,9 @@
         <li class="nav-item">
           <a href="${pageContext.request.contextPath}/src/perfil/listar-perfil.jsp" class="nav-link">Perfis</a>
         </li>
-        <li class="nav-item"><a href="#" class="nav-link">Menus</a></li>
+        <li class="nav-item">
+          <a href="${pageContext.request.contextPath}/src/menu/listar-menu.jsp" class="nav-link">Menus</a>
+        </li>
         <li class="nav-item"><a href="#" class="nav-link">Usuarios</a></li>
       </ul>
     </div>
