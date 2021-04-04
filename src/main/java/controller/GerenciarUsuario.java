@@ -1,7 +1,7 @@
 package controller;
 
-import model.Menu;
-import model.MenuDAO;
+import model.Usuario;
+import model.UsuarioDAO;
 import utils.Validacao;
 
 import javax.servlet.*;
@@ -11,42 +11,44 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Stack;
 
-@WebServlet(name = "GerenciarMenu", value = "/gerenciar_menu.do")
-public class GerenciarMenu extends HttpServlet {
+@WebServlet(name = "GerenciarUsuario", value = "/gerenciar_usuario.do")
+public class GerenciarUsuario extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     PrintWriter out = response.getWriter();
 
     String id = request.getParameter("id");
     String deletar = request.getParameter("deletar");
-    Menu menu = new Menu();
+    Usuario usuario = new Usuario();
 
     String idLimpa = id.trim();
     int idParsed = Integer.parseInt(idLimpa);
     try {
-      MenuDAO menuDAO = new MenuDAO();
+      UsuarioDAO usuarioDAO = new UsuarioDAO();
 
       if (deletar == null) {
-        Menu resultado = menuDAO.getById(idParsed);
+        Usuario resultado = usuarioDAO.getById(idParsed);
 
-        menu.setId(resultado.getId());
-        menu.setNome(resultado.getNome());
-        menu.setLink(resultado.getLink());
-        menu.setExibir(resultado.getExibir());
+        usuario.setId(resultado.getId());
+        usuario.setNome(resultado.getNome());
+        usuario.setUsername(resultado.getUsername());
+        usuario.setStatus(resultado.getStatus());
+        usuario.setSenha(resultado.getSenha());
+        usuario.setIdPerfil(resultado.getIdPerfil());
 
-        request.getSession().setAttribute("menu", menu);
-        response.sendRedirect(request.getContextPath() + "/src/menu/atualizar-menu.jsp");
+        request.getSession().setAttribute("usuario", usuario);
+        response.sendRedirect(request.getContextPath() + "/src/usuario/atualizar-usuario.jsp");
 
       } else {
         String mensagem;
 
-        if (menuDAO.deletar(idParsed)) {
+        if (usuarioDAO.deletar(idParsed)) {
           mensagem = "Deletado com sucesso!";
         } else {
           mensagem = "Erro ao deletar";
         }
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/usuario/listar-usuario.jsp");
       }
 
     } catch (Exception e) {
@@ -59,43 +61,47 @@ public class GerenciarMenu extends HttpServlet {
     PrintWriter out = response.getWriter();
     String id = request.getParameter("id");
     String nome = request.getParameter("nome");
-    String link = request.getParameter("link");
-    String exibir = request.getParameter("exibir");
+    String username = request.getParameter("username");
+    String status = request.getParameter("status");
+    String senha = request.getParameter("senha");
+    String idPerfil = request.getParameter("idPerfil");
 
     String mensagem;
-
-    String[] fields = {nome, link, exibir};
-    String[] fieldNames = {"nome", "link", "exibir"};
-    Menu menu = new Menu();
+    String[] fields = {nome, username, senha, status, idPerfil};
+    String[] fieldNames = {"nome", "username", "senha", "status", "idPerfil"};
+    Usuario usuario = new Usuario();
     try {
-      MenuDAO menuDAO = new MenuDAO();
+      UsuarioDAO usuarioDAO = new UsuarioDAO();
       Validacao validacao = new Validacao();
       Stack<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
       if (!camposNencontrados.isEmpty()) {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/menu/cadastrar-menu.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/usuario/cadastrar-usuario.jsp");
         return;
       }
 
       if (!id.isEmpty()) {
-        menu.setId(Integer.parseInt(id));
+        usuario.setId(Integer.parseInt(id));
       }
-      menu.setNome(nome);
-      menu.setLink(link);
-      menu.setExibir(Integer.parseInt(exibir));
+      usuario.setNome(nome);
+      usuario.setUsername(username);
+      usuario.setSenha(senha);
+      usuario.setStatus(Integer.parseInt(status));
+      usuario.setIdPerfil(Integer.parseInt(idPerfil));
 
-      if (menuDAO.gravar(menu)) {
+      if (usuarioDAO.gravar(usuario)) {
         mensagem = "Gravado com sucesso";
       } else {
         mensagem = "Erro ao gravar no banco de dados";
       }
     } catch (Exception e) {
       out.print(e);
+      System.out.println(e);
       mensagem = "Erro ao executar";
     }
     request.getSession().setAttribute("mensagem", mensagem);
-    response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
+    response.sendRedirect(request.getContextPath() + "/src/usuario/listar-usuario.jsp");
 
   }
 }

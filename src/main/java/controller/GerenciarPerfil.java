@@ -71,7 +71,7 @@ public class GerenciarPerfil extends HttpServlet {
       if (!camposNencontrados.isEmpty()) {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/perfil/listar-perfil.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/perfil/cadastrar-perfil.jsp");
         return;
       }
       

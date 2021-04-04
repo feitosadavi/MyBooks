@@ -16,7 +16,9 @@
         <li class="nav-item">
           <a href="${pageContext.request.contextPath}/src/menu/listar-menu.jsp" class="nav-link">Menus</a>
         </li>
-        <li class="nav-item"><a href="#" class="nav-link">Usuarios</a></li>
+        <li class="nav-item">
+          <a href="${pageContext.request.contextPath}/src/usuario/listar-usuario.jsp" class="nav-link">Usuarios</a>
+        </li>
       </ul>
     </div>
   </div>
