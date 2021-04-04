@@ -26,12 +26,14 @@
         <label class="mt-2" for="nome">Nome: </label>
         <input type="text" class="form-control" id="nome" name="nome" placeholder="insira o nome do menu">
         
-        <label class="mt-2" for="nome">Link: </label>
+        <label class="mt-2" for="link">Link: </label>
         <input type="text" class="form-control" id="link" name="link" placeholder="insira o link">
 
-        <label class="mt-2" for="nome">Exibir: </label>
-        <input type="text" class="form-control" id="exibir" name="exibir" placeholder="insira o ?">
-        
+        <label class="mt-2" for="exibir">Exibir: </label>
+        <select id="exibir" class="form-select" name="exibir">
+          <option value="1">Sim</option>
+          <option value="0">Não</option>
+        </select>
       </div>
 
       <button class="btn btn-primary mt-3 ms-auto me-auto" type="submit">Enviar</button>

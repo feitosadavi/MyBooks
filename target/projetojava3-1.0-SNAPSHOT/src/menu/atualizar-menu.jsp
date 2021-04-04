@@ -31,8 +31,10 @@
         <input value="${sessionScope.menu.link}" type="text" class="form-control" id="link" name="link" placeholder="insira o link">
 
         <label class="mt-2" for="exibir">Exibir: </label>
-        <input value="${sessionScope.menu.exibir}" type="text" class="form-control" id="exibir" name="exibir" placeholder="insira o ?">
-
+        <select id="exibir" class="form-select" name="exibir">
+          <option ${sessionScope.menu.exibir == 1 ? "selected" : null} value="1">Sim</option>
+          <option ${sessionScope.menu.exibir == 0 ? "selected" : null} value="0">Não</option>
+        </select>
       </div>
 
       <button class="btn btn-primary mt-3 ms-auto me-auto" type="submit">Enviar</button>

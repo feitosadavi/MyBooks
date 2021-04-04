@@ -50,7 +50,7 @@
               <th scope="row">${menu.id}</th>
               <td>${menu.nome}</td>
               <td>${menu.link}</td>
-              <td>${menu.exibir}</td>
+              <td>${menu.exibir == 1 ? "Sim" : "Não"}</td>
               <td>
                 <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_menu.do?id=${menu.id}">
                   <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
