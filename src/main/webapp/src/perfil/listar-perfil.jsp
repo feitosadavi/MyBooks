@@ -37,6 +37,7 @@
             <tr>
               <th scope="col">id</th>
               <th scope="col">nome</th>
+              <th scope="col">menus vinculados</th>
               <th scope="col">opções</th>
             </tr>
             </thead>
@@ -47,6 +48,13 @@
               <tr>
                 <th scope="row">${perfil.id}</th>
                 <td>${perfil.nome}</td>
+
+                <td>
+                  <c:forEach var="menu" items="${perfil.menus}">
+                    ${menu.nome}
+                  </c:forEach>
+                </td>
+                
                 <td>
                   <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_perfil.do?id=${perfil.id}">
                     <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">

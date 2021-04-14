@@ -1,6 +1,6 @@
 package model;
 
-public class Menu {
+public class Menu implements Comparable<Object> {
   private int id, exibir;
   private String nome, link, icone;
 
@@ -42,6 +42,12 @@ public class Menu {
 
   public void setIcone(String icone) {
     this.icone = icone;
+  }
+  
+  @Override
+  public int compareTo (Object o) {
+    Menu m = (Menu) o;
+    return this.id - m.id;
   }
 
   @Override

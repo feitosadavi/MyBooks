@@ -39,12 +39,8 @@ public class GerenciarMenu extends HttpServlet {
 
       } else {
         String mensagem;
-
-        if (menuDAO.deletar(idParsed)) {
-          mensagem = "Deletado com sucesso!";
-        } else {
-          mensagem = "Erro ao deletar";
-        }
+        mensagem = menuDAO.deletar(idParsed) ? "Deletado com sucesso!" : "Erro ao deletar";
+        
         request.getSession().setAttribute("mensagem", mensagem);
         response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
       }
@@ -85,11 +81,8 @@ public class GerenciarMenu extends HttpServlet {
       menu.setLink(link);
       menu.setExibir(Integer.parseInt(exibir));
 
-      if (menuDAO.gravar(menu)) {
-        mensagem = "Gravado com sucesso";
-      } else {
-        mensagem = "Erro ao gravar no banco de dados";
-      }
+      mensagem = menuDAO.gravar(menu) ? "Gravado com sucesso" : "Erro ao gravar no banco de dados";
+      
     } catch (Exception e) {
       out.print(e);
       mensagem = "Erro ao executar";

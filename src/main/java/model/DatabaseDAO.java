@@ -12,7 +12,6 @@ public class DatabaseDAO {
     public DatabaseDAO() throws Exception {
        try {
           Class.forName("com.mysql.cj.jdbc.Driver");
-          System.out.println("Connector load successfully");
        } catch (ClassNotFoundException ex) {
            System.out.println("Connector Not Loaded");
            System.out.println(ex.getMessage());
