@@ -60,7 +60,7 @@
                     <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
                   </a>
                   
-                  <button class="btn btn-outline-danger" onclick="confirmarExclusao(${perfil.id}, '${perfil.nome}')">
+                  <button class="btn btn-outline-danger" onclick="confirmarExclusao('${perfil.nome}', '/projetojava3_war_exploded/gerenciar_perfil.do?id='+'${perfil.id}'+'+&deletar=true')">
                     <img src="${pageContext.request.contextPath}/imagens/lixeira.svg" alt="lixeira dentro de um quadrado vermelho">
                   </button>
                 </td>
@@ -74,39 +74,7 @@
       <div class="col-sm-2"></div>
     </div>
 
-    <script>
-      function confirmarExclusao(id, nome) {
-        let alert = document.createElement("div");
-        alert.className = "alert alert-warning";
-        alert.id = "delete-alert";
-        alert.innerText = "Realmente deseja excluir "+nome+"?";
-        
-        let btn = document.createElement("button");
-        btn.className = "btn btn-outline-danger ms-2";
-        btn.id = "confirmar";
-        btn.innerText = "Sim"
-
-        let btn2 = document.createElement("button");
-        btn2.className = "btn btn-outline-success ms-2";
-        btn2.setAttribute('data-bs-dismiss', 'alert');
-        btn2.setAttribute('aria-label', 'Close');
-        btn2.innerText = "Cancelar"
-        
-        btn.addEventListener('click', () => {
-          location.href = "${pageContext.request.contextPath}/gerenciar_perfil.do?id="+id+"+&deletar=true";
-        })
-        
-        alert.append(btn, btn2);
-        
-        let referencia = document.getElementById('referencia');
-        referencia.prepend(alert)
-      }
-      
-      function inserirDepois(novoElemento, referencia) {
-        referencia.parentNode.insertBefore(novoElemento, referencia.nextSibling);
-      }
-      
-    </script>
+    <script src="${pageContext.request.contextPath}/scripts/confirmar.js"></script>
   
   </body>
 </html>
