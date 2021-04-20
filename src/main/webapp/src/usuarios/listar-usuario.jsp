@@ -21,13 +21,7 @@
     <div class="col-sm-2"></div>
 
     <div id="referencia" class="col-sm-8">
-      <c:if test="${sessionScope.mensagem != null}">
-        <div class="alert ${sessionScope.mensagem != "Gravado com sucesso" ? "alert-danger" : "alert-success"} alert-dismissible fade show" role="alert">
-          <strong>${sessionScope.mensagem}</strong>
-          <%session.invalidate();%>
-          <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      </c:if>
+    <%@include file="/src/componentes/mensagem.jsp"%>
 
       <h2>Lista de Usuário</h2>
       <a href="cadastrar-usuario.jsp" class="btn btn-primary">Novo Usuário</a>
@@ -52,9 +46,9 @@
             <td>${usuario.nome}</td>
             <td>${usuario.username}</td>
             <td>${usuario.status == 1 ? "Ativo" : "Inativo"}</td>
-            <td>${usuario.idPerfil}</td>
+            <td>${usuario.perfil.nome}</td>
             <td>
-              <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_usuario.do?id=${usuario.id}">
+              <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/src/usuarios/atualizar-usuario.jsp">
                 <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
               </a>
 

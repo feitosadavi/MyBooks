@@ -15,22 +15,20 @@
 <body>
 <div class="container row-cols-sm-4">
   <%@include file="../componentes/navbar.jsp"%>
-  <a href="${pageContext.request.contextPath}/src/perfil/listar-perfil.jsp">
+  <a href="${pageContext.request.contextPath}/src/perfis/listar-perfil.jsp">
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
 
   <div class="ms-auto me-auto mt-5">
     <h3 class="mt-5 mb-3">Atualizar</h3>
     <form action="${pageContext.request.contextPath}/gerenciar_perfil.do" onsubmit="checarCheckboxes()" method="POST">
-      
       <div class="form-group" onsubmit="checarCheckboxes()">
-        <input value="${sessionScope.perfil.id}" type="text" class="form-control" name="id" hidden>
+        <input value="${sessionScope.perfil.id}" type="text" class="form-control" name="id">
 
         <label class="mt-2" for="nome">Nome: </label>
         <input value="${sessionScope.perfil.nome}" type="text" class="form-control" id="nome" name="nome" placeholder="insira o nome do perfil" required>
 
         <jsp:useBean class="model.MenuDAO" id="menuDAO"/>
-        
         <c:set var="i" value="0"/>
         <c:set var="menuGravadoArray" value="${menuDAO.list}" />
         <c:forEach var="menuGravado" items="${menuGravadoArray}">
@@ -45,21 +43,11 @@
           </div>
           <c:set var="i" value="${i+1}"/>
         </c:forEach>
-
-
       </div>
-
       <button class="btn btn-primary mt-3 ms-auto me-auto" type="submit">Enviar</button>
     </form>
-
   </div>
-
 </div>
-
-
-<%--            <c:out value="${menusVinculados[i].nome == menuGravado.nome ? 'checked' : ''}"/>--%>
-<%--            <c:out value="${menusVinculados[i].nome}"/>--%>
-<%--            <c:out value="${menuGravado.nome}"/>--%>
 
 <script>
   function checarCheckboxes() {

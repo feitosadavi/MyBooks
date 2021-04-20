@@ -1,12 +1,10 @@
 package model;
 
 
-import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class PerfilDAO extends DatabaseDAO {
     public PerfilDAO() throws Exception{}
@@ -47,8 +45,9 @@ public class PerfilDAO extends DatabaseDAO {
     }
     
     public boolean gravar (Perfil perfil) throws Exception {
+      String SQL;
+      
       try {
-        String SQL;
         this.connect();
         if (perfil.getId() == 0) {
           SQL = "INSERT INTO perfil (nome) VALUES (?)";
@@ -71,8 +70,9 @@ public class PerfilDAO extends DatabaseDAO {
     }
     
     public boolean deletar (int id) throws Exception {
+      String SQL = "DELETE FROM perfil WHERE id=?";
+      
       try {
-        String SQL = "DELETE FROM perfil WHERE id=?";
         this.connect();
         PreparedStatement pstm = conn.prepareStatement(SQL);
         pstm.setInt(1, id);
@@ -94,6 +94,7 @@ public class PerfilDAO extends DatabaseDAO {
       PreparedStatement pstm = conn.prepareStatement(SQL);
       pstm.setInt(1, idPerfil);
       ResultSet rs = pstm.executeQuery();
+      
       while (rs.next()) {
         Menu menu = new Menu();
         menu.setId(rs.getInt("id"));
@@ -127,6 +128,7 @@ public class PerfilDAO extends DatabaseDAO {
     
     public boolean desvincular (int idMenu, int idPerfil) throws Exception {
       String SQL = "DELETE FROM menu_perfil WHERE idMenu=? AND idPerfil=?";
+      
       try {
         this.connect();
         PreparedStatement pstm = conn.prepareStatement(SQL);

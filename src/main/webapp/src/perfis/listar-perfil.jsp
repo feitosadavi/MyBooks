@@ -24,7 +24,7 @@
           <c:if test="${sessionScope.mensagem != null}">
             <div class="alert ${sessionScope.mensagem != "Gravado com sucesso" ? "alert-danger" : "alert-success"} alert-dismissible fade show" role="alert">
               <strong>${sessionScope.mensagem}</strong>
-              <%session.invalidate();%>
+                ${sessionScope.mensagem = null}
               <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </c:if>
@@ -56,11 +56,11 @@
                 </td>
                 
                 <td>
-                  <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_perfil.do?id=${perfil.id}">
+                  <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_perfil.do?acao=alterar&id=${perfil.id}">
                     <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
                   </a>
                   
-                  <button class="btn btn-outline-danger" onclick="confirmarExclusao('${perfil.nome}', '/projetojava3_war_exploded/gerenciar_perfil.do?id='+'${perfil.id}'+'+&deletar=true')">
+                  <button class="btn btn-outline-danger" onclick="confirmarExclusao('${perfil.nome}', '/projetojava3_war_exploded/gerenciar_perfil.do?acao=deletar&id='+'${perfil.id}')">
                     <img src="${pageContext.request.contextPath}/imagens/lixeira.svg" alt="lixeira dentro de um quadrado vermelho">
                   </button>
                 </td>

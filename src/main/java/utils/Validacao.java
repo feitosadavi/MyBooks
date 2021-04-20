@@ -1,16 +1,15 @@
 package utils;
 
-import java.util.Stack;
+import java.util.ArrayList;
 
 public class Validacao {
   public Validacao() {}
-  public Stack<String> camposRequeridos(String[] fieldNames, String[] fields) {
+  public ArrayList<String> camposRequeridos(String[] camposObrigatorios, String[] camposDoUsuario) {
     int i = 0;
-    Stack<String> camposNencontrados = new Stack<String>();
-    for (String field : fields) {
-
-      if (field.trim().length() < 1) { // se o campo for vazio, eu adiciona à pilha de campos não encontrados
-        camposNencontrados.push(fieldNames[i]);
+    ArrayList<String> camposNencontrados = new ArrayList<>();
+    for (String campoDoUsuario : camposDoUsuario) {
+      if (campoDoUsuario.trim().length() < 1) { // se o campo for vazio, eu adiciona à pilha de campos não encontrados
+        camposNencontrados.add(camposObrigatorios[i]);
       } 
       i++;
     }

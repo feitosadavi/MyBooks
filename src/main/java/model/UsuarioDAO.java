@@ -22,7 +22,10 @@ public class UsuarioDAO extends DatabaseDAO {
       usuario.setUsername(rs.getString("username"));
       usuario.setSenha(rs.getString("senha"));
       usuario.setStatus(rs.getInt("status"));
-      usuario.setIdPerfil(rs.getInt("idPerfil"));
+      
+      PerfilDAO perfilDAO = new PerfilDAO();
+      Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
+      usuario.setPerfil(perfil);
 
       list.add(usuario);
     }
@@ -45,8 +48,10 @@ public class UsuarioDAO extends DatabaseDAO {
       usuario.setUsername(rs.getString("username"));
       usuario.setSenha(rs.getString("senha"));
       usuario.setStatus(rs.getInt("status"));
-      usuario.setIdPerfil(rs.getInt("idPerfil"));
-    }
+      
+      PerfilDAO perfilDAO = new PerfilDAO();
+      Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
+      usuario.setPerfil(perfil);    }
 
     return usuario;
   }
@@ -66,7 +71,7 @@ public class UsuarioDAO extends DatabaseDAO {
       pstm.setString(2, usuario.getUsername());
       pstm.setString(3, usuario.getSenha());
       pstm.setInt(4, usuario.getStatus());
-      pstm.setInt(5, usuario.getIdPerfil());
+      pstm.setInt(5, usuario.getPerfil().getId());
 
       System.out.println(usuario);
       if (usuario.getId() > 0) {
@@ -96,4 +101,35 @@ public class UsuarioDAO extends DatabaseDAO {
       return false;
     }
   }
+  
+  public Usuario getRecuperarUsuario (String username) throws Exception {
+    String SQL = "SELECT * FROM usuario WHERE username = ?";
+    try {
+      this.connect();
+      PreparedStatement pstm = conn.prepareStatement(SQL);
+      pstm.setString(1, username);
+
+      ResultSet rs = pstm.executeQuery();
+
+      Usuario usuario = new Usuario();
+      if (rs.next()) {
+        usuario.setId(rs.getInt("id"));
+        usuario.setNome(rs.getString("nome"));
+        usuario.setUsername(rs.getString("username"));
+        usuario.setSenha(rs.getString("senha"));
+        usuario.setStatus(rs.getInt("status"));
+        
+        PerfilDAO perfilDAO = new PerfilDAO();
+        Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
+        System.out.println(perfil);
+        usuario.setPerfil(perfil);
+      }
+      this.disconnect();
+      System.out.println(usuario);
+      return usuario;
+    } catch (Exception e) {
+      System.out.println(e);
+      return null;
+    }
+  }  
 }

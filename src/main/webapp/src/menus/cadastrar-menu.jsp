@@ -13,18 +13,13 @@
 <body>
 <div class="container row-cols-sm-4">
   <%@include file="../componentes/navbar.jsp"%>
-  <a href="${pageContext.request.contextPath}/src/menu/listar-menu.jsp">
+  <a href="${pageContext.request.contextPath}/src/menus/listar-menu.jsp">
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
 
   <div class="ms-auto me-auto mt-5">
-    <c:if test="${sessionScope.mensagem != null}">
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>${sessionScope.mensagem}</strong>
-        <%session.invalidate();%>
-        <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    </c:if>
+    <%@include file="/src/componentes/mensagem.jsp"%>
+
     <h3 class="mt-5 mb-3">Novo Menu</h3>
     <form action="${pageContext.request.contextPath}/gerenciar_menu.do" method="POST">
       <div class="form-group">

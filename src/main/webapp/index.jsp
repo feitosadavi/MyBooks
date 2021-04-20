@@ -4,14 +4,17 @@
     Author     : eu
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <%@include file="src/componentes/head.jsp"%>
     <body>
         <div class="container">
-            <%@include file="src/componentes/navbar.jsp"%>
-          <h1>Página Inicial</h1>
+          <%@include file="/src/componentes/navbar.jsp"%>
+          <%@include file="/src/componentes/mensagem.jsp"%>
+
+          <h2>Página Inicial</h2>
         </div>
     </body>
 </html>

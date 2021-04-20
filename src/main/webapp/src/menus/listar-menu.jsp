@@ -21,16 +21,11 @@
       <div class="col-sm-2"></div>
   
       <div id="referencia" class="col-sm-8">
-        <c:if test="${sessionScope.mensagem != null}">
-          <div class="alert ${sessionScope.mensagem != "Gravado com sucesso" ? "alert-danger" : "alert-success"} alert-dismissible fade show" role="alert">
-            <strong>${sessionScope.mensagem}</strong>
-            <%session.invalidate();%>
-            <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        </c:if>
+        <%@include file="/src/componentes/mensagem.jsp"%>
+
   
         <h2>Lista de Menus</h2>
-        <a href="cadastrar-menu.jsp" class="btn btn-primary">Novo Menu</a>
+        <a href="${pageContext.request.contextPath}/src/menus/cadastrar-menu.jsp" class="btn btn-primary">Novo Menu</a>
   
         <table class="table table-hover table-striped table-bordered display mt-4 text-center">
           <thead>
@@ -52,11 +47,11 @@
               <td>${menu.link}</td>
               <td>${menu.exibir == 1 ? "Sim" : "Não"}</td>
               <td>
-                <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_menu.do?id=${menu.id}">
+                <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_menu.do?acao=alterar&id=${menu.id}">
                   <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
                 </a>
 
-                <button class="btn btn-outline-danger" onclick="confirmarExclusao('${menu.nome}', '/projetojava3_war_exploded/gerenciar_menu.do?id='+'${menu.id}'+'+&deletar=true')">
+                <button class="btn btn-outline-danger" onclick="confirmarExclusao('${menu.nome}', '/projetojava3_war_exploded/gerenciar_menu.do?acao=deletar&id='+'${menu.id}')">
                   <img src="${pageContext.request.contextPath}/imagens/lixeira.svg" alt="lixeira dentro de um quadrado vermelho">
                 </button>
               </td>

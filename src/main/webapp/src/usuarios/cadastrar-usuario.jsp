@@ -13,7 +13,7 @@
 <body>
 <div class="container row-cols-sm-4">
   <%@include file="../componentes/navbar.jsp"%>
-  <a href="${pageContext.request.contextPath}/src/menu/listar-menu.jsp">
+  <a href="${pageContext.request.contextPath}/src/menus/listar-menu.jsp">
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
 

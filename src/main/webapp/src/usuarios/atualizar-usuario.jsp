@@ -13,7 +13,7 @@
 <body>
 <div class="container row-cols-sm-4">
   <%@include file="../componentes/navbar.jsp"%>
-  <a href="${pageContext.request.contextPath}/src/perfil/listar-perfil.jsp">
+  <a href="${pageContext.request.contextPath}/src/perfis/listar-perfil.jsp">
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
 
@@ -43,7 +43,7 @@
         <select id="idPerfil" class="form-select" name="idPerfil">
           <jsp:useBean class="model.PerfilDAO" id="perfilDAO"/>
           <c:forEach var="perfilDAO" items="${perfilDAO.list}">
-            <option value="${perfilDAO.id}" ${sessionScope.usuario.idPerfil == perfilDAO.id ? "selected" : null }>${perfilDAO.nome}</option>
+            <option value="${perfilDAO.id}" ${sessionScope.usuario.perfil.id == perfilDAO.id ? "selected" : null }>${perfilDAO.nome}</option>
           </c:forEach>
         </select>
       </div>

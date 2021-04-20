@@ -8,51 +8,54 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Stack;
+import java.util.ArrayList;
 
 @WebServlet(name = "GerenciarMenu", value = "/gerenciar_menu.do")
 public class GerenciarMenu extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    PrintWriter out = response.getWriter();
+    String idBruta = request.getParameter("id");
+    int id = Integer.parseInt(idBruta.trim());
+    String acao = request.getParameter("acao");
 
-    String id = request.getParameter("id");
-    String deletar = request.getParameter("deletar");
-    Menu menu = new Menu();
-
-    String idLimpa = id.trim();
-    int idParsed = Integer.parseInt(idLimpa);
     try {
       MenuDAO menuDAO = new MenuDAO();
 
-      if (deletar == null) {
-        Menu resultado = menuDAO.getById(idParsed);
+      String mensagem;
+      if (acao.equals("deletar")) {
+        if (GerenciarLogin.verificarAcesso(request, response)) {
+          mensagem = menuDAO.deletar(id) ? "Deletado com sucesso!" : "Erro ao deletar";
+          request.getSession().setAttribute("mensagem", mensagem);
+          response.sendRedirect(request.getContextPath() + "/src/menus/listar-menu.jsp");
+        } else {
+          mensagem = "Acesso negado";
+          request.getSession().setAttribute("menu", mensagem);
+          String referer = request.getHeader("Referer");
+          response.sendRedirect(referer);
+        }
 
-        menu.setId(resultado.getId());
-        menu.setNome(resultado.getNome());
-        menu.setLink(resultado.getLink());
-        menu.setExibir(resultado.getExibir());
+      } else if (acao.equals("alterar")) {
+        if (GerenciarLogin.verificarAcesso(request, response)) {
+          Menu menu = menuDAO.getById(id);
+          request.getSession().setAttribute("menu", menu);
+          response.sendRedirect(request.getContextPath() + "/src/menus/atualizar-menu.jsp");
+        } else {
+          mensagem = "Acesso negado";
+          request.getSession().setAttribute("menu", mensagem);
+          String referer = request.getHeader("Referer");
+          response.sendRedirect(referer);
+        }
 
-        request.getSession().setAttribute("menu", menu);
-        response.sendRedirect(request.getContextPath() + "/src/menu/atualizar-menu.jsp");
 
-      } else {
-        String mensagem;
-        mensagem = menuDAO.deletar(idParsed) ? "Deletado com sucesso!" : "Erro ao deletar";
-        
-        request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
       }
 
     } catch (Exception e) {
-      out.println(e);
+      e.printStackTrace();
     }
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    PrintWriter out = response.getWriter();
     String id = request.getParameter("id");
     String nome = request.getParameter("nome");
     String link = request.getParameter("link");
@@ -66,11 +69,12 @@ public class GerenciarMenu extends HttpServlet {
     try {
       MenuDAO menuDAO = new MenuDAO();
       Validacao validacao = new Validacao();
-      Stack<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
+      
+      ArrayList<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
       if (!camposNencontrados.isEmpty()) {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/menu/cadastrar-menu.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/menus/cadastrar-menu.jsp");
         return;
       }
 
@@ -84,11 +88,11 @@ public class GerenciarMenu extends HttpServlet {
       mensagem = menuDAO.gravar(menu) ? "Gravado com sucesso" : "Erro ao gravar no banco de dados";
       
     } catch (Exception e) {
-      out.print(e);
+      e.printStackTrace();
       mensagem = "Erro ao executar";
     }
     request.getSession().setAttribute("mensagem", mensagem);
-    response.sendRedirect(request.getContextPath() + "/src/menu/listar-menu.jsp");
+    response.sendRedirect(request.getContextPath() + "/src/menus/listar-menu.jsp");
 
   }
 }

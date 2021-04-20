@@ -1,9 +1,10 @@
 package model;
 
 public class Usuario {
-  private int id, idPerfil, status;
+  private int id, status;
   private String nome, username, senha;
-
+  private Perfil perfil;
+  
   public Usuario() {}
 
   public int getId() {
@@ -14,12 +15,12 @@ public class Usuario {
     this.id = id;
   }
 
-  public int getIdPerfil() {
-    return idPerfil;
+  public Perfil getPerfil() {
+    return perfil;
   }
 
-  public void setIdPerfil(int idPerfil) {
-    this.idPerfil = idPerfil;
+  public void setPerfil(Perfil perfil) {
+    this.perfil = perfil;
   }
 
   public String getNome() {
@@ -58,7 +59,7 @@ public class Usuario {
   public String toString() {
     return "Usuario{" +
       "id=" + id +
-      ", idPerfil=" + idPerfil +
+      ", idPerfil=" + perfil +
       ", nome='" + nome + '\'' +
       ", username='" + username + '\'' +
       ", senha='" + senha + '\'' +
