@@ -3,8 +3,11 @@ package controller;
 import model.Menu;
 import model.Usuario;
 import model.UsuarioDAO;
+import utils.Hasher;
 import utils.Validacao;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -49,7 +52,9 @@ public class GerenciarLogin extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         Usuario usuario = usuarioDAO.getRecuperarUsuario(username);
 
-        if (usuario != null && usuario.getSenha().equals(senha)) {
+        String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
+        
+        if (usuario != null && usuario.getSenha().equals(senhaHasheada)) {
           mensagem = "Logado com sucesso";
           request.getSession().setAttribute("ulogado", usuario);
           request.getSession().setAttribute("mensagem", mensagem);
@@ -68,7 +73,7 @@ public class GerenciarLogin extends HttpServlet {
     }
   }
   
-  public static Usuario autenticar(HttpServletRequest request, HttpServletResponse response) {
+  public static Usuario autenticar(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Usuario usuario = null;
     GerenciarLogin.response = response;
     try {
@@ -82,16 +87,16 @@ public class GerenciarLogin extends HttpServlet {
         if (usuario == null) {
           sessao.setAttribute("mensagem", "Você não está autenticado");
           response.sendRedirect(request.getContextPath() + "/src/login/form-login.jsp");
-          
         }
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
+
     return usuario;
   }
 
-  public static boolean verificarAcesso (HttpServletRequest request, HttpServletResponse response) {
+  public static boolean verificarAcesso (HttpServletRequest request, HttpServletResponse response) throws IOException {
     GerenciarLogin.response = response;
     boolean possuiAcesso = false;
     try {
@@ -101,12 +106,9 @@ public class GerenciarLogin extends HttpServlet {
         uri += "?" + queryString;
       }
       Usuario usuario = (Usuario) request.getSession().getAttribute("ulogado");
-      System.out.println(queryString);
-      System.out.println(uri);
 
       for (Menu menu: usuario.getPerfil().getMenus()) {
         if (uri.contains(menu.getLink())) {
-          System.out.println("possui acesso");
           possuiAcesso = true;
           break;
         }
@@ -114,6 +116,15 @@ public class GerenciarLogin extends HttpServlet {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return possuiAcesso;
+    
+    if (!possuiAcesso) {
+      request.getSession().setAttribute("mensagem", "Acesso negado");
+      String referer = request.getHeader("Referer");
+      response.sendRedirect(referer);
+      return false;
+      
+    } else {
+      return true;
+    }
   }
 }

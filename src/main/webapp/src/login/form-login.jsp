@@ -12,19 +12,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <div class="container">
-    <a href="#" class="navbar-brand mb-2 mb-lg-0">Projeto</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="menu">
-
-      <a href="${pageContext.request.contextPath}/src/login/form-login.jsp" class="nav-link ms-auto">Login</a>
-    </div>
-  </div>
-</nav>
+<%@include file="../componentes/navbarSemVerificacao.jsp"%>
 
 <div class="container">
   <div class="row">
@@ -40,6 +28,11 @@
 
         <label for="senha" class="form-label">Senha</label>
         <input type="password" class="form-control mb-3" id="senha" name="senha" required>
+        
+        <p class="text">
+          Não possui uma conta? 
+          <a href="${pageContext.request.contextPath}/src/usuarios/cadastrar-usuario.jsp">Cadastre-se</a>
+        </p>
         
         <button type="submit" class="btn btn-primary">Entrar</button>
       </form>

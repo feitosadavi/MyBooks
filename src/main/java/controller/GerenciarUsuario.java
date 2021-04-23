@@ -4,6 +4,7 @@ import model.Perfil;
 import model.PerfilDAO;
 import model.Usuario;
 import model.UsuarioDAO;
+import utils.Hasher;
 import utils.Validacao;
 
 import javax.servlet.*;
@@ -18,24 +19,30 @@ public class GerenciarUsuario extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String idBruto = request.getParameter("id");
     int id = Integer.parseInt(idBruto.trim());
-    String deletar = request.getParameter("deletar");
+    String acao = request.getParameter("acao");
 
     try {
       UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-      if (deletar != null) {
-        String mensagem;
+      String mensagem;
+      if (acao.equals("deletar")) {
 
-        mensagem = usuarioDAO.deletar(id) ? "Deletado com sucesso!" : "Erro ao deletar";
+        if (GerenciarLogin.verificarAcesso(request, response)) {
+          mensagem = usuarioDAO.deletar(id) ? "Deletado com sucesso!" : "Erro ao deletar";
 
-        request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/usuario/listar-usuario.jsp");
-        
-      } else {
-        Usuario usuario = usuarioDAO.getById(id);
+          request.getSession().setAttribute("mensagem", mensagem);
+          response.sendRedirect(request.getContextPath() + "/src/usuarios/listar-usuario.jsp");
+        }
 
-        request.getSession().setAttribute("usuario", usuario);
-        response.sendRedirect(request.getContextPath() + "/src/usuario/atualizar-usuario.jsp");
+      } else if (acao.equals("alterar")) {
+        if (GerenciarLogin.verificarAcesso(request, response)) {
+          GerenciarLogin.verificarAcesso(request, response);
+          Usuario usuario = usuarioDAO.getById(id);
+
+          request.getSession().setAttribute("usuario", usuario);
+          response.sendRedirect(request.getContextPath() + "/src/usuarios/atualizar-usuario.jsp");
+        }
+
       }
 
     } catch (Exception e) {
@@ -65,7 +72,7 @@ public class GerenciarUsuario extends HttpServlet {
       if (!camposNencontrados.isEmpty()) {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/usuario/cadastrar-usuario.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/usuarios/cadastrar-usuario.jsp");
         
       } else {
         if (!id.isEmpty()) {
@@ -73,7 +80,10 @@ public class GerenciarUsuario extends HttpServlet {
         }
         usuario.setNome(nome);
         usuario.setUsername(username);
-        usuario.setSenha(senha);
+        
+        String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
+        usuario.setSenha(senhaHasheada);
+        
         usuario.setStatus(Integer.parseInt(status));
         
         PerfilDAO perfilDAO = new PerfilDAO();
@@ -88,7 +98,7 @@ public class GerenciarUsuario extends HttpServlet {
       mensagem = "Erro ao executar";
     }
     request.getSession().setAttribute("mensagem", mensagem);
-    response.sendRedirect(request.getContextPath() + "/src/usuario/listar-usuario.jsp");
+    response.sendRedirect(request.getContextPath() + "/src/usuarios/listar-usuario.jsp");
 
   }
 }

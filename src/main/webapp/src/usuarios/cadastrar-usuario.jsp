@@ -12,19 +12,23 @@
 <%@include file="../componentes/head.jsp"%>
 <body>
 <div class="container row-cols-sm-4">
-  <%@include file="../componentes/navbar.jsp"%>
+  <c:choose>
+    <c:when test="${ulogado != null && ulogado.perfil != null}">
+      <%@include file="../componentes/navbar.jsp"%>
+    </c:when>
+    
+    <c:otherwise>
+      <%@include file="../componentes/navbarSemVerificacao.jsp"%>
+    </c:otherwise>
+  </c:choose>
+
   <a href="${pageContext.request.contextPath}/src/menus/listar-menu.jsp">
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
 
   <div class="ms-auto me-auto mt-5">
-    <c:if test="${sessionScope.mensagem != null}">
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>${sessionScope.mensagem}</strong>
-        <%session.invalidate();%>
-        <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    </c:if>
+    <%@include file="../componentes/mensagem.jsp"%>
+
     <h3 class="mt-5 mb-3">Novo Usuário</h3>
     <form action="${pageContext.request.contextPath}/gerenciar_usuario.do" method="POST">
       <div class="form-group">

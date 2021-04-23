@@ -7,6 +7,7 @@
 <%@page import="model.PerfilDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.Perfil"%>
+<%@ page import="java.util.Enumeration" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -21,13 +22,7 @@
         <div class="col-sm-2"></div>
         
         <div id="referencia" class="col-sm-8">
-          <c:if test="${sessionScope.mensagem != null}">
-            <div class="alert ${sessionScope.mensagem != "Gravado com sucesso" ? "alert-danger" : "alert-success"} alert-dismissible fade show" role="alert">
-              <strong>${sessionScope.mensagem}</strong>
-                ${sessionScope.mensagem = null}
-              <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </c:if>
+          <%@include file="../componentes/mensagem.jsp"%>
 
           <h2>Lista de Perfis</h2>
           <a href="cadastrar-perfil.jsp" class="btn btn-primary">Novo Cadastro</a>

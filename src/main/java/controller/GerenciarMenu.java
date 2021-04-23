@@ -27,11 +27,6 @@ public class GerenciarMenu extends HttpServlet {
           mensagem = menuDAO.deletar(id) ? "Deletado com sucesso!" : "Erro ao deletar";
           request.getSession().setAttribute("mensagem", mensagem);
           response.sendRedirect(request.getContextPath() + "/src/menus/listar-menu.jsp");
-        } else {
-          mensagem = "Acesso negado";
-          request.getSession().setAttribute("menu", mensagem);
-          String referer = request.getHeader("Referer");
-          response.sendRedirect(referer);
         }
 
       } else if (acao.equals("alterar")) {
@@ -39,14 +34,7 @@ public class GerenciarMenu extends HttpServlet {
           Menu menu = menuDAO.getById(id);
           request.getSession().setAttribute("menu", menu);
           response.sendRedirect(request.getContextPath() + "/src/menus/atualizar-menu.jsp");
-        } else {
-          mensagem = "Acesso negado";
-          request.getSession().setAttribute("menu", mensagem);
-          String referer = request.getHeader("Referer");
-          response.sendRedirect(referer);
         }
-
-
       }
 
     } catch (Exception e) {
@@ -69,31 +57,31 @@ public class GerenciarMenu extends HttpServlet {
     try {
       MenuDAO menuDAO = new MenuDAO();
       Validacao validacao = new Validacao();
-      
+
       ArrayList<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
       if (!camposNencontrados.isEmpty()) {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
         response.sendRedirect(request.getContextPath() + "/src/menus/cadastrar-menu.jsp");
-        return;
+
+      } else {
+        if (!id.isEmpty()) {
+          menu.setId(Integer.parseInt(id));
+        }
+        menu.setNome(nome);
+        menu.setLink(link);
+        menu.setExibir(Integer.parseInt(exibir));
+
+        mensagem = menuDAO.gravar(menu) ? "Gravado com sucesso" : "Erro ao gravar no banco de dados";
       }
 
-      if (!id.isEmpty()) {
-        menu.setId(Integer.parseInt(id));
-      }
-      menu.setNome(nome);
-      menu.setLink(link);
-      menu.setExibir(Integer.parseInt(exibir));
-
-      mensagem = menuDAO.gravar(menu) ? "Gravado com sucesso" : "Erro ao gravar no banco de dados";
-      
     } catch (Exception e) {
       e.printStackTrace();
       mensagem = "Erro ao executar";
     }
     request.getSession().setAttribute("mensagem", mensagem);
     response.sendRedirect(request.getContextPath() + "/src/menus/listar-menu.jsp");
-
+    
   }
 }
 

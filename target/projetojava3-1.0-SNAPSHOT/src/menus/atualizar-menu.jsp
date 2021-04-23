@@ -33,8 +33,8 @@
 
         <label class="mt-2" for="exibir">Exibir: </label>
         <select id="exibir" class="form-select" name="exibir">
-          <option ${sessionScope.menu.exibir == 1 && "selected"} value="1">Sim</option>
-          <option ${sessionScope.menu.exibir == 0 && "selected"} value="0">Não</option>
+          <option ${sessionScope.menu.exibir == 1 ? "selected" : null} value="1">Sim</option>
+          <option ${sessionScope.menu.exibir == 0 ? "selected" : null} value="0">Não</option>
         </select>
       </div>
 

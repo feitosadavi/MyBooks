@@ -48,11 +48,11 @@
             <td>${usuario.status == 1 ? "Ativo" : "Inativo"}</td>
             <td>${usuario.perfil.nome}</td>
             <td>
-              <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/src/usuarios/atualizar-usuario.jsp">
+              <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
                 <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
               </a>
 
-              <button class="btn btn-outline-danger" onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?id='+'${usuario.id}'+'+&deletar=true')">
+              <button class="btn btn-outline-danger" onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
                 <img src="${pageContext.request.contextPath}/imagens/lixeira.svg" alt="lixeira dentro de um quadrado vermelho">
               </button>
             </td>

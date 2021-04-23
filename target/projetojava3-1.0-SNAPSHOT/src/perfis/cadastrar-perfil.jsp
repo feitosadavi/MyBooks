@@ -4,6 +4,13 @@
     Author     : eu
 --%>
 
+<%
+
+  if (!GerenciarLogin.verificarAcesso(request, response)) {
+    request.getSession().setAttribute("msg_acessoNegado", "Acesso negado");
+  }
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -18,13 +25,7 @@
           </a>
 
           <div class="ms-auto me-auto mt-5">
-            <c:if test="${sessionScope.mensagem != null}">
-              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>${sessionScope.mensagem}</strong>
-                <%session.invalidate();%>
-                <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            </c:if>
+            <%@include file="../componentes/mensagem.jsp"%>
             <h3 class="mt-5 mb-3">Novo cadastro</h3>
             <form action="${pageContext.request.contextPath}/gerenciar_perfil.do" method="POST">
               <div class="form-group">

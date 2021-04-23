@@ -23,7 +23,7 @@
     <h3 class="mt-5 mb-3">Atualizar</h3>
     <form action="${pageContext.request.contextPath}/gerenciar_perfil.do" onsubmit="checarCheckboxes()" method="POST">
       <div class="form-group" onsubmit="checarCheckboxes()">
-        <input value="${sessionScope.perfil.id}" type="text" class="form-control" name="id">
+        <input value="${sessionScope.perfil.id}" type="text" class="form-control" name="id" hidden>
 
         <label class="mt-2" for="nome">Nome: </label>
         <input value="${sessionScope.perfil.nome}" type="text" class="form-control" id="nome" name="nome" placeholder="insira o nome do perfil" required>

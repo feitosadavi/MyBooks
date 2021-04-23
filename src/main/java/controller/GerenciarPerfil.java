@@ -19,12 +19,12 @@ public class GerenciarPerfil extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String idBruto = request.getParameter("id");
     int id = Integer.parseInt(idBruto.trim());
-    String deletar = request.getParameter("deletar");
+    String acao = request.getParameter("acao");
 
     try {
       PerfilDAO perfilDAO = new PerfilDAO();
 
-      if (deletar != null) {
+      if (acao.equals("deletar")) {
         String mensagem;
         
         if (GerenciarLogin.verificarAcesso(request, response)) {
@@ -41,29 +41,26 @@ public class GerenciarPerfil extends HttpServlet {
           }
           mensagem = perfilDAO.deletar(id) ? "Deletado com sucesso!" : "Erro ao deletar";
 
+          request.getSession().setAttribute("mensagem", mensagem);
           response.sendRedirect(request.getContextPath() + "/src/perfis/listar-perfil.jsp");
-        } else {
-          String referer = request.getHeader("Referer");
-          response.sendRedirect(referer);
-          mensagem = "Acesso negado";
         }
+
+      } else if (acao.equals("alterar")){
         
-        request.getSession().setAttribute("mensagem", mensagem);
+        if (GerenciarLogin.verificarAcesso(request, response)) {
+          Perfil perfil = perfilDAO.getById(id);
+          ArrayList<Menu> menus = perfilDAO.getMenusVinculadosPorPerfil(perfil.getId());
 
-      } else {
-        Perfil perfil = perfilDAO.getById(id);
+          // o idsMenus servirá para verificar se o checkbox deve estar checado ou não 
+          ArrayList<Integer> idsMenus = new ArrayList<>();
+          menus.forEach(menu -> {
+            idsMenus.add(menu.getId());
+          });
 
-        ArrayList<Menu> menus = perfilDAO.getMenusVinculadosPorPerfil(perfil.getId());
-
-        // o idsMenus servirá para verificar se o checkbox deve estar checado ou não 
-        ArrayList<Integer> idsMenus = new ArrayList<>();
-        menus.forEach(menu -> {
-          idsMenus.add(menu.getId());
-        });
-
-        request.getSession().setAttribute("perfil", perfil);
-        request.getSession().setAttribute("idsMenus", idsMenus);
-        response.sendRedirect(request.getContextPath() + "/src/perfis/atualizar-perfil.jsp");
+          request.getSession().setAttribute("perfil", perfil);
+          request.getSession().setAttribute("idsMenus", idsMenus);
+          response.sendRedirect(request.getContextPath() + "/src/perfis/atualizar-perfil.jsp");
+        }
       }
 
     } catch (Exception e) {
@@ -93,34 +90,35 @@ public class GerenciarPerfil extends HttpServlet {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
         response.sendRedirect(request.getContextPath() + "/src/perfis/cadastrar-perfil.jsp");
-        return;
-      }
+        
+      } else {
+        if (!id.isEmpty()) {
+          int idParsed = Integer.parseInt(id);
+          perfil.setId(idParsed);
 
-      if (!id.isEmpty()) {
-        int idParsed = Integer.parseInt(id);
-        perfil.setId(idParsed);
+          // Crio um array com os menus do sistema
+          while (parameterNames.hasMoreElements()) {
+            try {
+              int idMenu;
+              String nomeMenu = parameterNames.nextElement();
+              String valorMenu = request.getParameter(nomeMenu);
 
-        // Crio um array com os menus do sistema
-        while (parameterNames.hasMoreElements()) {
-          try {
-            int idMenu;
-            String nomeMenu = parameterNames.nextElement();
-            String valorMenu = request.getParameter(nomeMenu);
-            
-            if (valorMenu.contains("#desvincular")) {
-              String[] arr = valorMenu.split("#");
-              idMenu = Integer.parseInt(arr[0]);
-              perfilDAO.desvincular(idMenu, idParsed);
-            } else {
-              idMenu = Integer.parseInt(valorMenu);
-              perfilDAO.vincular(idMenu, idParsed);
+              if (valorMenu.contains("#desvincular")) {
+                String[] arr = valorMenu.split("#");
+                idMenu = Integer.parseInt(arr[0]);
+                perfilDAO.desvincular(idMenu, idParsed);
+              } else {
+                idMenu = Integer.parseInt(valorMenu);
+                perfilDAO.vincular(idMenu, idParsed);
+              }
+
+            } catch (Exception e) {
+              e.printStackTrace();
             }
-
-          } catch (Exception e) {
-            e.printStackTrace();
           }
         }
       }
+      
       perfil.setNome(nome);
       mensagem = perfilDAO.gravar(perfil) ? "Gravado com sucesso" : "Erro ao gravar no banco de dados";
 

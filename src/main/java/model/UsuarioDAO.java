@@ -73,7 +73,6 @@ public class UsuarioDAO extends DatabaseDAO {
       pstm.setInt(4, usuario.getStatus());
       pstm.setInt(5, usuario.getPerfil().getId());
 
-      System.out.println(usuario);
       if (usuario.getId() > 0) {
         pstm.setInt(6, usuario.getId());
       }
@@ -81,7 +80,7 @@ public class UsuarioDAO extends DatabaseDAO {
       this.disconnect();
       return true;
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       return false;
     }
   }
@@ -97,7 +96,7 @@ public class UsuarioDAO extends DatabaseDAO {
 
       return true;
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       return false;
     }
   }
@@ -121,14 +120,12 @@ public class UsuarioDAO extends DatabaseDAO {
         
         PerfilDAO perfilDAO = new PerfilDAO();
         Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
-        System.out.println(perfil);
         usuario.setPerfil(perfil);
       }
       this.disconnect();
-      System.out.println(usuario);
       return usuario;
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       return null;
     }
   }  
