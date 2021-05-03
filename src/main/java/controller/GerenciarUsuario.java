@@ -4,16 +4,20 @@ import model.Perfil;
 import model.PerfilDAO;
 import model.Usuario;
 import model.UsuarioDAO;
+import utils.GerenciadorDeArquivos;
 import utils.Hasher;
 import utils.Validacao;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.IOException;
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @WebServlet(name = "GerenciarUsuario", value = "/gerenciar_usuario.do")
+@MultipartConfig
 public class GerenciarUsuario extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,20 +53,28 @@ public class GerenciarUsuario extends HttpServlet {
       e.printStackTrace();
     }
   }
-
+  
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String id = request.getParameter("id");
     String nome = request.getParameter("nome");
-    String username = request.getParameter("username");
-    String status = request.getParameter("status");
+    String email = request.getParameter("email");
     String senha = request.getParameter("senha");
     String idPerfil = request.getParameter("idPerfil");
+    String matricula = request.getParameter("matricula");
+    InputStream conteudoDoArquivoCapa = request.getPart("capa").getInputStream();
+    
+    Date data = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
+    final String nomeDoArquivoCapa = conteudoDoArquivoCapa != null 
+      ? "MyBooksImage" + dateFormat.format(data) + "-" + data.getTime()
+      : "sem-foto-perfil.webp";
+    
     String mensagem;
     
-    String[] fields = {nome, username, senha, status, idPerfil};
-    String[] fieldNames = {"nome", "username", "senha", "status", "idPerfil"};
+    String[] fields = {nome, email, senha, matricula, idPerfil};
+    String[] fieldNames = {"nome", "email", "senha", "matricula", "idPerfil"};
     
     Usuario usuario = new Usuario();
     try {
@@ -75,16 +87,24 @@ public class GerenciarUsuario extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/src/usuarios/cadastrar-usuario.jsp");
         
       } else {
-        if (!id.isEmpty()) {
+        if (!id.isEmpty()) { // se for editar
+          String status = request.getParameter("status");
+          usuario.setStatus(Integer.parseInt(status));
           usuario.setId(Integer.parseInt(id));
+          usuario.setSenha(senha);
+          
+        } else { // se for gravar um novo registro
+          String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
+          usuario.setSenha(senhaHasheada);
         }
+        
+        GerenciadorDeArquivos.uploadImagem(nomeDoArquivoCapa, conteudoDoArquivoCapa);
+        
         usuario.setNome(nome);
-        usuario.setUsername(username);
+        usuario.setEmail(email);
+        usuario.setMatricula(Integer.parseInt(matricula));
+        usuario.setCapa(nomeDoArquivoCapa);
         
-        String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
-        usuario.setSenha(senhaHasheada);
-        
-        usuario.setStatus(Integer.parseInt(status));
         
         PerfilDAO perfilDAO = new PerfilDAO();
         Perfil perfil = perfilDAO.getById(Integer.parseInt(idPerfil));

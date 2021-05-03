@@ -26,40 +26,33 @@
       <h2>Lista de Usuário</h2>
       <a href="cadastrar-usuario.jsp" class="btn btn-primary">Novo Usuário</a>
 
-      <table class="table table-hover table-striped table-bordered display mt-4 text-center">
-        <thead>
-        <tr>
-          <th scope="col">id</th>
-          <th scope="col">nome</th>
-          <th scope="col">username</th>
-          <th scope="col">status</th>
-          <th scope="col">perfil</th>
-          <th scope="col">opções</th>
-        </tr>
-        </thead>
+      <jsp:useBean class="model.UsuarioDAO" id="usuarioDAO"/>
+      <c:forEach var="usuario" items="${usuarioDAO.list}">
+        <div class="card mt-3 h-10">
+          <div class="card-horizontal">
+            <div class="img-square-wrapper">
+              <img class="img-thumbnail img-fluid w-25 h-100" src="${pageContext.request.contextPath}/imagens/${usuario.capa}" alt="Card image cap">
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">${usuario.nome}</h4>
+              <p class="card-text">id: ${usuario.id}</p>
+              <p class="card-text">matrícula: ${usuario.matricula}</p>
+              <p class="card-text">status: ${usuario.status == 1 ? "Ativo" : "Inativo"}</p>
+              <p class="card-text">Perfil: ${usuario.perfil.nome}</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
+              <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
+            </a>
 
-        <jsp:useBean class="model.UsuarioDAO" id="usuarioDAO"/>
-        <tbody>
-        <c:forEach var="usuario" items="${usuarioDAO.list}">
-          <tr>
-            <th scope="row">${usuario.id}</th>
-            <td>${usuario.nome}</td>
-            <td>${usuario.username}</td>
-            <td>${usuario.status == 1 ? "Ativo" : "Inativo"}</td>
-            <td>${usuario.perfil.nome}</td>
-            <td>
-              <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
-                <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
-              </a>
-
-              <button class="btn btn-outline-danger" onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
-                <img src="${pageContext.request.contextPath}/imagens/lixeira.svg" alt="lixeira dentro de um quadrado vermelho">
-              </button>
-            </td>
-          </tr>
-        </c:forEach>
-        </tbody>
-      </table>
+            <button class="btn btn-outline-danger" onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
+              <img src="${pageContext.request.contextPath}/imagens/lixeira.svg" alt="lixeira dentro de um quadrado vermelho">
+            </button>
+          </div>
+        </div>
+      </c:forEach>
+      
 
     </div>
   </div>

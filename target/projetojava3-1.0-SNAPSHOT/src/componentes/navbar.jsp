@@ -25,7 +25,7 @@
               </c:if>            
             </c:forEach>
           </ul>
-          <a href="${pageContext.request.contextPath}/gerenciar_login.do?logout=true" class="nav-link ms-auto">Sair</a>
+          <%@include file="/src/componentes/icone-conta.jsp"%>
         </c:when>
         <c:otherwise>
           <a href="${pageContext.request.contextPath}/src/login/form-login.jsp" class="nav-link ms-auto">Login</a>

@@ -19,33 +19,49 @@
 
   <div class="ms-auto me-auto mt-5">
     <h3 class="mt-5 mb-3">Atualizar Usuário</h3>
-    <form action="${pageContext.request.contextPath}/gerenciar_usuario.do" method="POST">
+    <form action="${pageContext.request.contextPath}/gerenciar_usuario.do" method="POST" enctype="multipart/form-data">
 
       <div class="form-group">
         <input value="${sessionScope.usuario.id}" type="text" class="form-control" name="id" hidden>
 
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+          <p class="text ms-2">Foto de perfil:</p>
+          <div id="preview-container">
+            <input onchange="lerURL(this)" type="file" class="form-control" id="preview" name="capa" value="${sessionScope.usuario.capa}" hidden>
+            <img src="${pageContext.request.contextPath}/imagens/${sessionScope.usuario.capa}" id="previewImg" class="img-fluid" alt="Foto de perfil">
+          </div>
+        </div>
+        <div class="col-sm-3"></div>
+        
         <label class="mt-2" for="nome">Nome: </label>
         <input value="${sessionScope.usuario.nome}" type="text" class="form-control" id="nome" name="nome" placeholder="insira o nome do menu">
 
-        <label class="mt-2" for="username">Username: </label>
-        <input value="${sessionScope.usuario.username}" type="text" class="form-control" id="username" name="username" placeholder="insira o username">
-
+        <label class="mt-2" for="email">Email: </label>
+        <input value="${sessionScope.usuario.email}" type="email" class="form-control" id="email" name="email" placeholder="insira o email">
+        
         <label class="mt-2" for="senha">Senha: </label>
         <input value="${sessionScope.usuario.senha}" type="password" class="form-control" id="senha" name="senha" placeholder="insira a senha">
-
-        <label class="mt-2" for="status">Status: </label>
-        <select class="form-select" name="status" id="status">
-          <option value="1" ${sessionScope.usuario.status == "1" && "selected"}>Ativo</option>
-          <option value="0" ${sessionScope.usuario.status == "0" && "selected"}>Inativo</option>
-        </select>
         
-        <label class="mt-2" for="idPerfil">Perfil: </label>
-        <select id="idPerfil" class="form-select" name="idPerfil">
-          <jsp:useBean class="model.PerfilDAO" id="perfilDAO"/>
-          <c:forEach var="perfilDAO" items="${perfilDAO.list}">
-            <option value="${perfilDAO.id}" ${sessionScope.usuario.perfil.id == perfilDAO.id ? "selected" : null }>${perfilDAO.nome}</option>
-          </c:forEach>
-        </select>
+        <c:if test="${sessionScope.ulogado.perfil.nome == 'bibliotecario' || sessionScope.ulogado.perfil.nome == 'admin'}" >
+          <label class="mt-2" for="matricula">Matricula: </label>
+          <input value="${sessionScope.usuario.matricula}" type="text" class="form-control" id="matricula" name="matricula" placeholder="insira a matricula">
+
+          <label class="mt-2" for="status">Status: </label>
+          <select class="form-select" name="status" id="status">
+            <option value="1" ${sessionScope.usuario.status == "1" ? "selected" : null}>Ativo</option>
+            <option value="0" ${sessionScope.usuario.status == "0" ? "selected" : null}>Inativo</option>
+          </select>
+        
+          <label class="mt-2" for="idPerfil">Perfil: </label>
+          <select id="idPerfil" class="form-select" name="idPerfil">
+            <jsp:useBean class="model.PerfilDAO" id="perfilDAO"/>
+            <c:forEach var="perfilDAO" items="${perfilDAO.list}">
+              <option value="${perfilDAO.id}" ${sessionScope.usuario.perfil.id == perfilDAO.id ? "selected" : null }>${perfilDAO.nome}</option>
+            </c:forEach>
+          </select>
+        </c:if>
+        
       </div>
 
       <button class="btn btn-primary mt-3 ms-auto me-auto" type="submit">Enviar</button>
@@ -54,5 +70,11 @@
   </div>
 
 </div>
+
+<script src="${pageContext.request.contextPath}/scripts/preview.js"></script>
+<script>
+  mostrarPreview()
+</script>
+
 </body>
 </html>

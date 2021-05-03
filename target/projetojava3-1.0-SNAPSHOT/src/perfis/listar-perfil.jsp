@@ -27,7 +27,7 @@
           <h2>Lista de Perfis</h2>
           <a href="cadastrar-perfil.jsp" class="btn btn-primary">Novo Cadastro</a>
           
-          <table class="table table-hover table-striped table-bordered display mt-4 text-center">
+          <table class="table table-hover table-striped table-bordered display mt-4">
             <thead>
             <tr>
               <th scope="col">id</th>
@@ -45,9 +45,26 @@
                 <td>${perfil.nome}</td>
 
                 <td>
-                  <c:forEach var="menu" items="${perfil.menus}">
-                    ${menu.nome}
-                  </c:forEach>
+                  <div class="accordion" id="menus-vinculados">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="one">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${perfil.nome}" aria-expanded="true" aria-controls="collapseOne">
+                          Mostrar
+                        </button>
+                      </h2>
+                      
+                      <div id="${perfil.nome}" class="accordion-collapse collapse show" aria-labelledby="one" data-bs-parent="#menus-vinculados">
+                        <div class="accordion-body">
+                          <c:forEach var="menu" items="${perfil.menus}">
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item">${menu.nome}</li>
+                            </ul>
+                          </c:forEach>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
                 </td>
                 
                 <td>

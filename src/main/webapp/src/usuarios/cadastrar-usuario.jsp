@@ -11,7 +11,7 @@
 <html lang="pt-br">
 <%@include file="../componentes/head.jsp"%>
 <body>
-<div class="container row-cols-sm-4">
+<div class="container">
   <c:choose>
     <c:when test="${ulogado != null && ulogado.perfil != null}">
       <%@include file="../componentes/navbar.jsp"%>
@@ -26,42 +26,77 @@
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
 
-  <div class="ms-auto me-auto mt-5">
-    <%@include file="../componentes/mensagem.jsp"%>
+  <%@include file="../componentes/mensagem.jsp"%>
+  <img src="" alt="">
+  <h3 class="mt-5 mb-3">Cadastre-se</h3>
 
-    <h3 class="mt-5 mb-3">Novo Usuário</h3>
-    <form action="${pageContext.request.contextPath}/gerenciar_usuario.do" method="POST">
-      <div class="form-group">
-        <input type="text" class="form-control" name="id" hidden>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <form action="${pageContext.request.contextPath}/gerenciar_usuario.do" method="POST" enctype="multipart/form-data">
+        <div class="form-group row">
+          <input type="text" class="form-control" name="id" hidden>
 
-        <label class="mt-2" for="nome">Nome: </label>
-        <input type="text" class="form-control" id="nome" name="nome" placeholder="insira o nome do menu">
+          <div class="col-sm-5"></div>
+          <div class="col-sm-4">
+            <p class="text ms-2">Foto de perfil:</p>
+            <div id="preview-container">
+              <input onchange="lerURL(this)" type="file" class="form-control" id="preview" name="capa" hidden>
+            </div>
+          </div>
+          <div class="col-sm-5"></div>
+          
+          <div class="row">
+            <label class="mt-2" for="nome">Nome: </label>
+            <input type="text" class="form-control" id="nome" name="nome" placeholder="insira o nome do menu" required>
 
-        <label class="mt-2" for="username">Username: </label>
-        <input type="text" class="form-control" id="username" name="username" placeholder="insira o username">
+            <div class="col">
+              <div class="form-outline">
+                <label class="mt-2" for="email">Email: </label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="insira o email" required>
+              </div>  
+            </div>
+            <div class="col">
+              <div class="form-outline">
+                <label class="mt-2" for="senha">Senha: </label>
+                <input type="password" class="form-control" id="senha" name="senha" placeholder="insira a senha" required>
+              </div>
+            </div>
+          </div>
 
-        <label class="mt-2" for="senha">Senha: </label>
-        <input type="password" class="form-control" id="senha" name="senha" placeholder="insira a senha">
+          <div class="row">
+            <div class="col">
+              <div class="form-outline">
+                <label class="mt-2" for="matricula">Matricula: </label>
+                <input type="text" class="form-control" id="matricula" name="matricula" placeholder="insira a matricula" required>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-outline">
+                <label class="mt-2" for="idPerfil">Perfil: </label>
+                <select id="idPerfil" class="form-select" name="idPerfil">
+                  <jsp:useBean class="model.PerfilDAO" id="perfilDAO"/>
+                  <c:forEach var="perfilDAO" items="${perfilDAO.list}">
+                    <option value="${perfilDAO.id}" >${perfilDAO.nome}</option>
+                  </c:forEach>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <label class="mt-2" for="status">Status: </label>
-        <select class="form-select" name="status" id="status">
-          <option value="1">Ativo</option>
-          <option value="0">Inativo</option>
-        </select>
-        
-        <label class="mt-2" for="idPerfil">Perfil: </label>
-        <select id="idPerfil" class="form-select" name="idPerfil">
-          <jsp:useBean class="model.PerfilDAO" id="perfilDAO"/>
-          <c:forEach var="perfilDAO" items="${perfilDAO.list}">
-            <option value="${perfilDAO.id}">${perfilDAO.nome}</option>
-          </c:forEach>
-        </select>
-      </div>
-
-      <button class="btn btn-primary mt-3 ms-auto me-auto" type="submit">Enviar</button>
-    </form>
+        <button class="btn btn-primary mt-3 ms-auto me-auto" type="submit">Enviar</button>
+      </form>
+    </div>
+    <div class="col-sm-2"></div>
   </div>
 
 </div>
+
+<script src="${pageContext.request.contextPath}/scripts/preview.js"></script>
+<script>
+  mostrarPreview()
+</script>
+
 </body>
 </html>

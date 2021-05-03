@@ -11,7 +11,7 @@ public class PerfilDAO extends DatabaseDAO {
     
     public ArrayList<Perfil> getList() throws Exception {
         ArrayList<Perfil> list = new ArrayList<Perfil>();
-        String SQL = "SELECT perfil.* FROM perfil";
+        String SQL = "SELECT perfis.* FROM perfis";
         this.connect();
         Statement stm = conn.createStatement();
         ResultSet rs = stm.executeQuery(SQL);
@@ -29,7 +29,7 @@ public class PerfilDAO extends DatabaseDAO {
     public Perfil getById(int id) throws Exception {
       Perfil perfil = new Perfil();
       
-      String SQL = "SELECT * FROM perfil WHERE id=?";
+      String SQL = "SELECT * FROM perfis WHERE id=?";
       this.connect();
       PreparedStatement pstm = conn.prepareStatement(SQL);
       pstm.setInt(1, id);
@@ -50,9 +50,9 @@ public class PerfilDAO extends DatabaseDAO {
       try {
         this.connect();
         if (perfil.getId() == 0) {
-          SQL = "INSERT INTO perfil (nome) VALUES (?)";
+          SQL = "INSERT INTO perfis (nome) VALUES (?)";
         } else {
-          SQL = "UPDATE perfil SET nome=? WHERE id=?";
+          SQL = "UPDATE perfis SET nome=? WHERE id=?";
         }
         PreparedStatement pstm = conn.prepareStatement(SQL);
         
@@ -64,13 +64,13 @@ public class PerfilDAO extends DatabaseDAO {
         this.disconnect();
         return true;
       } catch (Exception e) {
-        System.out.println(e);
+        e.printStackTrace();
         return false;
       }
     }
     
     public boolean deletar (int id) throws Exception {
-      String SQL = "DELETE FROM perfil WHERE id=?";
+      String SQL = "DELETE FROM perfis WHERE id=?";
       
       try {
         this.connect();
@@ -81,15 +81,15 @@ public class PerfilDAO extends DatabaseDAO {
         
         return true;
       } catch (Exception e) {
-        System.out.println(e);
+        e.printStackTrace();
         return false;
       }
     }
     
     public ArrayList<Menu> getMenusVinculadosPorPerfil (int idPerfil) throws Exception {
       ArrayList<Menu> list = new ArrayList<Menu>();
-      String SQL = "SELECT menu.* FROM menu, menu_perfil " +
-        "WHERE menu.id = menu_perfil.idMenu AND menu_perfil.idPerfil = ?";
+      String SQL = "SELECT menus.* FROM menus, menus_perfis " +
+        "WHERE menus.id = menus_perfis.idMenu AND menus_perfis.idPerfil = ?";
       this.connect();
       PreparedStatement pstm = conn.prepareStatement(SQL);
       pstm.setInt(1, idPerfil);
@@ -109,7 +109,7 @@ public class PerfilDAO extends DatabaseDAO {
     }
 
     public boolean vincular (int idMenu, int idPerfil) throws Exception {
-      String SQL = "INSERT INTO menu_perfil (idMenu, idPerfil) VALUES (?, ?)";
+      String SQL = "INSERT INTO menus_perfis (idMenu, idPerfil) VALUES (?, ?)";
 
       try {
         this.connect();
@@ -121,13 +121,13 @@ public class PerfilDAO extends DatabaseDAO {
   
         return true;
       } catch (Exception e) {
-        System.out.println(e);
+        e.printStackTrace();
         return false;
       }
     }
     
     public boolean desvincular (int idMenu, int idPerfil) throws Exception {
-      String SQL = "DELETE FROM menu_perfil WHERE idMenu=? AND idPerfil=?";
+      String SQL = "DELETE FROM menus_perfis WHERE idMenu=? AND idPerfil=?";
       
       try {
         this.connect();
@@ -139,7 +139,7 @@ public class PerfilDAO extends DatabaseDAO {
         return true;
         
       } catch (Exception e) {
-        System.out.println(e);
+        e.printStackTrace();
         return false;
       }
     }

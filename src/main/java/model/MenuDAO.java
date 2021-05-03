@@ -12,7 +12,7 @@ public class MenuDAO extends DatabaseDAO {
 
   public ArrayList<Menu> getList() throws Exception {
     ArrayList<Menu> list = new ArrayList<Menu>();
-    String SQL = "SELECT * FROM menu";
+    String SQL = "SELECT * FROM menus";
     this.connect();
     Statement stm = conn.createStatement();
     ResultSet rs = stm.executeQuery(SQL);
@@ -33,7 +33,7 @@ public class MenuDAO extends DatabaseDAO {
   public Menu getById(int id) throws Exception {
     Menu menu = new Menu();
 
-    String SQL = "SELECT * FROM menu WHERE id=?";
+    String SQL = "SELECT * FROM menus WHERE id=?";
     this.connect();
     PreparedStatement pstm = conn.prepareStatement(SQL);
     pstm.setInt(1, id);
@@ -55,9 +55,9 @@ public class MenuDAO extends DatabaseDAO {
       String SQL;
       this.connect();
       if (menu.getId() == 0) {
-        SQL = "INSERT INTO menu (nome, link, icone, exibir) VALUES (?, ?, ?, ?)";
+        SQL = "INSERT INTO menus (nome, link, icone, exibir) VALUES (?, ?, ?, ?)";
       } else {
-        SQL = "UPDATE menu SET nome=?, link=?, icone=?, exibir=? WHERE id=?";
+        SQL = "UPDATE menus SET nome=?, link=?, icone=?, exibir=? WHERE id=?";
       }
       PreparedStatement pstm = conn.prepareStatement(SQL);
 
@@ -73,14 +73,14 @@ public class MenuDAO extends DatabaseDAO {
       this.disconnect();
       return true;
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       return false;
     }
   }
 
   public boolean deletar (int id) throws Exception {
     try {
-      String SQL = "DELETE FROM menu WHERE id=?";
+      String SQL = "DELETE FROM menus WHERE id=?";
       this.connect();
       PreparedStatement pstm = conn.prepareStatement(SQL);
       pstm.setInt(1, id);
@@ -89,7 +89,7 @@ public class MenuDAO extends DatabaseDAO {
 
       return true;
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       return false;
     }
   }

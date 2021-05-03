@@ -1,8 +1,8 @@
 package model;
 
 public class Usuario {
-  private int id, status;
-  private String nome, username, senha;
+  private int id, status, matricula;
+  private String nome, email, senha, capa;
   private Perfil perfil;
   
   public Usuario() {}
@@ -15,12 +15,20 @@ public class Usuario {
     this.id = id;
   }
 
-  public Perfil getPerfil() {
-    return perfil;
+  public int getStatus() {
+    return status;
   }
 
-  public void setPerfil(Perfil perfil) {
-    this.perfil = perfil;
+  public void setStatus(int status) {
+    this.status = status;
+  }
+
+  public int getMatricula() {
+    return matricula;
+  }
+
+  public void setMatricula(int matricula) {
+    this.matricula = matricula;
   }
 
   public String getNome() {
@@ -31,12 +39,12 @@ public class Usuario {
     this.nome = nome;
   }
 
-  public String getUsername() {
-    return username;
+  public String getEmail() {
+    return email;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public String getSenha() {
@@ -47,23 +55,19 @@ public class Usuario {
     this.senha = senha;
   }
 
-  public int getStatus() {
-    return status;
+  public String getCapa() {
+    return capa;
   }
 
-  public void setStatus(int status) {
-    this.status = status;
+  public void setCapa(String capa) {
+    this.capa = capa;
   }
 
-  @Override
-  public String toString() {
-    return "Usuario{" +
-      "id=" + id +
-      ", idPerfil=" + perfil +
-      ", nome='" + nome + '\'' +
-      ", username='" + username + '\'' +
-      ", senha='" + senha + '\'' +
-      ", status='" + status + '\'' +
-      '}';
+  public Perfil getPerfil() {
+    return perfil;
+  }
+
+  public void setPerfil(Perfil perfil) {
+    this.perfil = perfil;
   }
 }

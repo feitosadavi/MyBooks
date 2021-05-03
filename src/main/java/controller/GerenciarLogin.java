@@ -6,8 +6,6 @@ import model.UsuarioDAO;
 import utils.Hasher;
 import utils.Validacao;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -32,13 +30,13 @@ public class GerenciarLogin extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     GerenciarLogin.response = response;
     
-    String username = request.getParameter("username");
+    String email = request.getParameter("email");
     String senha = request.getParameter("senha");
-    
+
     String mensagem;
 
-    String[] camposObrigatorios = {"username", "senha"};
-    String[] camposDoUsuario = {username, senha};
+    String[] camposObrigatorios = {"email", "senha"};
+    String[] camposDoUsuario = {email, senha};
     try {
       Validacao validacao = new Validacao();
       ArrayList<String> camposNencontrados = validacao.camposRequeridos(camposObrigatorios, camposDoUsuario);
@@ -50,7 +48,7 @@ public class GerenciarLogin extends HttpServlet {
         
       } else {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuario = usuarioDAO.getRecuperarUsuario(username);
+        Usuario usuario = usuarioDAO.getRecuperarUsuario(email);
 
         String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
         

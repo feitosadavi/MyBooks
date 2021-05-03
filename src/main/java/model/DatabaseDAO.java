@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DatabaseDAO {
-    public final String URL = "jdbc:mysql://localhost:3666/projetojava3";
+    public final String URL = "jdbc:mysql://localhost:3666/mybooksdb";
     public final String USER = "root";
     public final String PASSWORD = "";
     public Connection conn;
@@ -14,7 +14,6 @@ public class DatabaseDAO {
           Class.forName("com.mysql.cj.jdbc.Driver");
        } catch (ClassNotFoundException ex) {
            System.out.println("Connector Not Loaded");
-           System.out.println(ex.getMessage());
        }
     }
     

@@ -11,7 +11,7 @@ public class UsuarioDAO extends DatabaseDAO {
 
   public ArrayList<Usuario> getList() throws Exception {
     ArrayList<Usuario> list = new ArrayList<Usuario>();
-    String SQL = "SELECT * FROM usuario";
+    String SQL = "SELECT * FROM usuarios";
     this.connect();
     Statement stm = conn.createStatement();
     ResultSet rs = stm.executeQuery(SQL);
@@ -19,10 +19,13 @@ public class UsuarioDAO extends DatabaseDAO {
       Usuario usuario = new Usuario();
       usuario.setId(rs.getInt("id"));
       usuario.setNome(rs.getString("nome"));
-      usuario.setUsername(rs.getString("username"));
+      usuario.setEmail(rs.getString("email"));
       usuario.setSenha(rs.getString("senha"));
       usuario.setStatus(rs.getInt("status"));
-      
+      usuario.setMatricula(rs.getInt("matricula"));
+      usuario.setCapa(rs.getString("capa"));
+
+
       PerfilDAO perfilDAO = new PerfilDAO();
       Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
       usuario.setPerfil(perfil);
@@ -36,18 +39,20 @@ public class UsuarioDAO extends DatabaseDAO {
   public Usuario getById(int id) throws Exception {
     Usuario usuario = new Usuario();
 
-    String SQL = "SELECT * FROM usuario WHERE id=?";
+    String SQL = "SELECT * FROM usuarios WHERE id=?";
     this.connect();
     PreparedStatement pstm = conn.prepareStatement(SQL);
     pstm.setInt(1, id);
 
     ResultSet rs = pstm.executeQuery();
-    if (rs.next()) {      
+    if (rs.next()) {
       usuario.setId(rs.getInt("id"));
       usuario.setNome(rs.getString("nome"));
-      usuario.setUsername(rs.getString("username"));
+      usuario.setEmail(rs.getString("email"));
       usuario.setSenha(rs.getString("senha"));
       usuario.setStatus(rs.getInt("status"));
+      usuario.setMatricula(rs.getInt("matricula"));
+      usuario.setCapa(rs.getString("capa"));
       
       PerfilDAO perfilDAO = new PerfilDAO();
       Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
@@ -61,23 +66,26 @@ public class UsuarioDAO extends DatabaseDAO {
       String SQL;
       this.connect();
       if (usuario.getId() == 0) {
-        SQL = "INSERT INTO usuario (nome, username, senha, status, idPerfil) VALUES (?, ?, ?, ?, ?)";
+        SQL = "INSERT INTO usuarios (nome, email, senha, capa, matricula, idPerfil) VALUES (?, ?, ?, ?, ?, ?)";
       } else {
-        SQL = "UPDATE usuario SET nome=?, username=?, senha=?, status=?, idPerfil=? WHERE id=?";
+        SQL = "UPDATE usuarios SET nome=?, email=?, senha=?, capa = ?, matricula = ?, idPerfil=? WHERE id=?";
       }
       PreparedStatement pstm = conn.prepareStatement(SQL);
 
       pstm.setString(1, usuario.getNome());
-      pstm.setString(2, usuario.getUsername());
+      pstm.setString(2, usuario.getEmail());
       pstm.setString(3, usuario.getSenha());
-      pstm.setInt(4, usuario.getStatus());
-      pstm.setInt(5, usuario.getPerfil().getId());
+//      pstm.setInt(4, usuario.getStatus());
+      pstm.setString(4, usuario.getCapa());
+      pstm.setInt(5, usuario.getMatricula());
+      pstm.setInt(6, usuario.getPerfil().getId());
 
       if (usuario.getId() > 0) {
-        pstm.setInt(6, usuario.getId());
+        pstm.setInt(7, usuario.getId());
       }
       pstm.execute();
       this.disconnect();
+      System.out.println(true);
       return true;
     } catch (Exception e) {
       e.printStackTrace();
@@ -101,12 +109,12 @@ public class UsuarioDAO extends DatabaseDAO {
     }
   }
   
-  public Usuario getRecuperarUsuario (String username) throws Exception {
-    String SQL = "SELECT * FROM usuario WHERE username = ?";
+  public Usuario getRecuperarUsuario (String email) throws Exception {
+    String SQL = "SELECT * FROM usuarios WHERE email = ?";
     try {
       this.connect();
       PreparedStatement pstm = conn.prepareStatement(SQL);
-      pstm.setString(1, username);
+      pstm.setString(1, email);
 
       ResultSet rs = pstm.executeQuery();
 
@@ -114,9 +122,11 @@ public class UsuarioDAO extends DatabaseDAO {
       if (rs.next()) {
         usuario.setId(rs.getInt("id"));
         usuario.setNome(rs.getString("nome"));
-        usuario.setUsername(rs.getString("username"));
+        usuario.setEmail(rs.getString("email"));
         usuario.setSenha(rs.getString("senha"));
         usuario.setStatus(rs.getInt("status"));
+        usuario.setMatricula(rs.getInt("matricula"));
+        usuario.setCapa(rs.getString("capa"));
         
         PerfilDAO perfilDAO = new PerfilDAO();
         Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));

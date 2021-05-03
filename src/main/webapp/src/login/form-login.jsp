@@ -23,8 +23,8 @@
     <%@include file="/src/componentes/mensagem.jsp"%>
 
       <form action="${pageContext.request.contextPath}/gerenciar_login.do" method="POST">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" class="form-control mb-3" id="username" name="username" required>
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control mb-3" id="email" name="email" required>
 
         <label for="senha" class="form-label">Senha</label>
         <input type="password" class="form-control mb-3" id="senha" name="senha" required>
