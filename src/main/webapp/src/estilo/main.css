@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --azul-escuro: #0C0032;
+  --roxo-opaco: #190061;
+  --roxo-opaco-claro: #240090;
+  --roxo-claro: #3500D3;
+  --preto-fosco: #282828;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+.titulo {
+  color: var(--azul-escuro);
+  line-height: 1;
+  font-size: 2.3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.titulo::after {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--roxo-claro);
+  position: absolute;
+  bottom: 3px;
+  left: -5px;
+  border-radius: 0.2rem;
+  z-index: -1;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-title-mybooks {
+  display: flex;
+  align-items: center;
+}
+
+.card-title-decoration {
+  width: .2rem;
+  height: 1.5rem;
+  margin-bottom: .4rem;
+  border-radius: .2rem;
+  margin-right: .2rem;
+  background-color: var(--azul-escuro);
+}
+
+
+.foto-thumb {
+  border-radius: 100%;
+  width: 5rem;
+  height: 5rem;
+  border: .2rem solid var(--roxo-claro);
+  border: .3rem solid var(--roxo-opaco);
+  overflow: hidden;
+  background-color: var(--azul-escuro);
+}
+
+.foto-thumb img {
+  border-radius: 100%;
+  width: 100%;
+  height: 100%;
+  transition: transform .5s;
+  border: .3rem solid var(--roxo-claro);
+}
+
+.hover-thumb:hover > img {
+  -moz-transform: scale(1.3);
+  -webkit-transform: scale(1.3);
+  transform: scale(1.3);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.bg-azul-escuro {
+  background-color: #0C0032 !important;
+}
+
+.bg-roxo-claro {
+  background-color: var(--roxo-claro) !important;
+}
