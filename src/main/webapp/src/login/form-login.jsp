@@ -14,34 +14,51 @@
 
 <%@include file="../componentes/navbarSemVerificacao.jsp"%>
 
-<div class="container">
+<div id="referencia" class="container-fluid">
+  <%@include file="../componentes/mensagem.jsp"%>
+
   <div class="row">
-    <h3 class="mt-5 mb-3">Login</h3>
-    
-    <div class="col-sm-4"></div>
-    <div id="referencia" class="col-sm-4">
-    <%@include file="/src/componentes/mensagem.jsp"%>
 
-      <form action="${pageContext.request.contextPath}/gerenciar_login.do" method="POST">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control mb-3" id="email" name="email" required>
+    <div class="d-flex justify-content-center">
+      <div class="col-12 col-lg-5 form-container">
+        <h2 class="titulo mt-4 mb-4">Login</h2>
 
-        <label for="senha" class="form-label">Senha</label>
-        <input type="password" class="form-control mb-3" id="senha" name="senha" required>
-        
-        <p class="text">
-          Não possui uma conta? 
-          <a href="${pageContext.request.contextPath}/src/usuarios/cadastrar-usuario.jsp">Cadastre-se</a>
-        </p>
-        
-        <button type="submit" class="btn btn-primary">Entrar</button>
-      </form>
-      
+        <form class="form" action="${pageContext.request.contextPath}/gerenciar_login.do" method="POST">
+
+          <div class="row mb-3 mt-5">
+            <input type="email"
+                   name="email"
+                   class="form-control form-mybooks mb-3"
+                   placeholder="Seu email"
+                   required>
+
+            <input type="password"
+                   name="senha"
+                   class="form-control form-mybooks mb-3"
+                   placeholder="Sua senha"
+                   required>
+            <p class="text-secondary">Não possui uma conta?
+              <a href="${pageContext.request.contextPath}/src/usuarios/cadastrar-usuario.jsp">Cadastre-se</a>
+            </p>
+          </div>
+
+          <input type="checkbox"
+                 id="lembrar"
+                 name="lembrar">
+          <label class="ms-1 text-white"
+                 for="lembrar">Lembre-se de mim</label>
+
+          <button type="submit"
+             class="btn btn-dark bg-azul-escuro w-100 mt-4">Entrar</button>
+
+        </form>
+      </div>
     </div>
-    <div class="col-sm-4"></div>
+
   </div>
 </div>
 
+<script src="${pageContext.request.contextPath}/scripts/confirmar.js"></script>
 <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.js"></script>
 
 </body>

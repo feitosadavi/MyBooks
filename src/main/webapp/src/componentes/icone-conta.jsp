@@ -1,5 +1,5 @@
 <div id="container" onclick="abrirMenu()">
-  <img src="${pageContext.request.contextPath}/imagens/${sessionScope.ulogado.capa}" alt="Ã­cone do usuÃ¡rio" id="icone-usuario">
+  <img src="${pageContext.request.contextPath}/imagens/fotosUsuario/${sessionScope.ulogado.capa}" alt="Ícone do usuário" class="icone-usuario-navbar">
 </div>
 
 <script>

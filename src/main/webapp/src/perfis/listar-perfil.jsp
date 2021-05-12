@@ -15,8 +15,8 @@
   <%@include file="../componentes/head.jsp"%>
   
   <body>
+    <%@include file="../componentes/navbar.jsp"%>
     <div class="container">
-      <%@include file="../componentes/navbar.jsp"%>
 
       <div class="row mt-4">
         <div class="col-sm-2"></div>
@@ -24,9 +24,11 @@
         <div id="referencia" class="col-sm-8">
           <%@include file="../componentes/mensagem.jsp"%>
 
-          <h2>Lista de Perfis</h2>
+          <h2 class="titulo">Lista de Perfis</h2>
           <a href="cadastrar-perfil.jsp" class="btn btn-primary">Novo Cadastro</a>
-          
+
+          <%@include file="../componentes/campo-pesquisa.jsp"%>
+
           <table class="table table-hover table-striped table-bordered display mt-4">
             <thead>
             <tr>

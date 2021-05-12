@@ -56,8 +56,8 @@ public class UsuarioDAO extends DatabaseDAO {
       
       PerfilDAO perfilDAO = new PerfilDAO();
       Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
-      usuario.setPerfil(perfil);    }
-
+      usuario.setPerfil(perfil);    
+    }
     return usuario;
   }
 
@@ -68,24 +68,23 @@ public class UsuarioDAO extends DatabaseDAO {
       if (usuario.getId() == 0) {
         SQL = "INSERT INTO usuarios (nome, email, senha, capa, matricula, idPerfil) VALUES (?, ?, ?, ?, ?, ?)";
       } else {
-        SQL = "UPDATE usuarios SET nome=?, email=?, senha=?, capa = ?, matricula = ?, idPerfil=? WHERE id=?";
+        SQL = "UPDATE usuarios SET nome=?, email=?, senha=?, capa = ?, matricula = ?, idPerfil=?, status = ? WHERE id=?";
       }
       PreparedStatement pstm = conn.prepareStatement(SQL);
 
       pstm.setString(1, usuario.getNome());
       pstm.setString(2, usuario.getEmail());
       pstm.setString(3, usuario.getSenha());
-//      pstm.setInt(4, usuario.getStatus());
       pstm.setString(4, usuario.getCapa());
       pstm.setInt(5, usuario.getMatricula());
       pstm.setInt(6, usuario.getPerfil().getId());
 
       if (usuario.getId() > 0) {
-        pstm.setInt(7, usuario.getId());
+        pstm.setInt(7, usuario.getStatus());
+        pstm.setInt(8, usuario.getId());
       }
       pstm.execute();
       this.disconnect();
-      System.out.println(true);
       return true;
     } catch (Exception e) {
       e.printStackTrace();
@@ -95,7 +94,7 @@ public class UsuarioDAO extends DatabaseDAO {
 
   public boolean deletar (int id) throws Exception {
     try {
-      String SQL = "DELETE FROM usuario WHERE id=?";
+      String SQL = "DELETE FROM usuarios WHERE id=?";
       this.connect();
       PreparedStatement pstm = conn.prepareStatement(SQL);
       pstm.setInt(1, id);

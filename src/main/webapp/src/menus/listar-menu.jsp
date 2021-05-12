@@ -14,8 +14,8 @@
 <%@include file="../componentes/head.jsp"%>
 
 <body>
+<%@include file="../componentes/navbar.jsp"%>
   <div class="container">
-    <%@include file="../componentes/navbar.jsp"%>
   
     <div class="row mt-4">
       <div class="col-sm-2"></div>
@@ -25,7 +25,11 @@
 
   
         <h2>Lista de Menus</h2>
+        
         <a href="${pageContext.request.contextPath}/src/menus/cadastrar-menu.jsp" class="btn btn-primary">Novo Menu</a>
+
+        <%@include file="../componentes/campo-pesquisa.jsp"%>
+
   
         <table class="table table-hover table-striped table-bordered display mt-4 text-center">
           <thead>

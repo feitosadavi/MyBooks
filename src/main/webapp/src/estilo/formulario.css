@@ -1,0 +1,17 @@
+.form-container-cadastro {
+  background-color: var(--azul-escuro);
+  height: 100vh;
+}
+
+.form {
+  background-color: var(--roxo-claro) !important;
+  width: 100%;
+  padding: 5rem;
+  border-radius: .5rem;
+}
+
+.form-mybooks {
+  background-color: var(--preto-fosco) !important;
+  border: 0 !important;
+  color: white !important;
+}

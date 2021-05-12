@@ -1,0 +1,40 @@
+.navbar {
+	height: 4.3rem !important;
+}
+
+.bg-blue {
+  background-color: var(--azul-escuro) !important;
+}
+
+.navbar-input {
+  border-radius: 0 !important;
+  height: 2rem !important;
+  align-self: center;
+}
+
+.btn-pesquisa {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 !important;
+  height: 2rem !important;
+  width: 2rem !important;
+  background-color: #3500D3 !important;
+  border: 0 !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("/imagens/collapse-icon.svg") !important;
+}
+
+.navbar-toggler {
+  border: 0 !important;
+  outline: none !important;
+}
+
+.icone-usuario-navbar {
+  border-radius: 100%;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer
+}

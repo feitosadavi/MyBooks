@@ -1,14 +1,14 @@
 let previewContainer = document.getElementById('preview-container');
-function mostrarPreview() {
+function mostrarPreview () {
   let preview = document.getElementById('preview');
 
-  previewContainer.addEventListener('click', () => {
+  previewContainer && previewContainer.addEventListener('click', () => {
     removerImagem(preview)
     preview.click();
   })
 }
 
-function lerURL(input) {
+function lerURL (input) {
   if (input.files && input.files[0]) {
     let reader = new FileReader();
 
@@ -23,12 +23,16 @@ function lerURL(input) {
       img.className = 'img-fluid';
       img.setAttribute("src", e.target.result);
       img.alt = "preview da foto de perfil";
+
+      let cameraIcone = document.getElementById('camera-icone');
+      cameraIcone && cameraIcone.remove(); // se eu deixar o ícone, ele vai atrapalhar a preview
+
       previewContainer.append(img);
     }
     reader.readAsDataURL(input.files[0]);
   }
 }
 
-function removerImagem(preview) {
+function removerImagem (preview) {
   preview.value = null;
 }

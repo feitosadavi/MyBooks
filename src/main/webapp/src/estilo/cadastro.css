@@ -1,0 +1,18 @@
+.logo {
+  letter-spacing: .5rem;
+}
+
+.logo span {
+  background-color: var(--roxo-claro);
+  color: white;
+  border-radius: .3rem;
+}
+
+.camera-icone {
+  width: 2.5rem;
+}
+
+.btn-cadastro {
+  background-color: var(--roxo-opaco) !important;
+  border: 0 !important;
+}

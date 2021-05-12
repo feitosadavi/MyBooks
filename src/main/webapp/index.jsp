@@ -8,13 +8,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <%@include file="src/componentes/head.jsp"%>
-    <body>
-        <div class="container">
-          <%@include file="/src/componentes/navbar.jsp"%>
-          <%@include file="/src/componentes/mensagem.jsp"%>
+  <%@include file="src/componentes/head.jsp"%>
+  <body>
+    <%@include file="/src/componentes/navbar.jsp"%>
+    <div class="container">
+      <%@include file="/src/componentes/mensagem.jsp"%>
 
-          <h2>Página Inicial</h2>
-        </div>
-    </body>
+      <h2>Página Inicial</h2>
+    </div>
+  </body>
 </html>

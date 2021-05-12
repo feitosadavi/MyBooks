@@ -11,8 +11,8 @@
 <html lang="pt-br">
 <%@include file="../componentes/head.jsp"%>
 <body>
+<%@include file="../componentes/navbar.jsp"%>
 <div class="container row-cols-sm-4">
-  <%@include file="../componentes/navbar.jsp"%>
   <a href="${pageContext.request.contextPath}/src/perfis/listar-perfil.jsp">
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
@@ -24,15 +24,21 @@
       <div class="form-group">
         <input value="${sessionScope.usuario.id}" type="text" class="form-control" name="id" hidden>
 
-        <div class="col-sm-3"></div>
-        <div class="col-sm-6">
-          <p class="text ms-2">Foto de perfil:</p>
-          <div id="preview-container">
-            <input onchange="lerURL(this)" type="file" class="form-control" id="preview" name="capa" value="${sessionScope.usuario.capa}" hidden>
-            <img src="${pageContext.request.contextPath}/imagens/${sessionScope.usuario.capa}" id="previewImg" class="img-fluid" alt="Foto de perfil">
-          </div>
+
+        <div id="preview-container"
+             class="ms-auto me-auto">
+          <input onchange="lerURL(this)"
+                 type="file"
+                 class="form-control form-mybooks"
+                 id="preview"
+                 name="capa"
+                 value="${sessionScope.usuario.capa}"
+                 hidden>
+          <img  src="${pageContext.request.contextPath}/imagens/${sessionScope.usuario.capa}"
+               class="camera-icone"
+               id="camera-icone"
+               alt="foto de perfil">
         </div>
-        <div class="col-sm-3"></div>
         
         <label class="mt-2" for="nome">Nome: </label>
         <input value="${sessionScope.usuario.nome}" type="text" class="form-control" id="nome" name="nome" placeholder="insira o nome do menu">

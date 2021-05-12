@@ -1,14 +1,13 @@
 package utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.util.Arrays;
 
 public class GerenciadorDeArquivos {
   public static boolean uploadImagem (String nomeDoArquivo, InputStream conteudoDoArquivo) throws Exception{
     try {
-      String path = "/home/eu/Documentos/Projetos/TCC(parte-prática)/MyBooks/src/main/webapp/imagens";
+      String path = "/home/eu/Documentos/Projetos/TCC(parte-prática)/MyBooks/src/main/webapp/imagens/fotosUsuario/";
       OutputStream out = new FileOutputStream(path + File.separator + nomeDoArquivo);
 
       int read = 0;
@@ -22,5 +21,18 @@ public class GerenciadorDeArquivos {
       e.printStackTrace();
       return false;
     }
+  }
+  
+  public static void procurarArquivo (String nomeDoArquivo, HttpServletRequest request) throws Exception {
+    File diretorio = new File(request.getContextPath() + "/imagens/foto-usuario");
+    
+    File[] listaFiles = diretorio.listFiles(new FileFilter() {
+      @Override
+      public boolean accept(File pathname) {
+        return pathname.getName().equals(nomeDoArquivo);
+      }
+    });
+    // if true capa else nomeDoArquivo
+    System.out.println(Arrays.toString(listaFiles));
   }
 }

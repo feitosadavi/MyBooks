@@ -43,32 +43,34 @@ public class GerenciarLogin extends HttpServlet {
 
       if (!camposNencontrados.isEmpty()) {
         mensagem = "Os seguintes campos não foram encontrados: " + camposNencontrados;
-        request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/login/form-login.jsp");
-        
+
       } else {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         Usuario usuario = usuarioDAO.getRecuperarUsuario(email);
 
         String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
-        
-        if (usuario != null && usuario.getSenha().equals(senhaHasheada)) {
+
+        if (usuario.getId() == 0) {
+          mensagem = "Email não encontrado";
+          
+        } else if (usuario.getSenha().equals(senhaHasheada)) {
+          mensagem = "Senha incorreta!";
+            
+        } else {
           mensagem = "Logado com sucesso";
           request.getSession().setAttribute("ulogado", usuario);
           request.getSession().setAttribute("mensagem", mensagem);
           response.sendRedirect(request.getContextPath() + "/");
-
-        } else {
-          mensagem = "Username ou senha incorretos!";
-          request.getSession().setAttribute("mensagem", mensagem);
-          response.sendRedirect(request.getContextPath() + "/src/login/form-login.jsp");
+          return;
         }
       }
-      
+
     } catch(Exception e) {
       e.printStackTrace();
       mensagem = "Erro ao executar";
     }
+    request.getSession().setAttribute("mensagem", mensagem);
+    response.sendRedirect(request.getContextPath() + "/src/login/form-login.jsp");
   }
   
   public static Usuario autenticar(HttpServletRequest request, HttpServletResponse response) throws IOException {

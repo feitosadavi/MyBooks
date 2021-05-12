@@ -12,6 +12,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.*;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,14 +63,17 @@ public class GerenciarUsuario extends HttpServlet {
     String senha = request.getParameter("senha");
     String idPerfil = request.getParameter("idPerfil");
     String matricula = request.getParameter("matricula");
-    InputStream conteudoDoArquivoCapa = request.getPart("capa").getInputStream();
+    
+    Part capaPart = request.getPart("capa");
+    String nomeDoArquivoCapa = Paths.get(capaPart.getSubmittedFileName()).getFileName().toString();
+    InputStream conteudoDoArquivoCapa = capaPart.getInputStream();
     
     Date data = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    final String nomeDoArquivoCapa = conteudoDoArquivoCapa != null 
+    final String novoNomeDoArquivoCapa = conteudoDoArquivoCapa != null 
       ? "MyBooksImage" + dateFormat.format(data) + "-" + data.getTime()
-      : "sem-foto-perfil.webp";
+      : "sem-foto-perfil.svg";
     
     String mensagem;
     
@@ -85,9 +89,22 @@ public class GerenciarUsuario extends HttpServlet {
         mensagem = "Campos não inseridos: " + camposNencontrados;
         request.getSession().setAttribute("mensagem", mensagem);
         response.sendRedirect(request.getContextPath() + "/src/usuarios/cadastrar-usuario.jsp");
+        return;
         
       } else {
-        if (!id.isEmpty()) { // se for editar
+    	if (nomeDoArquivoCapa.contains("MyBooks")) {
+    	  usuario.setCapa(nomeDoArquivoCapa); // não mudo a capa se vier uma imagem já existente
+    		
+    	} else {
+    	  usuario.setCapa(novoNomeDoArquivoCapa);
+    		
+          if (id != null && !id.isEmpty()) { // se for editar
+            GerenciadorDeArquivos.procurarArquivo(nomeDoArquivoCapa, request);
+          } 
+          GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa);
+    	}
+    	
+        if (id != null && !id.isEmpty()) { // se for editar
           String status = request.getParameter("status");
           usuario.setStatus(Integer.parseInt(status));
           usuario.setId(Integer.parseInt(id));
@@ -98,14 +115,11 @@ public class GerenciarUsuario extends HttpServlet {
           usuario.setSenha(senhaHasheada);
         }
         
-        GerenciadorDeArquivos.uploadImagem(nomeDoArquivoCapa, conteudoDoArquivoCapa);
-        
         usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setMatricula(Integer.parseInt(matricula));
-        usuario.setCapa(nomeDoArquivoCapa);
         
-        
+     
         PerfilDAO perfilDAO = new PerfilDAO();
         Perfil perfil = perfilDAO.getById(Integer.parseInt(idPerfil));
         usuario.setPerfil(perfil);

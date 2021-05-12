@@ -12,8 +12,8 @@
 <%@include file="../componentes/head.jsp"%>
 
 <body>
+<%@include file="../componentes/navbar.jsp"%>
 <div class="container row-cols-sm-4">
-  <%@include file="../componentes/navbar.jsp"%>
   <a href="${pageContext.request.contextPath}/src/perfis/listar-perfil.jsp">
     <img src="${pageContext.request.contextPath}/imagens/voltar.svg" alt="seta de voltar">
   </a>
