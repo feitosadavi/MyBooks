@@ -1,3 +1,4 @@
+<%@page import="model.LocacaoDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -25,7 +26,7 @@
             <h3 class="text-white">${usuario.nome}</h3>
           </div>
           <div class="foto-thumb hover-thumb">
-            <img src="${pageContext.request.contextPath}/imagens/${usuario.capa}"
+            <img src="${pageContext.request.contextPath}/imagens/fotosUsuario/${usuario.capa}"
                  alt="">
           </div>
 
@@ -44,40 +45,43 @@
 
       <%@include file="../componentes/campo-pesquisa.jsp"%>
 
-      <div class="card-container mt-4">
-
-        <div class="livro-thumb hover-thumb me-2">
-          <img src="${pageContext.request.contextPath}/imagens/ladrao-de-raios-capa.jpg"
-               alt="">
-        </div>
-
-        <div class="card">
-          <div class="card-body">
-            <div class="card-title-mybooks">
-              <div class="card-title-decoration"></div>
-              <h3>Percy Jackson e o Ladrão de Raios</h3>
-            </div>
-            <p class="card-text text-success">
-              Devolvido
-            </p>
-            <p class="text-secondary text-end">14/04/21 - 12/05/21</p>
-          </div>
-
-          <div class="card-footer">
-            <a class="btn btn-outline-info"
-               href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
-              <img src="${pageContext.request.contextPath}/imagens/editar.svg"
-                   alt="caneta dentro de um quadrado verde">
-            </a>
-
-            <button class="btn btn-outline-danger"
-                    onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
-              <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
-                   alt="lixeira dentro de um quadrado vermelho">
-            </button>
-          </div>
-        </div>
-      </div>
+  		<jsp:useBean class="model.LocacaoDAO" id="livroDAO" />
+      <c:forEach var="locacao" items="${livroDAO.getHistoricoLocacoesPorUsuario(usuario.id)}">
+	     	<div class="card-container mt-4">
+	        <div class="livro-thumb hover-thumb me-2">
+	          <img src="${pageContext.request.contextPath}/imagens/fotosLivro/${locacao.getLivros()[0].getCapa()}"
+	               alt="">
+	        </div>
+	
+	        <div class="card">
+	          <div class="card-body">
+	            <div class="card-title-mybooks">
+	              <div class="card-title-decoration"></div>
+	              <h3>${locacao.getLivros()[0].getNome()}</h3>
+	            </div>
+	            <p class="card-text text-success">
+	              ${locacao.getStatus()}
+	            </p>
+	            <p class="text-secondary text-end">${locacao.getDataLocacao()} § ${locacao.getDataDevolucao()}</p>
+	          </div>
+	
+	          <div class="card-footer">
+	            <a class="btn btn-outline-info"
+	               href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
+	              <img src="${pageContext.request.contextPath}/imagens/editar.svg"
+	                   alt="caneta dentro de um quadrado verde">
+	            </a>
+	
+	            <button class="btn btn-outline-danger"
+	                    onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
+	              <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
+	                   alt="lixeira dentro de um quadrado vermelho">
+	            </button>
+	          </div>
+	        </div>
+	     	</div>
+	    </c:forEach>
+            
     </aside>
   </main>
 </div>

@@ -32,10 +32,6 @@
   background-color: var(--azul-escuro);
 }
 
-.info-complementar {
-
-}
-
 .wrapper {
   display: flex;
 }
@@ -58,8 +54,6 @@
   border-radius: 0%;
   height: 6rem;
   width: 5rem;
-  border: .2rem solid var(--roxo-claro);
-  border: .3rem solid var(--roxo-opaco);
   overflow: hidden;
   background-color: var(--azul-escuro);
 }

@@ -1,0 +1,68 @@
+#carrinho {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: -18rem;
+  bottom: 0;
+  width: 18rem;
+  transition: .7s;
+  background: var(--roxo-claro);
+  overflow-y: hidden;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+#carrinho .thumb-livro-carrinho {
+	width: 5rem;
+	height: 7rem;
+}
+
+#carrinho .itens-carrinho {
+	display: flex;
+}
+
+/* Elemento inserido com javascript */
+#carrinho .agendamento {
+	display:flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: column;
+	align-self: center;
+	margin-bottom: auto;
+	margin-top: auto;
+}
+
+#toggler {
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	right:5vw;
+	top:12vh;
+	font-size: 1.5rem;
+	border-radius: 100%;
+	background-color: var(--roxo-claro);
+	cursor:pointer;
+	z-index: 1000;
+	padding: 1.2rem;
+	width: 2rem;
+	height: 2rem;
+ }
+ 
+ #toggler::before {
+ 	display: block;
+ 	content: '.....  ';
+ 	background-image: url('../../imagens/carrinho.svg'); 
+ 	fill: #fff;
+ 	background-size: 28px 28px;
+  height: 28px;
+  width: 28px;
+ }
+ 
+ svg {
+ 	align-self: center;
+ }
+  
+@media screen and (max-width: 950px) {
+  #header {padding-top: 3rem;}
+}

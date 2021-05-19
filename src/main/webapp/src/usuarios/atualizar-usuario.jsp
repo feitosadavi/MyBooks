@@ -19,7 +19,10 @@
 
   <div class="ms-auto me-auto mt-5">
     <h3 class="mt-5 mb-3">Atualizar Usuário</h3>
-    <form action="${pageContext.request.contextPath}/gerenciar_usuario.do" method="POST" enctype="multipart/form-data">
+    <form class="form"
+    	action="${pageContext.request.contextPath}/gerenciar_usuario.do" 
+    	method="POST" 
+    	enctype="multipart/form-data">
 
       <div class="form-group">
         <input value="${sessionScope.usuario.id}" type="text" class="form-control" name="id" hidden>
@@ -27,14 +30,14 @@
 
         <div id="preview-container"
              class="ms-auto me-auto">
+          <input name="capaAtual" value="${sessionScope.usuario.capa}" hidden>
           <input onchange="lerURL(this)"
                  type="file"
                  class="form-control form-mybooks"
                  id="preview"
                  name="capa"
-                 value="${sessionScope.usuario.capa}"
                  hidden>
-          <img  src="${pageContext.request.contextPath}/imagens/${sessionScope.usuario.capa}"
+          <img  src="${pageContext.request.contextPath}/imagens/fotosUsuario/${sessionScope.usuario.capa}"
                class="camera-icone"
                id="camera-icone"
                alt="foto de perfil">

@@ -9,6 +9,8 @@
   <link href="${pageContext.request.contextPath}/src/estilo/usuarios.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/src/estilo/conta.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/src/estilo/cadastro.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/src/estilo/livros.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/src/estilo/carrinho.css" rel="stylesheet">
 
   <title>MyBooks</title>
 </head>

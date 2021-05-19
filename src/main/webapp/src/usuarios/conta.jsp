@@ -33,7 +33,7 @@
               <h3 class="text-white">${usuario.nome}</h3>
             </div>
             <div class="foto-thumb hover-thumb">
-              <img src="${pageContext.request.contextPath}/imagens/${usuario.capa}"
+              <img src="${pageContext.request.contextPath}/imagens/fotosUsuario/${usuario.capa}"
                    alt="">
             </div>
 

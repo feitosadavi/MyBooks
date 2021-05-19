@@ -15,4 +15,5 @@
 .btn-cadastro {
   background-color: var(--roxo-opaco) !important;
   border: 0 !important;
+  color: #fff;
 }

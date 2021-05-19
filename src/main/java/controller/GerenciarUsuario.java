@@ -1,5 +1,9 @@
 package controller;
 
+import model.Livro;
+import model.LivroDAO;
+import model.Locacao;
+import model.LocacaoDAO;
 import model.Perfil;
 import model.PerfilDAO;
 import model.Usuario;
@@ -12,7 +16,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.*;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +26,8 @@ public class GerenciarUsuario extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String idBruto = request.getParameter("id");
-    int id = Integer.parseInt(idBruto.trim());
+    int id = 0;
+    if (idBruto != null) id = Integer.parseInt(idBruto.trim()); // evitando NullPointerException
     String acao = request.getParameter("acao");
 
     try {
@@ -41,14 +45,27 @@ public class GerenciarUsuario extends HttpServlet {
 
       } else if (acao.equals("alterar")) {
         if (GerenciarLogin.verificarAcesso(request, response)) {
-          GerenciarLogin.verificarAcesso(request, response);
           Usuario usuario = usuarioDAO.getById(id);
 
           request.getSession().setAttribute("usuario", usuario);
           response.sendRedirect(request.getContextPath() + "/src/usuarios/atualizar-usuario.jsp");
         }
 
-      }
+      } else if (acao.equals("carrinho")) {
+      	String livroId = request.getParameter("livroId");
+      	ArrayList<String> carrinho  = (ArrayList<String>) request.getSession().getAttribute("carrinho");
+      	
+      	if (carrinho != null) {
+      		carrinho.add(livroId);
+      	} else {
+      		carrinho = new ArrayList<String>() {{
+      			add(livroId);
+      		}};
+        	request.getSession().setAttribute("carrinho", carrinho);
+      	}
+      	response.sendRedirect(request.getContextPath() + "/src/livros/listar-livro.jsp");
+      	
+      } 
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -63,18 +80,20 @@ public class GerenciarUsuario extends HttpServlet {
     String senha = request.getParameter("senha");
     String idPerfil = request.getParameter("idPerfil");
     String matricula = request.getParameter("matricula");
-    
+    String capaAtual = request.getParameter("capaAtual");
+    String acao = request.getParameter("acao");
+
     Part capaPart = request.getPart("capa");
-    String nomeDoArquivoCapa = Paths.get(capaPart.getSubmittedFileName()).getFileName().toString();
-    InputStream conteudoDoArquivoCapa = capaPart.getInputStream();
+    String capaNova = capaPart.getSubmittedFileName();
     
+    InputStream conteudoDoArquivoCapa = capaPart.getInputStream();
     Date data = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     final String novoNomeDoArquivoCapa = conteudoDoArquivoCapa != null 
       ? "MyBooksImage" + dateFormat.format(data) + "-" + data.getTime()
       : "sem-foto-perfil.svg";
-    
+
     String mensagem;
     
     String[] fields = {nome, email, senha, matricula, idPerfil};
@@ -82,6 +101,27 @@ public class GerenciarUsuario extends HttpServlet {
     
     Usuario usuario = new Usuario();
     try {
+    	if (acao.equals("alugar")) {
+        if (GerenciarLogin.verificarAcesso(request, response)) {
+        	Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
+        	if (aluno.getStatus() == 1) { // se o usuário estiver ativado		
+        		String dataColeta = request.getParameter("dataColeta");
+        		
+        		System.out.println(dataColeta);
+        		
+//          	ArrayList<String> carrinho  = (ArrayList<String>) request.getSession().getAttribute("carrinho");
+//        		ArrayList<Integer> livrosId = new ArrayList<Integer>();
+//        		for (String livroIdString : carrinho) {
+//        			livrosId.add(Integer.parseInt(livroIdString));
+//        		}
+//            this.alugar(livrosId, aluno);
+//            
+//            request.getSession().removeAttribute("carrinho");
+            response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
+        	}
+        }    
+      }
+    	
       UsuarioDAO usuarioDAO = new UsuarioDAO();
       Validacao validacao = new Validacao();
       ArrayList<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
@@ -92,16 +132,16 @@ public class GerenciarUsuario extends HttpServlet {
         return;
         
       } else {
-    	if (nomeDoArquivoCapa.contains("MyBooks")) {
-    	  usuario.setCapa(nomeDoArquivoCapa); // não mudo a capa se vier uma imagem já existente
+    	if (!capaAtual.isEmpty() && capaNova.isEmpty()) { // se tiver capa atual e ela não for atualizada: 
+    	  usuario.setCapa(capaAtual); // não mudo a capa se vier uma imagem já existente
     		
-    	} else {
+    	} else if (!capaNova.isEmpty()) { // se o usuário escolheu uma nova foto de perfil
     	  usuario.setCapa(novoNomeDoArquivoCapa);
     		
-          if (id != null && !id.isEmpty()) { // se for editar
-            GerenciadorDeArquivos.procurarArquivo(nomeDoArquivoCapa, request);
-          } 
-          GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa);
+        if (id != null && !id.isEmpty()) { // se for editar
+          //GerenciadorDeArquivos.procurarArquivo(nomeDoArquivoCapa, request);
+        } 
+        GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa, "fotosLivro");
     	}
     	
         if (id != null && !id.isEmpty()) { // se for editar
@@ -134,6 +174,42 @@ public class GerenciarUsuario extends HttpServlet {
     request.getSession().setAttribute("mensagem", mensagem);
     response.sendRedirect(request.getContextPath() + "/src/usuarios/listar-usuario.jsp");
 
+  }
+  
+  private boolean alugar (ArrayList<Integer> idLivros, Usuario aluno) throws Exception {
+  	try {
+  		java.util.Date dataHoje = new java.util.Date();
+//  		SimpleDateFormat spdf = new SimpleDateFormat("dd-MM-yyyy");
+//  		String dataHojeString = spdf.format(dataHoje);
+//  		Date date1 = spdf.parse(dataHojeString);
+  		
+  		Locacao locacao = new Locacao();
+  		java.sql.Date dataHojeSQL = new java.sql.Date(dataHoje.getTime());
+  		locacao.setDataLocacao(dataHojeSQL);
+  		
+  		java.util.Date dataDevolucao = new java.util.Date();
+  		dataDevolucao.setDate(dataHoje.getDate() + 10);
+  		java.sql.Date dataDevolucaoSQL = new java.sql.Date(dataDevolucao.getTime());
+  		
+  		locacao.setDataDevolucao(dataDevolucaoSQL);
+  		locacao.setAluno(aluno);
+  		
+  		ArrayList<Livro> livros = new ArrayList<Livro>();
+  		for (int idLivro : idLivros) {
+  			LivroDAO livroDAO = new LivroDAO();
+    		Livro livro = livroDAO.getById(idLivro);
+    		livros.add(livro);
+  		}
+  		locacao.setLivros(livros);
+  		
+  		LocacaoDAO locacaoDAO = new LocacaoDAO();
+    	locacaoDAO.gravar(locacao);
+    	
+  		return true;
+  	} catch (Exception e) {
+  		e.printStackTrace();
+  		return false;
+  	}
   }
 }
 

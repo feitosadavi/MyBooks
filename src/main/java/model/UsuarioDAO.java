@@ -137,5 +137,5 @@ public class UsuarioDAO extends DatabaseDAO {
       e.printStackTrace();
       return null;
     }
-  }  
+  }
 }

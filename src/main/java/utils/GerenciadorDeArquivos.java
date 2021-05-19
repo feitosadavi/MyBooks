@@ -5,9 +5,9 @@ import java.io.*;
 import java.util.Arrays;
 
 public class GerenciadorDeArquivos {
-  public static boolean uploadImagem (String nomeDoArquivo, InputStream conteudoDoArquivo) throws Exception{
+  public static boolean uploadImagem (String nomeDoArquivo, InputStream conteudoDoArquivo, String folder) throws Exception{
     try {
-      String path = "/home/eu/Documentos/Projetos/TCC(parte-prática)/MyBooks/src/main/webapp/imagens/fotosUsuario/";
+      String path = "/home/eu/Documentos/Projetos/TCC(parte-prática)/MyBooks/src/main/webapp/imagens/" + folder + "/";
       OutputStream out = new FileOutputStream(path + File.separator + nomeDoArquivo);
 
       int read = 0;
@@ -16,6 +16,7 @@ public class GerenciadorDeArquivos {
       while ((read = conteudoDoArquivo.read(bytes)) != -1) {
         out.write(bytes, 0, read);
       }
+      out.close();
       return true;
     } catch(Exception e) {
       e.printStackTrace();
