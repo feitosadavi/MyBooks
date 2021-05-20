@@ -20,7 +20,7 @@
 		</c:when>
 		
 		<c:otherwise>
-			<div class="resumo-carrinho">
+			<div id="resumo-carrinho" class="resumo-carrinho">
 				<c:forEach var="livroId" items="${sessionScope.carrinho}">
 			 		<c:set var="livro" value="${livroDA.getById(livroId)}" /> 		
 			    <div class="item-carrinho">
@@ -35,6 +35,25 @@
 					Alugar
 				</a>
 			</div>
+				<div id="agendamento" style="display:none">
+					<form action="${pageContext.request.contextPath}/gerenciar_aluguel.do" method="POST">
+											
+						<select name="dataHorario">
+							<option>01/05</option>
+							<option>02/05</option>
+							<option>03/05</option>
+							<option>04/05</option>
+						</select>
+						<select name="dataHorario">
+							<option>07:30</option>
+							<option>07:45</option>
+							<option>08:00</option>
+							<option>08:15</option>
+						</select>
+						
+						<button class="btn btn-cadastro" type="submit">Confirmar</button>
+					</form>
+				</div>
 		</c:otherwise>
 	</c:choose>
 		
@@ -43,41 +62,12 @@
 <script>
 
 function agendar() {
-	let resumoCarrinho = document.querySelector('.resumo-carrinho')
-	if (resumoCarrinho){
-		resumoCarrinho.remove();
-
-		let carrinho = document.getElementById('carrinho');
-		
-		let div = document.createElement('div');
-		div.className = 'agendamento';
-		
-		let form = document.createElement('form');
-		form.action = '${pageContext.request.contextPath}/gerenciar_locacao.do';
-		form.method = 'POST';
-
-		let titulo = document.createElement('h3');
-		titulo.innerText = 'Quando você deseja buscar o livro?';
-		
-		let input = document.createElement('input');
-		input.type = 'date';
-		input.name = 'dataColeta';
-		
-		let button = document.createElement('button');
-		button.innerText = 'Confirmar';
-		button.className = 'btn-cadastro';
-		button.type = 'submit';
-		
-		div.append(titulo);
-		form.append(input);
-		form.append(button);
-		div.append(form);
-		carrinho.append(div);
-			
-	}
+	let resumoCarrinho = document.getElementById('resumo-carrinho');
+	resumoCarrinho.style.display = 'none';
 	
+	let agendamento = document.getElementById('agendamento');
+	agendamento.style.display = 'flex';
 }
-
 
 let sidenav = document.getElementById('carrinho');
 let toggler = document.getElementById('toggler');

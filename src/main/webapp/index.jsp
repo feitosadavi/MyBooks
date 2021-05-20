@@ -14,8 +14,17 @@
     <div class="container">
       <%@include file="/src/componentes/mensagem.jsp"%>
 
-      <h2>Página Inicial</h2>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/se1rkJFQGcA?start=1117&end=1227&autoplay=0&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		  <%
+			  java.util.Date data = new java.util.Date();
+	      out.print(data.getDate());
+		  
+		  %>
+      <h2>
+      
+      
+      
+      </h2>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/se1rkJFQGcA?start=1117&end=1227&autoplay=1&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
   </body>
 </html>
