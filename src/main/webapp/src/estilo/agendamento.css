@@ -1,0 +1,199 @@
+/*
+
+  
+
+*/
+.calendario__wrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(225, 220, 220);
+}
+
+.calendario {
+  display: flex;
+  margin-top: 5rem;
+  width: 50rem;
+  height: 30rem;
+}
+
+/*
+
+  Barra lateral do calendário
+
+*/
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: var(--roxo-claro);
+  color: #fff;
+  flex: 1;
+}
+
+.dia__mes__title {
+  font-size: 60pt;
+  font-weight: 800;
+  margin-bottom: 0;
+}
+
+.dia__semana__title {
+  margin-top: -16px;
+  text-align: center;
+  font-size: 10pt;
+  margin-right: .9rem;
+  font-weight: 900;
+}
+
+/*
+
+  Navegação do calendário
+
+*/
+.calendario__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+  padding: 1rem;
+  flex: 3;
+}
+
+.sidebar .slider {
+  width: 300px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.sidebar .slider .slides {
+  display: flex;
+
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /*
+  scroll-snap-points-x: repeat(300px);
+  scroll-snap-type: mandatory;
+  */
+}
+.sidebar .slider .slides::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.sidebar .slider .slides::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 10px;
+}
+.sidebar .slider .slides::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar .slider .slides > div {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 100%;
+  height: 50rem;
+  margin-right: 50px;
+  border-radius: 10px;
+  background-color: var(--roxo-claro);
+  transform-origin: center center;
+  transform: scale(1);
+  transition: transform 0.5s;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  font-size: 100px;
+}
+.sidebar .slider .slides > div label {
+  font-size: 12pt;
+}
+.sidebar .slider .slides > div:target {
+  /*   transform: scale(0.8); */
+}
+
+.horario-wrapper {
+  height: 1rem;
+  width: 10rem;
+  padding: 0;
+  margin-bottom: .2rem;
+}
+
+/*!* Don't need button navigation *!*/
+/*@supports (scroll-snap-type) {*/
+/*  .slider > a {*/
+/*    display: none;*/
+/*  }*/
+/*}*/
+/* //Seção dos meses//  */
+.meses {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mes {
+  padding: .4rem;
+}
+
+.mes {
+  color: var(--preto-fosco);
+  text-decoration: none;
+}
+
+/* //Seção dos dias da semana//  */
+.dias__semana {
+  display: flex;
+  justify-content: space-between;
+}
+
+/*
+
+  Dias do calendário
+
+*/
+.semana {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dias {
+  display: flex;
+  flex-direction: column;
+}
+
+.dia {
+  padding: .5rem;
+  margin-top: .2rem;
+}
+
+.dia:hover {
+  background-color: rgba(95, 95, 95, 0.165);
+  border-radius: 100%;
+}
+
+.selecionado {
+  color: #fff;
+  background-color: var(--roxo-claro);
+  border-radius: 100%;
+}
+
+.selecionado:hover {
+  color: #fff;
+  background-color: #3500d3c4;
+  border-radius: 100%;
+}
+
+.dia__ativo {
+  font-weight: 900;
+}
+
+.dia__inativo {
+  font-weight: 200;
+}
