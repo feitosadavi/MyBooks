@@ -23,10 +23,9 @@
       <div id="referencia" class="col-sm-8">
         <%@include file="/src/componentes/mensagem.jsp"%>
 
-  
-        <h2>Lista de Menus</h2>
-        
-        <a href="${pageContext.request.contextPath}/src/menus/cadastrar-menu.jsp" class="btn btn-primary">Novo Menu</a>
+
+        <h2 class="titulo mt-4 mb-4">Menus</h2>        
+        <a href="${pageContext.request.contextPath}/src/menus/cadastrar-menu.jsp" class="btn btn-outline-mybooks">Novo Menu</a>
 
         <%@include file="../componentes/campo-pesquisa.jsp"%>
 

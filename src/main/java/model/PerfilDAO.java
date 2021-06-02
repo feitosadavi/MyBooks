@@ -10,20 +10,20 @@ public class PerfilDAO extends DatabaseDAO {
     public PerfilDAO() throws Exception{}
     
     public ArrayList<Perfil> getList() throws Exception {
-        ArrayList<Perfil> list = new ArrayList<Perfil>();
-        String SQL = "SELECT perfis.* FROM perfis";
-        this.connect();
-        Statement stm = conn.createStatement();
-        ResultSet rs = stm.executeQuery(SQL);
-        while (rs.next()) {
-            Perfil perfil = new Perfil();
-            perfil.setId(rs.getInt("id"));
-            perfil.setNome(rs.getString("nome"));
-            perfil.setMenus(getMenusVinculadosPorPerfil(rs.getInt("id")));
-            list.add(perfil);
-        }
-        this.disconnect();
-        return list;
+      ArrayList<Perfil> list = new ArrayList<Perfil>();
+      String SQL = "SELECT perfis.* FROM perfis";
+      this.connect();
+      Statement stm = conn.createStatement();
+      ResultSet rs = stm.executeQuery(SQL);
+      while (rs.next()) {
+          Perfil perfil = new Perfil();
+          perfil.setId(rs.getInt("id"));
+          perfil.setNome(rs.getString("nome"));
+          perfil.setMenus(getMenusVinculadosPorPerfil(rs.getInt("id")));
+          list.add(perfil);
+      }
+      this.disconnect();
+      return list;
     }
     
     public Perfil getById(int id) throws Exception {

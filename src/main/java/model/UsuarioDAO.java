@@ -38,8 +38,8 @@ public class UsuarioDAO extends DatabaseDAO {
 
   public Usuario getById(int id) throws Exception {
     Usuario usuario = new Usuario();
-
     String SQL = "SELECT * FROM usuarios WHERE id=?";
+    
     this.connect();
     PreparedStatement pstm = conn.prepareStatement(SQL);
     pstm.setInt(1, id);
@@ -58,6 +58,7 @@ public class UsuarioDAO extends DatabaseDAO {
       Perfil perfil = perfilDAO.getById(rs.getInt("idPerfil"));
       usuario.setPerfil(perfil);    
     }
+    this.disconnect();
     return usuario;
   }
 

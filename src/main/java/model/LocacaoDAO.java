@@ -30,6 +30,7 @@ public class LocacaoDAO extends DatabaseDAO {
 			Usuario bibliotecario = bibliotecarioDAO.getById(rs.getInt("idBibliotecario"));
 			locacao.setBibliotecario(bibliotecario);
     }
+    this.disconnect();
     return locacao;
   }
   
@@ -129,22 +130,15 @@ public class LocacaoDAO extends DatabaseDAO {
   	}
   }
   
-  public boolean vincularLocacao (int idLocacao, int idLivro) throws Exception {
+  public void vincularLocacao (int idLocacao, int idLivro) throws Exception {
     String SQL = "INSERT INTO locacoes_livros (idLocacoes, idLivros) VALUES (?, ?)";
 
-    try {
-      this.connect();
-      PreparedStatement pstm = conn.prepareStatement(SQL);
-      pstm.setInt(1, idLocacao);
-      pstm.setInt(2, idLivro);
-      pstm.execute();
-      this.disconnect();
-
-      return true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
-    }
+    this.connect();
+    PreparedStatement pstm = conn.prepareStatement(SQL);
+    pstm.setInt(1, idLocacao);
+    pstm.setInt(2, idLivro);
+    pstm.execute();
+    this.disconnect();
   }
   
   private ArrayList<Livro> getLivrosVinculados (int idLocacoes) throws Exception {

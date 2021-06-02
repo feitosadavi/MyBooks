@@ -45,7 +45,7 @@ public class MenuDAO extends DatabaseDAO {
       menu.setIcone(rs.getString("icone"));
       menu.setExibir(rs.getInt("exibir"));
     }
-
+    this.disconnect();
     return menu;
   }
 

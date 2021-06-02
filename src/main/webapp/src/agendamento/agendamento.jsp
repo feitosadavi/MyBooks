@@ -129,12 +129,18 @@
   let mes = urlParams.get('mes');
   let primeiroDiaDoMes = getPrimeiroDiaDoMes(mes);
   let mesAnterior = Number(mes) === 0 ? 11 : mes - 1;
-  let diasMesAnterior = getDiasEmUmMes(date.getFullYear(), mesAnterior);
-  let diasDoMes = getDiasEmUmMes(date.getFullYear(), mes);
-
+  let data = new Date();
+  let diasMesAnterior = getDiasEmUmMes(data.getFullYear(), mesAnterior);
+  let diasDoMes = getDiasEmUmMes(data.getFullYear(), mes);
 
   for (let dia of dias) {
     dia.ondblclick = selecionarUm;
+    dia.onclick = () => {
+      console.log(Number(mes));
+      console.log(data.getMonth())
+      if (Number(mes-1) !== data.getMonth()) alert('Só é possível definir agendamento para o mês atual');
+    }
+
   }
   comecarNo(primeiroDiaDoMes, dias, diasDoMes);
   preencherAntes(primeiroDiaDoMes, diasMesAnterior);

@@ -101,7 +101,7 @@ public class GerenciarUsuario extends HttpServlet {
     
     Usuario usuario = new Usuario();
     try {
-    	if (acao.equals("alugar")) {
+    	if (acao != null && acao.equals("alugar")) {
         if (GerenciarLogin.verificarAcesso(request, response)) {
         	Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
         	if (aluno.getStatus() == 1) { // se o usuário estiver ativado		
@@ -132,7 +132,7 @@ public class GerenciarUsuario extends HttpServlet {
         return;
         
       } else {
-    	if (!capaAtual.isEmpty() && capaNova.isEmpty()) { // se tiver capa atual e ela não for atualizada: 
+    	if (capaAtual != null && !capaAtual.isEmpty() && capaNova.isEmpty()) { // se tiver capa atual e ela não for atualizada: 
     	  usuario.setCapa(capaAtual); // não mudo a capa se vier uma imagem já existente
     		
     	} else if (!capaNova.isEmpty()) { // se o usuário escolheu uma nova foto de perfil

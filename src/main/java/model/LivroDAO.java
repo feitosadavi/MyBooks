@@ -52,6 +52,8 @@ public class LivroDAO extends DatabaseDAO {
       livro.setEstoque(rs.getInt("estoque"));
       livro.setCapa(rs.getString("capa"));  
     }
+    this.disconnect();
+
     return livro;
   }
 
@@ -77,7 +79,9 @@ public class LivroDAO extends DatabaseDAO {
       }
       pstm.execute();
       this.disconnect();
+      
       return true;
+      
     } catch (Exception e) {
       e.printStackTrace();
       return false;

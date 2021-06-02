@@ -20,9 +20,9 @@ public class GerenciarLocacao extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String dataColetaString = request.getParameter("dataColeta");
-    
+
     SimpleDateFormat spdf = new SimpleDateFormat("yyyy-MM-dd");
-    java.util.Date parsed = null;
+    java.util.Date parsed = new java.util.Date();
 		try {
 			parsed = spdf.parse(dataColetaString);
 		} catch (ParseException e1) {
@@ -32,7 +32,8 @@ public class GerenciarLocacao extends HttpServlet {
     java.sql.Date dataColetaDate = new java.sql.Date(parsed.getTime());
     
     String mensagem = null;
-    
+    System.out.println("dataColetaDate");
+    System.out.println(dataColetaDate);
     String[] fields = {dataColetaString};
     String[] fieldNames = {"dataColeta"};
     

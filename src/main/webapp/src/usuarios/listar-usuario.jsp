@@ -6,24 +6,6 @@
 
 <body>
 
-
-<%
-
-	int filtro;
-	String conta = request.getParameter("conta");
-	if (conta != null) {
-  	  if (conta.equals("inativa")) {
-	    filtro = 0;
-		  
-	  } else if (conta.equals("ativa")) {
-	    filtro = 1;
-		  
-	  } else {
-	    filtro = 2;
-	  }
-	}
-%>
-
 <%@include file="../componentes/navbar.jsp"%>
 
 <div class="container" id="referencia">
@@ -33,57 +15,35 @@
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
       <h2 class="titulo mt-4 mb-4">Usuários</h2>
-      
-      <h5>Filtrar por: </h5>
-      <a href="?conta=">Todos</a>
-      <a href="?conta=inativa">Inativo</a>
-      <a href="?conta=ativa">Ativo</a>
+
+
+      <%@include file="../componentes/filtro.jsp"%>
 
       <%@include file="../componentes/campo-pesquisa.jsp"%>
 
       <jsp:useBean class="model.UsuarioDAO" id="usuarioDAO" />
         <c:forEach var="usuario" items="${usuarioDAO.list}">
           <c:choose>
-        	<c:when test="${param.conta.equals('ativa')}">
-              <div class="card-container mt-3">
+            <c:when test="${param.conta.equals('ativa') && usuario.status == 1}">
+              <%@include file="../componentes/usuario-card.jsp"%>
+            </c:when>
 
-                <div class="foto-thumb hover-thumb me-2" onclick="abrirConta(${usuario.id})">
-                  <img src="${pageContext.request.contextPath}/imagens/fotosUsuario/${usuario.capa}"
-                       alt="">
-                </div>
+            <c:when test="${param.conta.equals('inativa') && usuario.status == 0}">
+              <%@include file="../componentes/usuario-card.jsp"%>
+            </c:when>
 
-                <div class="card w-50">
-                  <div class="card-body">
-                    <div class="card-title-mybooks">
-                      <div class="card-title-decoration"></div>
-                      <h3>${usuario.nome}</h3>
-                    </div>
-                    <p class="card-text">
-                        ${usuario.matricula}
-                    </p>
-                  </div>
+            
+            
+            <c:when test="${param.conta.equals('todos') || param.conta == null || param.conta.equals('')}">
+              <%@include file="../componentes/usuario-card.jsp"%>
+            </c:when>
 
-                  <div class="card-footer">
-                    <a class="btn btn-outline-info"
-                       href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
-                      <img src="${pageContext.request.contextPath}/imagens/editar.svg"
-                           alt="caneta dentro de um quadrado verde">
-                    </a>
-
-                    <button class="btn btn-outline-danger"
-                            onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
-                      <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
-                           alt="lixeira dentro de um quadrado vermelho">
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <c:when test="${param.pesquisa != null && usuario.nome == param.pesquisa}">
+              <%@include file="../componentes/usuario-card.jsp"%>
             </c:when>
           </c:choose>
         </c:forEach>
-
-
-        
+       
     </div>
     <div class="col-sm-2"></div>
   </div>

@@ -18,14 +18,14 @@
     <%@include file="../componentes/navbar.jsp"%>
     <div class="container">
 
-      <div class="row mt-4">
+      <div class="row mt-3">
         <div class="col-sm-2"></div>
         
         <div id="referencia" class="col-sm-8">
           <%@include file="../componentes/mensagem.jsp"%>
 
-          <h2 class="titulo">Lista de Perfis</h2>
-          <a href="cadastrar-perfil.jsp" class="btn btn-primary">Novo Cadastro</a>
+          <h2 class="titulo mt-4 mb-4"><p>Perfis</p></h2>
+          <a href="cadastrar-perfil.jsp" class="btn btn-outline-mybooks">Novo Cadastro</a>
 
           <%@include file="../componentes/campo-pesquisa.jsp"%>
 

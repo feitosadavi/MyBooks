@@ -27,7 +27,7 @@
 
         <div class="info-livro d-flex justify-content-between mt-4">
           <div class="">
-            <p><span class="info-bold">Páginas:</span> ${livro.paginas}</p>
+            <p><span class="info-bold">Paginas:</span> ${livro.paginas}</p>
             <p><span class="info-bold">Estoque:</span> ${livro.estoque}</p>
             <p><span class="info-bold">Ano:</span> ${livro.lancamento}</p>
           </div>
@@ -38,19 +38,20 @@
         </div>
 
       </div>
-      <div class="modal-footer d-flex">
-        <a class="btn btn-outline-info"
-          href="${pageContext.request.contextPath}/gerenciar_livro.do?acao=alterar&id=${livro.id}">
-          <img src="${pageContext.request.contextPath}/imagens/editar.svg"
-            alt="caneta dentro de um quadrado verde">
-        </a>
+      <c:if test="${sessionScope.ulogado.perfil.nome.equals('Bibliotecario')}" >
+        <div class="modal-footer d-flex">
+          <a class="btn btn-outline-info"
+             href="${pageContext.request.contextPath}/gerenciar_livro.do?acao=alterar&id=${livro.id}">
+            <img src="${pageContext.request.contextPath}/imagens/editar.svg"
+                 alt="caneta dentro de um quadrado verde">
+          </a>
 
-        <button class="btn btn-outline-danger"
-          onclick="confirmarExclusao('${livro.nome}', '/projetojava3_war_exploded/gerenciar_livro.do?acao=deletar&id='+'${livro.id}')">
-          <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
-            alt="lixeira dentro de um quadrado vermelho">
-        </button>
-      </div>
+          <button class="btn btn-outline-danger"
+                  onclick="confirmarExclusao('${livro.nome}', '/projetojava3_war_exploded/gerenciar_livro.do?acao=deletar&id='+'${livro.id}')">
+            <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
+                 alt="lixeira dentro de um quadrado vermelho">
+          </button>
+        </div>      </c:if>
     </div>
   </div>
 </div>

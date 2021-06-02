@@ -50,10 +50,12 @@ public class GerenciarLogin extends HttpServlet {
 
         String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
 
+        System.out.println(usuario.getSenha().equals(senhaHasheada));
+        
         if (usuario.getId() == 0) {
           mensagem = "Email não encontrado";
           
-        } else if (usuario.getSenha().equals(senhaHasheada)) {
+        } else if (!usuario.getSenha().equals(senhaHasheada)) {
           mensagem = "Senha incorreta!";
             
         } else {

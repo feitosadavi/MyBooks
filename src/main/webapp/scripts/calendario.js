@@ -59,6 +59,8 @@ function preencherDepois() {
 * */
 
 function selecionarUm() {
+  if (Number(mes) !== data.getMonth()) alert('Só é possível definir agendamento para o mês atual');
+
   if (this.className.includes('dia__inativo')) return;
   if (this.className.includes('selecionado')) {
     this.className = 'dia dia__ativo';
@@ -68,6 +70,8 @@ function selecionarUm() {
 }
 
 function selecionarTodos() {
+  if (Number(mes) !== data.getMonth()) alert('Só é possível definir agendamento para o mês atual');
+
   let checked = document.getElementById("todos").checked;
   if (!checked) {
     for (let dia of dias) {

@@ -1,3 +1,8 @@
+/*
+
+GERAL
+
+*/
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -23,6 +28,7 @@ code {
   font-size: 2.3rem;
   position: relative;
   z-index: 1;
+  text-shadow: var(--azul-escuro) -.2rem .2rem 0;
 }
 
 .titulo::after {
@@ -38,6 +44,25 @@ code {
   z-index: -1;
 }
 
+.btn-outline-mybooks {
+  color: var(--roxo-opaco);
+  border: .15rem solid var(--roxo-opaco);
+  border-radius: .3rem;
+}
+
+.btn-outline-mybooks:hover {
+  color: var(--roxo-claro);
+  border: .15rem solid var(--roxo-claro);
+  box-shadow: var(--azul-escuro) -.4rem .2rem 0 0;
+}
+
+.bg-azul-escuro {
+  background-color: #0C0032 !important;
+}
+
+.bg-roxo-claro {
+  background-color: var(--roxo-claro) !important;
+}
 .card-container {
   display: flex;
   justify-content: center;
@@ -98,14 +123,6 @@ code {
   transform: scale(1.3);
   opacity: 0.5;
   cursor: pointer;
-}
-
-.bg-azul-escuro {
-  background-color: #0C0032 !important;
-}
-
-.bg-roxo-claro {
-  background-color: var(--roxo-claro) !important;
 }
 
 #preview-container {

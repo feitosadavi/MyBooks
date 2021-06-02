@@ -1,3 +1,4 @@
+// Só será possível definir datas para o mes atual
 function enviar() {
   let dias = document.getElementsByClassName('dia__ativo');
   let horarios = document.querySelectorAll('.horario-wrapper > input');
@@ -28,7 +29,7 @@ function enviar() {
     let key = dia.innerText[0] === '0' ? dia.innerText.replace('0', '') : dia.innerText;
     agendamentos[key].status = dia.className.includes('selecionado') ? 1 : 0
   }
-
+  
   let xmlHttp = new XMLHttpRequest();
   xmlHttp.open('GET', 'gerenciar_agendamento.do?acao=dias');
   xmlHttp.send(JSON.stringify(agendamentos));

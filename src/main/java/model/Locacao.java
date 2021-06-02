@@ -4,12 +4,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class Locacao {
-	int id;
-	String status;
-	Date dataLocacao, dataDevolucao, dataColeta;
-	Usuario aluno;
-	Usuario bibliotecario;
-	ArrayList<Livro> livro;
+  private int id;
+  private String status;
+  private Date dataLocacao, dataDevolucao, dataColeta;
+  private Usuario aluno;
+  private Usuario bibliotecario;
+  private ArrayList<Livro> livro;
 	
 	public ArrayList<Livro> getLivros() {
 		return livro;

@@ -78,7 +78,7 @@ function converterEmHoras(tempos) { // numero de digitos adicionar zero se tiver
       let parteDecimal = (arr[1]/100)*60;
       hora = arr[0].toString() + ':' + parteDecimal.toString();
     }
-    return hora
+    return hora;
   })
 }
 
