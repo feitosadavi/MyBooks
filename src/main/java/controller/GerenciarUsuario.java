@@ -141,7 +141,7 @@ public class GerenciarUsuario extends HttpServlet {
         if (id != null && !id.isEmpty()) { // se for editar
           //GerenciadorDeArquivos.procurarArquivo(nomeDoArquivoCapa, request);
         } 
-        GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa, "fotosLivro");
+        GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa, "fotosUsuario");
     	}
     	
         if (id != null && !id.isEmpty()) { // se for editar

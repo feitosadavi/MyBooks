@@ -48,6 +48,41 @@ public class DataDAO extends DatabaseDAO {
     return this.agruparDatas(list);
   }
 
+  public Data getPorData(String dataNome) throws Exception {
+    this.connect();
+
+    String SQL = "SELECT d.id as idData, d.`data`, d.`status` as statusData,\n" +
+      "h.id as idHorario, h.horario, h.qtd, h.`status` as statusHorario\n" +
+      "FROM datas as d \n" +
+      "JOIN datas_horarios as dh ON dh.idData = d.id \n" +
+      "JOIN horarios as h ON h.id = dh.idHorario \n" +
+      "WHERE d.data = ?;";
+
+    PreparedStatement pstm = conn.prepareStatement(SQL);
+    pstm.setString(1, dataNome);
+    ResultSet rs = pstm.executeQuery();
+
+    ArrayList<Data> datas = new ArrayList<Data>();
+    while (rs.next()) {
+      Data data = new Data();
+      data.setId(rs.getInt("idData"));
+      data.setData(rs.getString("data"));
+      data.setStatus(rs.getInt("statusData"));
+
+      Horario horario = new Horario();
+      horario.setId(rs.getInt("idHorario"));
+      horario.setHorario(rs.getString("horario"));
+      horario.setQtd(rs.getInt("qtd"));
+      horario.setStatus(rs.getInt("statusHorario"));
+
+      data.setHorario(horario);
+      datas.add(data);
+    }
+
+    this.disconnect();
+    return this.agruparDatas(datas).get(0) != null ? this.agruparDatas(datas).get(0) : null;
+  }
+  
   public Data getById(int idData) throws Exception {
     this.connect();
 
@@ -80,7 +115,7 @@ public class DataDAO extends DatabaseDAO {
     }
     
     this.disconnect();
-    
+
     return this.agruparDatas(datas).get(0);
   }
   
@@ -91,7 +126,7 @@ public class DataDAO extends DatabaseDAO {
 
     lista.forEach(data -> {
       datasDistintas.forEach(dataDistinta -> {
-        if (data.getId() == dataDistinta.getId()) {
+        if (data.getId() == dataDistinta.getId() && !dataDistinta.getHorarios().contains(data.getHorario())) {
           dataDistinta.addHorario(data.getHorario());
         }
       });
@@ -135,7 +170,7 @@ public class DataDAO extends DatabaseDAO {
   }
 
   public void vincularDataHorario (int idData, int idHorario) throws Exception {
-    String SQL = "INSERT INTO datas_horarios (idHorario, idData) VALUES (?, ?)";
+    String SQL = "INSERT INTO datas_horarios (idData, idHorario) VALUES (?, ?)";
 
     this.connect();
     PreparedStatement pstm = conn.prepareStatement(SQL);
@@ -145,20 +180,25 @@ public class DataDAO extends DatabaseDAO {
     this.disconnect();
   }
   
-//
-//  public boolean deletar (int id) throws Exception {
-//    try {
-//      String SQL = "DELETE FROM datas WHERE id=?";
-//      this.connect();
-//      PreparedStatement pstm = conn.prepareStatement(SQL);
-//      pstm.setInt(1, id);
-//      pstm.execute();
-//      this.disconnect();
-//
-//      return true;
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//      return false;
-//    }
-//  }
+  public boolean deletar (int id) throws Exception {
+    try {
+      // se id for 0, deve deletar tudo
+      String SQL = id > 0 ? "DELETE FROM datas WHERE id=?;" : "DELETE FROM datas;";
+      this.connect();
+      if (id > 0) {
+        PreparedStatement pstm = conn.prepareStatement(SQL);
+        pstm.setInt(1, id);
+        pstm.execute();
+      } else {
+        Statement stm = conn.createStatement();
+        stm.execute(SQL);
+      }
+      this.disconnect();
+
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }

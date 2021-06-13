@@ -88,6 +88,26 @@ public class LivroDAO extends DatabaseDAO {
     }
   }
 
+  public boolean atualizarEstoque (int estoque, int livroId) throws Exception {
+    try {
+      String SQL;
+      this.connect();
+      SQL = "UPDATE livros SET estoque = ? WHERE id=?";
+      PreparedStatement pstm = conn.prepareStatement(SQL);
+      
+      pstm.setInt(1, estoque);
+      pstm.setInt(2, livroId);
+      pstm.execute();
+      this.disconnect();
+
+      return true;
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public boolean deletar (int id) throws Exception {
   	String SQL = "DELETE FROM livros WHERE id=?";
     try {

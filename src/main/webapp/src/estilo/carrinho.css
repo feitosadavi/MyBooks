@@ -2,10 +2,10 @@
   position: fixed;
   z-index: 9999;
   top: 0;
-  left: -18rem;
+  left: -26rem;
   bottom: 0;
-  width: 18rem;
-  transition: .7s;
+  width: 26rem;
+  transition: .4s;
   background: var(--roxo-claro);
   overflow-y: hidden;
   overflow-x: hidden;

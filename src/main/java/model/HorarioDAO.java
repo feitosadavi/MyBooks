@@ -28,15 +28,13 @@ public class HorarioDAO extends DatabaseDAO {
     return list;
   }
 
-  public Horario getById(int id) throws Exception {
+  public Horario getPorNome(String horarioNome) throws Exception {
     Horario horario = new Horario();
-
-    String SQL = "SELECT * FROM horarios WHERE id=?";
+    
+    String SQL = "SELECT * FROM horarios WHERE horario=" + horarioNome;
     this.connect();
-    PreparedStatement pstm = conn.prepareStatement(SQL);
-    pstm.setInt(1, id);
-
-    ResultSet rs = pstm.executeQuery();
+    Statement stm = conn.createStatement();
+    ResultSet rs = stm.executeQuery(SQL);
     if (rs.next()) {
       horario.setId(rs.getInt("id"));
       horario.setHorario(rs.getString("horario"));
@@ -90,4 +88,21 @@ public class HorarioDAO extends DatabaseDAO {
       return false;
     }
   }
-}
+
+  public void deletarTodos () throws Exception {
+    try {
+      String SQL = "DELETE FROM datas_horarios;";
+      String SQL2 = "DELETE FROM horarios;";
+      
+      this.connect();
+      Statement stm = conn.createStatement();
+      stm.execute(SQL);
+      stm.execute(SQL2);
+      this.disconnect();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  }

@@ -1,22 +1,19 @@
 /*
-
-  
-
+  GERAL
 */
-.calendario__wrapper {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgb(225, 220, 220);
+
+.mybooks-form-select {
+  height: 2rem;
+  width: 5rem;
+  font-size: 10pt;
 }
 
 .calendario {
-  display: flex;
-  margin-top: 5rem;
-  width: 50rem;
+  position: relative;
+  width: 30rem;
   height: 30rem;
+  left: -2rem;
+  transform: scale(0.72);
 }
 
 /*
@@ -29,9 +26,9 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  background-color: var(--roxo-claro);
+  background-color: var(--azul-escuro);
   color: #fff;
-  flex: 1;
+  height: 11.5rem;
 }
 
 .dia__mes__title {
@@ -63,7 +60,8 @@
 }
 
 .sidebar .slider {
-  width: 300px;
+  width: 100%;
+  height: 100%;
   text-align: center;
   overflow: hidden;
 }
@@ -97,33 +95,23 @@
   scroll-snap-align: start;
   flex-shrink: 0;
   width: 100%;
-  height: 50rem;
-  margin-right: 50px;
-  border-radius: 10px;
-  background-color: var(--roxo-claro);
+  height: 100%;
+  background-color: var(--azul-escuro);
   transform-origin: center center;
   transform: scale(1);
   transition: transform 0.5s;
   position: relative;
 
   display: flex;
-  flex-direction: column;
   justify-content: start;
   align-items: center;
-  font-size: 100px;
+  font-size: 60pt;
 }
 .sidebar .slider .slides > div label {
   font-size: 12pt;
 }
 .sidebar .slider .slides > div:target {
   /*   transform: scale(0.8); */
-}
-
-.horario-wrapper {
-  height: 1rem;
-  width: 10rem;
-  padding: 0;
-  margin-bottom: .2rem;
 }
 
 /*!* Don't need button navigation *!*/
@@ -151,6 +139,7 @@
 .dias__semana {
   display: flex;
   justify-content: space-between;
+  color: #000;
 }
 
 /*
@@ -203,5 +192,6 @@
 }
 
 .dia__inativo {
-  font-weight: 200;
+  font-weight: 300;
+  color: #000
 }

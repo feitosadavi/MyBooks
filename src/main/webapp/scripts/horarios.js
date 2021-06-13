@@ -42,6 +42,7 @@ function listarHorarios(horarios) {
       label.innerText = horario;
       
       input.type = 'checkbox';
+      input.checked = true;
       input.id = 'horario-' + horario + '-' + formHorarios.parentElement.id;
       // input.name = 'horario';
       input.value = i + ',' + horario;

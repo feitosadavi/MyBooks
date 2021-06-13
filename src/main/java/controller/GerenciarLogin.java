@@ -49,8 +49,6 @@ public class GerenciarLogin extends HttpServlet {
         Usuario usuario = usuarioDAO.getRecuperarUsuario(email);
 
         String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
-
-        System.out.println(usuario.getSenha().equals(senhaHasheada));
         
         if (usuario.getId() == 0) {
           mensagem = "Email não encontrado";

@@ -26,7 +26,7 @@
               <a>${dia}</a>
               <button onclick="enviar()" class="btn btn-success">Enviar</button>
               <div class="form-horarios">
-                <form id="form-horarios-${dia}" action="">
+                <form id="form-horarios-${dia}" method="POST" action="gerenciar_agendamento.do">
                   <div class="horarios d-flex flex-column">
                     <c:forEach var="horario" items="${sessionScope.horarios}">
                       <div class="horario-wrapper">
@@ -135,11 +135,11 @@
 
   for (let dia of dias) {
     dia.ondblclick = selecionarUm;
-    dia.onclick = () => {
-      console.log(Number(mes));
-      console.log(data.getMonth())
-      if (Number(mes-1) !== data.getMonth()) alert('Só é possível definir agendamento para o mês atual');
-    }
+    // dia.onclick = () => {
+    //   console.log(Number(mes));
+    //   console.log(data.getMonth())
+    //   if (Number(mes-1) !== data.getMonth()) alert('Só é possível definir agendamento para o mês atual');
+    // }
 
   }
   comecarNo(primeiroDiaDoMes, dias, diasDoMes);

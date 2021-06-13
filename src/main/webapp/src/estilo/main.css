@@ -23,12 +23,12 @@ code {
 }
 
 .titulo {
-  color: var(--azul-escuro);
+  color: #000000;
   line-height: 1;
-  font-size: 2.3rem;
+  font-size: 2rem;
   position: relative;
   z-index: 1;
-  text-shadow: var(--azul-escuro) -.2rem .2rem 0;
+  font-weight: bold;
 }
 
 .titulo::after {
@@ -38,7 +38,7 @@ code {
   height: 1.5rem;
   background: var(--roxo-claro);
   position: absolute;
-  bottom: 3px;
+  top: 5px;
   left: -5px;
   border-radius: 0.2rem;
   z-index: -1;

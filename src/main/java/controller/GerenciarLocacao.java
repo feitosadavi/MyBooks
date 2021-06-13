@@ -1,10 +1,9 @@
 package controller;
 
-import model.Livro;
-import model.LivroDAO;
-import model.Locacao;
-import model.LocacaoDAO;
-import model.Usuario;
+import model.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -13,49 +12,41 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "GerenciarLocacao", value = "/gerenciar_locacao.do")
 @MultipartConfig
 public class GerenciarLocacao extends HttpServlet {  
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String dataColetaString = request.getParameter("dataColeta");
+    String locacao = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+    String mensagem = "";
 
-    SimpleDateFormat spdf = new SimpleDateFormat("yyyy-MM-dd");
-    java.util.Date parsed = new java.util.Date();
-		try {
-			parsed = spdf.parse(dataColetaString);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    java.sql.Date dataColetaDate = new java.sql.Date(parsed.getTime());
-    
-    String mensagem = null;
-    System.out.println("dataColetaDate");
-    System.out.println(dataColetaDate);
-    String[] fields = {dataColetaString};
-    String[] fieldNames = {"dataColeta"};
-    
     try {
-      if (GerenciarLogin.verificarAcesso(request, response)) {
-      	Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
-      	if (aluno.getStatus() == 1) { // se o usuário estiver ativado		      		      		
-        	ArrayList<String> carrinho  = (ArrayList<String>) request.getSession().getAttribute("carrinho");
-      		ArrayList<Integer> livrosId = new ArrayList<Integer>();
-      		
-      		for (String livroIdString : carrinho) {
-      			livrosId.add(Integer.parseInt(livroIdString));
-      		}
-          this.alugar(livrosId, aluno, dataColetaDate);
-          
-          request.getSession().removeAttribute("carrinho");
-      	}
-      	mensagem = "Livro(s) alugado(s) com sucesso";
-      	
-      } else {
-      	mensagem = "Usuários inativos não podem alugar livros";
+      JSONObject locacaoObj = new JSONObject(locacao);
+      String dataColetaString = locacaoObj.getString("dataColeta");
+      JSONArray livrosIdJSON = locacaoObj.getJSONArray("livrosId");
+      
+      java.sql.Date dataColetaDate = java.sql.Date.valueOf(dataColetaString);
+      
+      String[] fields = {dataColetaString};
+      String[] fieldNames = {"dataColeta"};
+
+      Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
+      if (aluno.getStatus() == 1) mensagem = "Usuários inativos não podem alugar livros";
+
+      ArrayList<Integer> livrosId = new ArrayList<Integer>();
+      for (int i = 0; i < livrosIdJSON.length(); i++) {
+        Integer diaObj = (Integer) livrosIdJSON.get(i);
+        livrosId.add(diaObj);
       }
+
+      mensagem = this.alugar(livrosId, aluno, dataColetaDate);
+
+      request.getSession().removeAttribute("carrinho");
+    
     } catch (Exception e) {
       e.printStackTrace();
       mensagem = "Erro ao executar";
@@ -64,12 +55,9 @@ public class GerenciarLocacao extends HttpServlet {
     response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
   }
   
-  private boolean alugar (ArrayList<Integer> idLivros, Usuario aluno, java.sql.Date dataColeta) throws Exception {
+  private String alugar (ArrayList<Integer> idLivros, Usuario aluno, java.sql.Date dataColeta) throws Exception {
   	try {
   		java.util.Date dataHoje = new java.util.Date();
-//  		SimpleDateFormat spdf = new SimpleDateFormat("dd-MM-yyyy");
-//  		String dataHojeString = spdf.format(dataHoje);
-//  		Date date1 = spdf.parse(dataHojeString);
   		
   		Locacao locacao = new Locacao();
   		java.sql.Date dataHojeSQL = new java.sql.Date(dataHoje.getTime());
@@ -87,17 +75,24 @@ public class GerenciarLocacao extends HttpServlet {
   		for (int idLivro : idLivros) {
   			LivroDAO livroDAO = new LivroDAO();
     		Livro livro = livroDAO.getById(idLivro);
-    		livros.add(livro);
+    		
+    		if (livro.getEstoque() < 1) return "Livro fora de estoque. Por favor, aguarde!";
+    		if (livroDAO.atualizarEstoque(livro.getEstoque() - 1, livro.getId())) {
+    		  livros.add(livro);
+        } else {
+    		  return "Erro ao atualizar o estouqe";
+        }
+    		
   		}
   		locacao.setLivros(livros);
   		
   		LocacaoDAO locacaoDAO = new LocacaoDAO();
     	locacaoDAO.gravar(locacao);
     	
-  		return true;
+  		return "Livro(s) alugado(s) com sucesso";
   	} catch (Exception e) {
   		e.printStackTrace();
-  		return false;
+  		return "Erro interno do servidor ao alugar";
   	}
   }
 }

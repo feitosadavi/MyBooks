@@ -21,6 +21,11 @@
   font-weight: bold;
 }
 
+.info-conta-container h3 {
+  font-size: 1.2rem;
+  word-break: break-word;
+}
+
 .info-conta-container {
   display: flex;
   flex-direction: column;

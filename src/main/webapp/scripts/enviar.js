@@ -3,34 +3,48 @@ function enviar() {
   let dias = document.getElementsByClassName('dia__ativo');
   let horarios = document.querySelectorAll('.horario-wrapper > input');
 
-  let agendamentos = {};
-  horarios.forEach((horario, i, j) => {
-
+  let agendamentos = {dias:[]};
+  horarios.forEach((horario) => {
     let arrValues = horario.value.split(',');
-    let key = arrValues[0];
-    let value = arrValues[1];
+    let dia = arrValues[0];
+    let hora = arrValues[1];
 
-    if (Number(key) === 1) { // eu só preciso adicionar os horários existentes uma vez
+    // configuro todos os horários possíveis
+    if (Number(dia) === 1) { // eu só preciso adicionar os horários existentes uma vez
       if (agendamentos.horariosTotais) {
-        agendamentos.horariosTotais.push(value);
+        agendamentos.horariosTotais.push(hora);
       } else {
-        agendamentos.horariosTotais = [value];
+        agendamentos.horariosTotais = [hora];
       }
     }
     
-    if (agendamentos[key]) {
-      horario.checked === true && agendamentos[key].horariosDisponiveis.push(value);
+    // configuro os dias
+    if (agendamentos.dias[dia]) {
+      horario.checked === true && agendamentos.dias[dia].horariosDisponiveis.push(hora);
     } else {
-      agendamentos[key] = horario.checked === true && {horariosDisponiveis: [value]};
+      agendamentos.dias[dia] = horario.checked === true && {horariosDisponiveis: [hora], dia: dia};
     }
   })
 
-  for (let dia of dias) {
-    let key = dia.innerText[0] === '0' ? dia.innerText.replace('0', '') : dia.innerText;
-    agendamentos[key].status = dia.className.includes('selecionado') ? 1 : 0
-  }
   
-  let xmlHttp = new XMLHttpRequest();
-  xmlHttp.open('GET', 'gerenciar_agendamento.do?acao=dias');
-  xmlHttp.send(JSON.stringify(agendamentos));
+  // informo no objeto se o dia está disponível ou não
+  for (let diaElemento of dias) {
+    let dia = diaElemento.innerText[0] === '0' ? diaElemento.innerText.replace('0', '') : diaElemento.innerText;
+    agendamentos.dias[dia].status = diaElemento.className.includes('selecionado') ? 1 : 0
+  }
+
+  // agendamentos.forEach(agendamento => console.log(agendamento));
+  
+  const url = 'http://localhost:8080/projetojava3_war_exploded/gerenciar_agendamento.do?acao=dias';
+  (async () => {
+    const rawResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(agendamentos)
+    });
+
+  })();
 }

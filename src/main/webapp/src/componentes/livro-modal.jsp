@@ -21,8 +21,23 @@
           alt="capa do livro"
           class="modal-capa align-self-center">
 
-				<a href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=carrinho&livroId=${livro.id}"
-				 class="btn btn-cadastro mt-3">Adicionar ao Carrinho</a>
+        <c:choose>
+          <c:when test="${sessionScope.ulogado.perfil == 'Aluno' &&  sessionScope.ulogado.status == 0}">
+            <p class="text-center text-secondary p-2">Voce nao pode realizar locacoes enquanto estiver inativo. Espere o Bibliotecario ativa-lo</p>
+          </c:when>
+          
+          <c:otherwise>
+            <c:choose>
+              <c:when test="${livro.estoque >= 1}">
+                <a href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=carrinho&livroId=${livro.id}"
+                   class="btn btn-cadastro mt-3" disabled="${livro.estoque >= 1 ? false : true}">Adicionar ao Carrinho</a>
+              </c:when>
+              <c:otherwise>
+                <button class="btn btn-cadastro mt-3" disabled>Livro fora de estoque</button>
+              </c:otherwise>
+            </c:choose>
+          </c:otherwise>
+        </c:choose>
 		
 
         <div class="info-livro d-flex justify-content-between mt-4">
@@ -51,7 +66,8 @@
             <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
                  alt="lixeira dentro de um quadrado vermelho">
           </button>
-        </div>      </c:if>
+        </div>      
+      </c:if>
     </div>
   </div>
 </div>
