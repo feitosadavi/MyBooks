@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UsuarioDAO extends DatabaseDAO {
   public UsuarioDAO() throws Exception{}
@@ -62,6 +64,53 @@ public class UsuarioDAO extends DatabaseDAO {
     return usuario;
   }
 
+  public Map<String, Object> getLivrosLocados(int id) throws Exception {
+    String SQL = "SELECT livros.*, " +
+      "u.status as statusUsuario, u.id as idUsuario, " +
+      "l.id as idLocacao, l.dataDevolucao, l.status as statusLocacao " +
+      "FROM livros " +
+      "JOIN usuarios as u ON u.id = ? " +
+      "JOIN locacoes as l ON l.idUsuario = u.id " +
+      "JOIN locacoes_livros as ll ON livros.id = ll.idLivros;";
+    this.connect();
+    PreparedStatement pstm = conn.prepareStatement(SQL);
+    pstm.setInt(1, id);
+
+    ResultSet rs = pstm.executeQuery();
+    ArrayList<Livro> livros = new ArrayList<>();
+    ArrayList<Locacao> locacoes = new ArrayList<>();
+    
+    Usuario usuario = new Usuario();
+    while (rs.next()) {
+      Livro livro = new Livro();
+      livro.setId(rs.getInt("id"));
+      livro.setNome(rs.getString("nome"));
+      livro.setGenero(rs.getString("genero"));
+      livro.setPaginas(rs.getInt("paginas"));
+      livro.setLancamento(rs.getInt("lancamento"));
+      livro.setEstoque(rs.getInt("estoque"));
+      livro.setCapa(rs.getString("capa"));
+      livros.add(livro);
+      
+      usuario.setId(rs.getInt("idUsuario"));
+      usuario.setStatus(rs.getInt("statusUsuario"));
+
+      Locacao locacao = new Locacao();
+      locacao.setId(rs.getInt("idLocacao"));
+      locacao.setDataDevolucao(rs.getDate("dataDevolucao"));
+      locacao.setStatus(rs.getString("statusLocacao"));
+      locacoes.add(locacao);
+    }
+    this.disconnect();
+    
+    Map<String, Object> resultado = new HashMap<>();
+    resultado.put("livros", livros);
+    resultado.put("locacoes", locacoes);
+    resultado.put("usuario", usuario);
+    return resultado;
+  }
+
+
   public boolean gravar (Usuario usuario) throws Exception {
     try {
       String SQL;
@@ -87,6 +136,23 @@ public class UsuarioDAO extends DatabaseDAO {
       pstm.execute();
       this.disconnect();
       return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+  
+  public boolean alterarStatus(int status) throws Exception {
+    try {
+      String SQL = "UPDATE usuarios SET status=?";
+      this.connect();
+      PreparedStatement pstm = conn.prepareStatement(SQL);
+      pstm.setInt(1, status);
+      pstm.execute();
+      this.disconnect();
+      
+      return true;
+      
     } catch (Exception e) {
       e.printStackTrace();
       return false;

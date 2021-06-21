@@ -12,6 +12,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "GerenciarAgendamento", value = "/gerenciar_agendamento.do")
@@ -46,7 +47,9 @@ public class GerenciarAgendamento extends HttpServlet {
       
       DataDAO dataDAO = new DataDAO();
       dataDAO.deletar(0); // deleta tudo antes de gravar os novos
-      for (int i = 1; i < dias.length()-1; i++) {
+
+      Date date = new Date();
+      for (int i = date.getDate(); i < dias.length(); i++) {
         JSONObject diaObj = dias.getJSONObject(i);
 
         Data data = new Data();

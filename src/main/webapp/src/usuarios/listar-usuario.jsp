@@ -16,7 +16,6 @@
     <div class="col-sm-8">
       <h2 class="titulo mt-4 mb-4">Usuários</h2>
 
-
       <%@include file="../componentes/filtro.jsp"%>
 
       <%@include file="../componentes/campo-pesquisa.jsp"%>

@@ -1,13 +1,17 @@
 <%@ page import="model.Data" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.time.YearMonth" %>
+<%@ page import="model.Horario" %>
 <jsp:useBean class="model.DataDAO" id="dataDAO"/>
 
 <%
   Date date = new Date();
   YearMonth yearMonth = YearMonth.of(date.getYear(), date.getMonth());
   int diasNoMes = yearMonth.lengthOfMonth();
+  int horaAtual = Integer.parseInt("" + date.getHours() + date.getMinutes());
+
   pageContext.setAttribute("diasNoMes", diasNoMes);
+  pageContext.setAttribute("horaAtual", horaAtual);
 %>
 
 
@@ -22,8 +26,7 @@
             try {
               int dia = (int) pageContext.getAttribute("dia");
               data = dataDAO.getPorData(dia + "");
-            }   catch (Exception ignored) {
-            }
+            }   catch (Exception ignored) {}
             pageContext.setAttribute("horarios", data.getHorarios());
           %>
           
@@ -37,7 +40,16 @@
                 <label for="horario-${horario}-slide-${dia}">${horario}</label>
                 <select class="mybooks-form-select">
                   <c:forEach var="horario" items="${horarios}">
-                    <option value="${horario.horario}">${horario.horario}</option>
+                    <%
+                      Horario horario = (Horario) pageContext.getAttribute("horario");
+                      String[] partesHorario = horario.getHorario().split(":");
+                      int somaHorario = Integer.parseInt( "" + partesHorario[0] + partesHorario[1]);
+                      pageContext.setAttribute("somaHorario", somaHorario);
+                    %>
+                    
+                    <c:if test="${horaAtual <= somaHorario}">
+                      <option value="${horario.horario}">${horario.horario}</option>
+                    </c:if>
                   </c:forEach>
                 </select>
               </form>
@@ -90,8 +102,7 @@
         <p>DOM</p>
       </div>
     </nav>
-
-
+    
     <c:forEach begin="1" end="6">
       <div class="semana">
         <c:forEach begin="1" end="7">
@@ -110,7 +121,6 @@
 <script src="${pageContext.request.contextPath}/scripts/horarios.js"></script>
 
 <script>
-
   let dias = document.getElementsByClassName('dia');
   let urlParams = new URLSearchParams(window.location.search); // parâmetros da url
   let mes = urlParams.get('mes');
@@ -128,9 +138,12 @@
           let clicouDentro = dia.contains(e.target);
           if (clicouDentro) {
             dia.className += " selecionado";
-            console.log("clicou dentro: ", dia.innerText)
           } else {
-            dia.className = "dia dia__ativo"
+            if (dia.className.includes('dia__inativo')) {
+              dia.className = "dia dia__inativo"
+            } else {
+              dia.className = "dia dia__ativo"
+            }
           }
         }
       })
@@ -139,14 +152,17 @@
   }
   
   function confirmar() {
-
     let url = window.location.href; // parâmetros da url
-
-    console.log('url', url);
+    
     let slide = url.split('#')[1];
-    console.log(slide)
+
+    if (!slide) {
+      alert ("Selecione um dia para efetuar a locação!");
+      return null;
+    }
+
     let elementoSlide = document.getElementById(slide);
-    let horario = elementoSlide.querySelector('select').value;
+    let horarioColeta = elementoSlide.querySelector('select').value;
     let dia = elementoSlide.querySelector('.slide-dia').innerText;
     
     // coloco o 0 se o número tiver apenas um algarismo
@@ -156,12 +172,11 @@
 
     let dataColeta = data.getFullYear() + '-' + mes + '-' + dia;
     
-    let locacao = {dataColeta, horario, livrosId: []};
+    let locacao = {dataColeta, horarioColeta, livrosId: []};
     
     for (let id of ${sessionScope.carrinho}) {
       locacao.livrosId.push(id);
     }
-    console.log(locacao)
     enviar(locacao);
   }
   
@@ -179,16 +194,8 @@
 
     })();
   }
+  
   comecarNo(primeiroDiaDoMes, dias, diasDoMes);
   preencherAntes(primeiroDiaDoMes, diasMesAnterior);
-
-
-  // function numerizarHorario(horario) {
-  //   // let arrHorario = horario.split(':');
-  //   // return {
-  //   //   horas: Number(arrHorario[0]),
-  //   //   minutos: Number(arrHorario[1])
-  //   // 
-  // }
 
 </script>

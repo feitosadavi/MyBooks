@@ -38,54 +38,87 @@
             </div>
 
           </div>
-          <div class="info-complementar">
-            <p>${usuario.email}</p>
-            <p>${usuario.status == 0 ? "Inativo" : "Ativo"}</p>
-            <p>${usuario.matricula}</p>
+          <div class="info-complementar row">
+            <div class="col-8">
+              <p>${usuario.email}</p>
+              
+              <c:choose>
+                <c:when test="${sessionScope.ulogado.perfil.nome == 'Bibliotecario'}">
+                  <form action="/gerenciar_usuario.do?acao=alterar_status" method="POST">
+                    <input name="id" type="text" value="${usuario.id}" hidden>
+                    <div class="d-flex justify-content-between gap-4">
+                      <select name="status" id="status" class="form-select">
+                        <option value="1" ${usuario.status == 1 ? "selected" : null}>Ativo</option>
+                        <option value="0" ${usuario.status == 0 ? "selected" : null}>Inativo</option>
+                      </select>
+                      <button class="btn btn-outline-mybooks">Ok</button>
+                    </div>
+                  </form>
+                </c:when>
+                
+                <c:otherwise>
+                  <p>${usuario.status == 1 ? "Ativo" : "Inativo"}</p>
+                </c:otherwise>
+              </c:choose>
+              <p>${usuario.matricula}</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <aside>
+      <aside id="referencia">
+        <%@include file="../componentes/mensagem.jsp"%>
 
         <h3 class="titulo">Histórico de Locações</h3>
 
         <%@include file="../componentes/campo-pesquisa.jsp"%>
 
-        <div class="card-container mt-4">
+        <jsp:useBean class="model.LocacaoDAO" id="livroDAO" />
+        <c:forEach var="locacao" items="${livroDAO.getHistoricoLocacoesPorUsuario(usuario.id)}">
+          <div class="card-container mt-4">
+            <div class="livro-thumb hover-thumb me-2">
+              <img src="${pageContext.request.contextPath}/imagens/fotosLivro/${locacao.getLivros()[0].getCapa()}"
+                   alt="capa do livro">
+            </div>
 
-          <div class="livro-thumb hover-thumb me-2">
-            <img src="${pageContext.request.contextPath}/imagens/ladrao-de-raios-capa.jpg"
-                 alt="">
-          </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title-mybooks">
+                  <div class="card-title-decoration"></div>
+                  <h3>${locacao.getLivros()[0].getNome()}</h3>
+                </div>
 
-          <div class="card">
-            <div class="card-body">
-              <div class="card-title-mybooks">
-                <div class="card-title-decoration"></div>
-                <h3>Percy Jackson e o Ladrão de Raios</h3>
+                <form action="${pageContext.request.contextPath}/gerenciar_locacao.do" method="GET">
+                  <input name="acao" type="text" value="alterar_status" hidden>
+                  <input name="idConta" type="text" value="${usuario.id}" hidden>
+                  <input name="idLocacao" type="text" value="${locacao.id}" hidden>
+                  <div class="d-flex  gap-4">
+                    <select class="form-select w-25" name="statusLocacao" id="statusLivro">
+                      <option value="pendente" ${locacao.status == "pendente" ? "selected" : null}>Pendente</option>
+                      <option value="confirmado" ${locacao.status == "confirmado" ? "selected" : null}>Confirmado</option>
+                      <option value="devolvido" ${locacao.status == "devolvido" ? "selected" : null}>Devolvido</option>
+                      <option value="n_devolvido" ${locacao.status == "n_devolvido" ? "selected" : null}>Não Devolvido</option>
+                    </select>
+
+                    <button class="btn btn-outline-mybooks">Ok</button>
+                  </div>
+                </form>
+                
+                <p class="text-secondary text-end">${locacao.getHorarioColeta()}</p>
+                <p class="text-secondary text-end">${locacao.getDataLocacao()} § ${locacao.getDataDevolucao()}</p>
               </div>
-              <p class="card-text text-success">
-                Devolvido
-              </p>
-              <p class="text-secondary text-end">14/04/21 - 12/05/21</p>
-            </div>
 
-            <div class="card-footer">
-              <a class="btn btn-outline-info"
-                 href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
-                <img src="${pageContext.request.contextPath}/imagens/editar.svg"
-                     alt="caneta dentro de um quadrado verde">
-              </a>
-
-              <button class="btn btn-outline-danger"
-                      onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
-                <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
-                     alt="lixeira dentro de um quadrado vermelho">
-              </button>
+              <div class="card-footer">
+                <button class="btn btn-outline-danger"
+                        onclick="confirmarExclusao('$locacao.livro.nome}', '/projetojava3_war_exploded/gerenciar_locacao.do?id='+'${locacao.id}')">
+                  <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
+                       alt="lixeira dentro de um quadrado vermelho">
+                </button>
+              </div>
             </div>
           </div>
-        </div>  
+        </c:forEach>
+
       </aside>
     </main>
   </div>

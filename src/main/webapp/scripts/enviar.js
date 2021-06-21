@@ -2,6 +2,7 @@
 function enviar() {
   let dias = document.getElementsByClassName('dia__ativo');
   let horarios = document.querySelectorAll('.horario-wrapper > input');
+  let hoje = date.getDate();
 
   let agendamentos = {dias:[]};
   horarios.forEach((horario) => {
@@ -10,7 +11,7 @@ function enviar() {
     let hora = arrValues[1];
 
     // configuro todos os horários possíveis
-    if (Number(dia) === 1) { // eu só preciso adicionar os horários existentes uma vez
+    if (Number(dia) === hoje) { // eu só preciso adicionar os horários existentes uma vez
       if (agendamentos.horariosTotais) {
         agendamentos.horariosTotais.push(hora);
       } else {
@@ -33,11 +34,9 @@ function enviar() {
     agendamentos.dias[dia].status = diaElemento.className.includes('selecionado') ? 1 : 0
   }
 
-  // agendamentos.forEach(agendamento => console.log(agendamento));
-  
-  const url = 'http://localhost:8080/projetojava3_war_exploded/gerenciar_agendamento.do?acao=dias';
+  const url = 'http://localhost:8080/projetojava3_war_exploded/gerenciar_agendamento.do';
   (async () => {
-    const rawResponse = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

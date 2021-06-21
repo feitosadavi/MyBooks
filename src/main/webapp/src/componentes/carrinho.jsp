@@ -13,6 +13,7 @@
 <div id="toggler" onclick="toogleNav.call(this)"></div>
 
 <jsp:useBean class="model.LivroDAO" id="livroDA" />
+<jsp:useBean class="model.UsuarioDAO" id="usuarioDAO"/>
 <div id="carrinho" class="d-flex flex-column align-items-start">
 
   <c:choose>
@@ -38,6 +39,7 @@
             <p>${livro.nome}</p>
           </div>
         </c:forEach>
+        
         <a onclick="agendar()" class="btn btn-cadastro mt-3 px-5 py-2">
           Alugar
         </a>

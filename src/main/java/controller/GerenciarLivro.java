@@ -110,11 +110,7 @@ public class GerenciarLivro extends HttpServlet {
         livro.setLancamento(Integer.parseInt(lancamento));
         livro.setGenero(genero);
         livro.setPaginas(Integer.parseInt(paginas));
-        livro.setEstoque(Integer.parseInt(estoque));        
-     
-//        PerfilDAO perfilDAO = new PerfilDAO();
-//        Perfil perfil = perfilDAO.getById(Integer.parseInt(idPerfil));
-//        livro.setPerfil(perfil);
+        livro.setEstoque(Integer.parseInt(estoque));
         
         mensagem = livroDAO.gravar(livro) ? "Gravado com sucesso!" : "Erro ao gravar no banco de dados";
       }

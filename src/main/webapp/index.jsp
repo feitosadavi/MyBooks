@@ -1,8 +1,7 @@
-<%@ page import="model.DataDAO" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="model.Data" %>
-<%@ page import="model.HorarioDAO" %>
-<%@ page import="model.Horario" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="model.*" %>
+<%@ page import="java.lang.reflect.Array" %>
 
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -15,26 +14,29 @@
     <div class="container">
       <%@include file="/src/componentes/mensagem.jsp"%>
 
-		  <%
-//        try {
-//          DataDAO dataDAO = new DataDAO();
-//          Data data = new Data();
-//          data.setData("02/06");
-//          data.setStatus(1);
-//
-//          HorarioDAO horarioDAO = new HorarioDAO();
-//          ArrayList<Horario> horarios = horarioDAO.getList();
-//          System.out.println(horarios);
-//          data.setHorarios(horarios);
-//          dataDAO.gravar(data);
-//          System.out.println(data);
-//          
-//          
-//            
-//        } catch (Exception e) {
-//          e.printStackTrace();
-//        }
-
+<%--      <%--%>
+<%--        System.out.println("olá mundo");--%>
+<%--        Usuario usuario = (Usuario) request.getSession().getAttribute("ulogado");--%>
+<%--        UsuarioDAO usuarioDAO = null;--%>
+<%--        try {--%>
+<%--          usuarioDAO = new UsuarioDAO();--%>
+<%--          Map<String, Object> livrosLocados = null;--%>
+<%--          livrosLocados = usuarioDAO.getLivrosLocados(usuario.getId());--%>
+<%--          ArrayList<Livro> livros = (ArrayList<Livro>) livrosLocados.get("livros");--%>
+<%--          --%>
+<%--//          for (Livro livroLocado : livros) {--%>
+<%--//            if (livroLocado.getId() === livro.getId()) {--%>
+<%--//              --%>
+<%--//            }--%>
+<%--          }--%>
+<%--          --%>
+<%--          System.out.println(livrosLocados);--%>
+<%--        } catch (Exception e) {--%>
+<%--          e.printStackTrace();--%>
+<%--        }--%>
+<%--//          assert livrosLocados != null;--%>
+<%--//          System.out.println(livrosLocados.get("livros"));--%>
+<%--//          pageContext.setAttribute("livrosLocados", livrosLocados);--%>
 
       %>
       <h2>

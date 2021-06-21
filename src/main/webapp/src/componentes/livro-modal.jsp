@@ -1,5 +1,21 @@
 <!-- Modal -->
 <%@page import="model.UsuarioDAO"%>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
+
+<%
+  Usuario usuario = (Usuario) request.getSession().getAttribute("ulogado");
+  Map<String, Object> livrosLocados = null;
+  try {
+    livrosLocados = usuarioDAO.getLivrosLocados(usuario.getId());
+  } catch (Exception e) {
+    e.printStackTrace();
+  }
+  assert livrosLocados != null;
+  pageContext.setAttribute("livrosLocados", livrosLocados);
+
+%>
+
 <div class="modal fade"
   id="livro-info-${livro.id}"
   tabindex="-1"
@@ -20,24 +36,40 @@
         <img src="${pageContext.request.contextPath}/imagens/fotosLivro/${livro.capa}"
           alt="capa do livro"
           class="modal-capa align-self-center">
-
-        <c:choose>
-          <c:when test="${sessionScope.ulogado.perfil == 'Aluno' &&  sessionScope.ulogado.status == 0}">
-            <p class="text-center text-secondary p-2">Voce nao pode realizar locacoes enquanto estiver inativo. Espere o Bibliotecario ativa-lo</p>
-          </c:when>
-          
-          <c:otherwise>
-            <c:choose>
-              <c:when test="${livro.estoque >= 1}">
-                <a href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=carrinho&livroId=${livro.id}"
-                   class="btn btn-cadastro mt-3" disabled="${livro.estoque >= 1 ? false : true}">Adicionar ao Carrinho</a>
-              </c:when>
-              <c:otherwise>
-                <button class="btn btn-cadastro mt-3" disabled>Livro fora de estoque</button>
-              </c:otherwise>
-            </c:choose>
-          </c:otherwise>
-        </c:choose>
+        <c:if test="${sessionScope.ulogado.perfil.nome == 'admin'}">
+          <c:choose>
+            <c:when test="${sessionScope.ulogado.status == 0}">
+              <p class="text-center text-secondary p-2">Voce nao pode realizar locacoes enquanto estiver inativo.</p>
+            </c:when>
+            
+            <c:otherwise>
+              <c:choose>
+                <c:when test="${livro.estoque >= 1}">
+                  <c:set var="livroJaFoiAlugado" value="${false}"/>
+                  <c:forEach var="livroLocado" items="${livrosLocados.get('livros')}">
+                    <c:if test="${livro.id == livroLocado.id}">
+                      <c:set var="livroJaFoiAlugado" value="${true}"/>
+                    </c:if>
+                  </c:forEach>
+  
+                  <c:choose>
+                    <c:when test="${livroJaFoiAlugado}">
+                      <button class="btn btn-cadastro mt-3" disabled>Voce ja alugou este livro :/</button>
+                    </c:when>
+  
+                    <c:otherwise>
+                      <a href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=carrinho&livroId=${livro.id}"
+                         class="btn btn-cadastro mt-3" disabled="${livro.estoque >= 1 ? false : true}">Adicionar ao Carrinho</a>
+                    </c:otherwise>
+                  </c:choose>
+                </c:when>
+                <c:otherwise>
+                  <button class="btn btn-cadastro mt-3" disabled>Livro fora de estoque</button>
+                </c:otherwise>
+              </c:choose>
+            </c:otherwise>
+          </c:choose>
+        </c:if>
 		
 
         <div class="info-livro d-flex justify-content-between mt-4">

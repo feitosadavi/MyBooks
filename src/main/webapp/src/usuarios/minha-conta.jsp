@@ -39,52 +39,52 @@
       </div>
     </section>
 
-    <aside>
+    <aside id="referencia">
+      <%@include file="../componentes/mensagem.jsp"%>
 
       <h3 class="titulo">Histórico de Locações</h3>
 
       <%@include file="../componentes/campo-pesquisa.jsp"%>
 
   		<jsp:useBean class="model.LocacaoDAO" id="livroDAO" />
-      <c:forEach var="locacao" items="${livroDAO.getHistoricoLocacoesPorUsuario(usuario.id)}">
-	     	<div class="card-container mt-4">
-	        <div class="livro-thumb hover-thumb me-2">
-	          <img src="${pageContext.request.contextPath}/imagens/fotosLivro/${locacao.getLivros()[0].getCapa()}"
-	               alt="">
-	        </div>
-	
-	        <div class="card">
-	          <div class="card-body">
-	            <div class="card-title-mybooks">
-	              <div class="card-title-decoration"></div>
-	              <h3>${locacao.getLivros()[0].getNome()}</h3>
-	            </div>
-	            <p class="card-text text-success">
-	              ${locacao.getStatus()}
-	            </p>
-	            <p class="text-secondary text-end">${locacao.getDataLocacao()} § ${locacao.getDataDevolucao()}</p>
-	          </div>
-	
-	          <div class="card-footer">
-	            <a class="btn btn-outline-info"
-	               href="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar&id=${usuario.id}">
-	              <img src="${pageContext.request.contextPath}/imagens/editar.svg"
-	                   alt="caneta dentro de um quadrado verde">
-	            </a>
-	
-	            <button class="btn btn-outline-danger"
-	                    onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
-	              <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
-	                   alt="lixeira dentro de um quadrado vermelho">
-	            </button>
-	          </div>
-	        </div>
-	     	</div>
+      <c:forEach var="locacoes" items="${livroDAO.getHistoricoLocacoesPorUsuario(usuario.id)}">
+        <c:forEach var="livro" items="${locacoes.livros}">
+          <div class="card-container mt-4">
+            <div class="livro-thumb hover-thumb me-2">
+              <img src="${pageContext.request.contextPath}/imagens/fotosLivro/${livro.capa}"
+                   alt="capa do livro">
+            </div>
+    
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title-mybooks">
+                  <div class="card-title-decoration"></div>
+                  <h3>${livro.nome}</h3>
+                </div>
+                <p class="card-text text-success">
+                  ${locacoes.getStatus()}
+                </p>
+                <p class="text-secondary text-end">${locacoes.getHorarioColeta()}</p>
+                <p class="text-secondary text-end">${locacoes.getDataLocacao()} § ${locacoes.getDataDevolucao()}</p>
+              </div>
+    
+              <div class="card-footer">
+                <button class="btn btn-outline-danger"
+                        onclick="confirmarExclusao('${livro.nome}', '/projetojava3_war_exploded/gerenciar_locacao.do?idLocacao='+'${locacoes.id}&idLivro=${livro.id}')">
+                  <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
+                       alt="lixeira dentro de um quadrado vermelho">
+                </button>
+              </div>
+            </div>
+          </div>
+        </c:forEach>
 	    </c:forEach>
             
     </aside>
   </main>
 </div>
+
+<script src="${pageContext.request.contextPath}/scripts/confirmar.js"></script>
 
 </body>
 </html>

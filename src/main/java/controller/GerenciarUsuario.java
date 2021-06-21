@@ -29,11 +29,10 @@ public class GerenciarUsuario extends HttpServlet {
     int id = 0;
     if (idBruto != null) id = Integer.parseInt(idBruto.trim()); // evitando NullPointerException
     String acao = request.getParameter("acao");
-
+    String mensagem = null;
     try {
       UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-      String mensagem;
       if (acao.equals("deletar")) {
 
         if (GerenciarLogin.verificarAcesso(request, response)) {
@@ -65,7 +64,7 @@ public class GerenciarUsuario extends HttpServlet {
       	}
       	response.sendRedirect(request.getContextPath() + "/src/livros/listar-livro.jsp");
       	
-      } 
+      }
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -74,34 +73,14 @@ public class GerenciarUsuario extends HttpServlet {
   
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String id = request.getParameter("id");
-    String nome = request.getParameter("nome");
-    String email = request.getParameter("email");
-    String senha = request.getParameter("senha");
-    String idPerfil = request.getParameter("idPerfil");
-    String matricula = request.getParameter("matricula");
-    String capaAtual = request.getParameter("capaAtual");
     String acao = request.getParameter("acao");
-
-    Part capaPart = request.getPart("capa");
-    String capaNova = capaPart.getSubmittedFileName();
+    String mensagem = null;
     
-    InputStream conteudoDoArquivoCapa = capaPart.getInputStream();
-    Date data = new Date();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-    final String novoNomeDoArquivoCapa = conteudoDoArquivoCapa != null 
-      ? "MyBooksImage" + dateFormat.format(data) + "-" + data.getTime()
-      : "sem-foto-perfil.svg";
-
-    String mensagem;
     
-    String[] fields = {nome, email, senha, matricula, idPerfil};
-    String[] fieldNames = {"nome", "email", "senha", "matricula", "idPerfil"};
-    
-    Usuario usuario = new Usuario();
     try {
-    	if (acao != null && acao.equals("alugar")) {
+      UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+      if (acao != null && acao.equals("alugar")) {
         if (GerenciarLogin.verificarAcesso(request, response)) {
         	Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
         	if (aluno.getStatus() == 1) { // se o usuário estiver ativado		
@@ -120,51 +99,86 @@ public class GerenciarUsuario extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
         	}
         }    
-      }
-    	
-      UsuarioDAO usuarioDAO = new UsuarioDAO();
-      Validacao validacao = new Validacao();
-      ArrayList<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
-      if (!camposNencontrados.isEmpty()) {
-        mensagem = "Campos não inseridos: " + camposNencontrados;
+      } else if (acao != null && acao.equals("alterar_status")) {
+        String status = request.getParameter("status");
+        String id = request.getParameter("id");
+
+        if (usuarioDAO.alterarStatus(Integer.parseInt(status))) {
+          mensagem = "Status do usuário alterado com sucesso";
+        } else {
+          mensagem = "Erro ao alterar status";
+        }
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/usuarios/cadastrar-usuario.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/usuarios/conta.jsp?id=" + id);
         return;
         
       } else {
-    	if (capaAtual != null && !capaAtual.isEmpty() && capaNova.isEmpty()) { // se tiver capa atual e ela não for atualizada: 
-    	  usuario.setCapa(capaAtual); // não mudo a capa se vier uma imagem já existente
-    		
-    	} else if (!capaNova.isEmpty()) { // se o usuário escolheu uma nova foto de perfil
-    	  usuario.setCapa(novoNomeDoArquivoCapa);
-    		
-        if (id != null && !id.isEmpty()) { // se for editar
-          //GerenciadorDeArquivos.procurarArquivo(nomeDoArquivoCapa, request);
-        } 
-        GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa, "fotosUsuario");
-    	}
-    	
-        if (id != null && !id.isEmpty()) { // se for editar
-          String status = request.getParameter("status");
-          usuario.setStatus(Integer.parseInt(status));
-          usuario.setId(Integer.parseInt(id));
-          usuario.setSenha(senha);
+        String id = request.getParameter("id");
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+        String senha = request.getParameter("senha");
+        String idPerfil = request.getParameter("idPerfil");
+        String matricula = request.getParameter("matricula");
+        String capaAtual = request.getParameter("capaAtual");
+
+        Part capaPart = request.getPart("capa");
+        String capaNova = capaPart.getSubmittedFileName();
+
+        InputStream conteudoDoArquivoCapa = capaPart.getInputStream();
+        Date data = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        final String novoNomeDoArquivoCapa = conteudoDoArquivoCapa != null
+          ? "MyBooksImage" + dateFormat.format(data) + "-" + data.getTime()
+          : "sem-foto-perfil.svg";
+
+        String[] fields = {nome, email, senha, matricula, idPerfil};
+        String[] fieldNames = {"nome", "email", "senha", "matricula", "idPerfil"};
+        
+        Validacao validacao = new Validacao();
+        ArrayList<String> camposNencontrados = validacao.camposRequeridos(fieldNames, fields);
+        if (!camposNencontrados.isEmpty()) {
+          mensagem = "Campos não inseridos: " + camposNencontrados;
+          request.getSession().setAttribute("mensagem", mensagem);
+          response.sendRedirect(request.getContextPath() + "/src/usuarios/cadastrar-usuario.jsp");
+          return;
           
-        } else { // se for gravar um novo registro
-          String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
-          usuario.setSenha(senhaHasheada);
+        } else {
+          Usuario usuario = new Usuario();
+          if (capaAtual != null && !capaAtual.isEmpty() && capaNova.isEmpty()) { // se tiver capa atual e ela não for atualizada: 
+            usuario.setCapa(capaAtual); // não mudo a capa se vier uma imagem já existente
+            
+          } else if (!capaNova.isEmpty()) { // se o usuário escolheu uma nova foto de perfil
+            usuario.setCapa(novoNomeDoArquivoCapa);
+            
+            if (id != null && !id.isEmpty()) { // se for editar
+              //GerenciadorDeArquivos.procurarArquivo(nomeDoArquivoCapa, request);
+            } 
+            GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa, "fotosUsuario");
+          }
+        
+          if (id != null && !id.isEmpty()) { // se for editar
+            String status = request.getParameter("status");
+            usuario.setStatus(Integer.parseInt(status));
+            usuario.setId(Integer.parseInt(id));
+            usuario.setSenha(senha);
+            
+          } else { // se for gravar um novo registro
+            String senhaHasheada = Hasher.criarHash(senha,  new byte[128 / 8], 1000, 256);
+            usuario.setSenha(senhaHasheada);
+          }
+          
+          usuario.setNome(nome);
+          usuario.setEmail(email);
+          usuario.setMatricula(Integer.parseInt(matricula));
+          
+       
+          PerfilDAO perfilDAO = new PerfilDAO();
+          Perfil perfil = perfilDAO.getById(Integer.parseInt(idPerfil));
+          usuario.setPerfil(perfil);
+          
+          mensagem = usuarioDAO.gravar(usuario) ? "Gravado com sucesso!" : "Erro ao gravar no banco de dados";
         }
-        
-        usuario.setNome(nome);
-        usuario.setEmail(email);
-        usuario.setMatricula(Integer.parseInt(matricula));
-        
-     
-        PerfilDAO perfilDAO = new PerfilDAO();
-        Perfil perfil = perfilDAO.getById(Integer.parseInt(idPerfil));
-        usuario.setPerfil(perfil);
-        
-        mensagem = usuarioDAO.gravar(usuario) ? "Gravado com sucesso!" : "Erro ao gravar no banco de dados";
       }
       
     } catch (Exception e) {

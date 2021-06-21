@@ -1,3 +1,5 @@
+<%@ page import="java.util.Date" %>
+<%@ page import="java.time.YearMonth" %>
 <%@page contentType="text/html"
         pageEncoding="UTF-8"
 %>
@@ -21,7 +23,15 @@
     <div class="sidebar">
       <div class="slider">
         <div class="slides">
-          <c:forEach var="dia" begin="01" end="31">
+            <%
+              Date date = new Date(); 
+              int hoje = date.getDate();
+              YearMonth yearMonthObject = YearMonth.of(date.getYear(), date.getMonth()+1);
+              int ultimoDiaDoMes = yearMonthObject.lengthOfMonth();
+              pageContext.setAttribute("hoje", hoje);
+              pageContext.setAttribute("ultimoDiaDoMes", ultimoDiaDoMes);
+            %>  
+          <c:forEach var="dia" begin="${hoje}" end="${ultimoDiaDoMes}">
             <div id="slide-${dia}">
               <a>${dia}</a>
               <button onclick="enviar()" class="btn btn-success">Enviar</button>
@@ -126,7 +136,7 @@
 
   let dias = document.getElementsByClassName('dia');
   let urlParams = new URLSearchParams(window.location.search); // parâmetros da url
-  let mes = urlParams.get('mes');
+  let mes = urlParams.get('mes') ? urlParams.get('mes') : date.getMonth() + 1 ;
   let primeiroDiaDoMes = getPrimeiroDiaDoMes(mes);
   let mesAnterior = Number(mes) === 0 ? 11 : mes - 1;
   let data = new Date();
@@ -135,24 +145,10 @@
 
   for (let dia of dias) {
     dia.ondblclick = selecionarUm;
-    // dia.onclick = () => {
-    //   console.log(Number(mes));
-    //   console.log(data.getMonth())
-    //   if (Number(mes-1) !== data.getMonth()) alert('Só é possível definir agendamento para o mês atual');
-    // }
-
   }
   comecarNo(primeiroDiaDoMes, dias, diasDoMes);
   preencherAntes(primeiroDiaDoMes, diasMesAnterior);
   
-  
-  // function numerizarHorario(horario) {
-  //   // let arrHorario = horario.split(':');
-  //   // return {
-  //   //   horas: Number(arrHorario[0]),
-  //   //   minutos: Number(arrHorario[1])
-  //   // 
-  // }
   
 </script>
 

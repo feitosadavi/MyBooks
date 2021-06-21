@@ -3,7 +3,7 @@
 * */
 
   let date = new Date();
-
+  let hoje = date.getDate();
 
 /*
 * FUNCÕES PARA A CONSTRUÇÃO DO CALENDÁRIO
@@ -21,10 +21,15 @@ function comecarNo(dia, dias, diasDoMes) {
 
     let index = i === 0 ? 0 : i - 1;
     if (i >= dia) {
-      let diaA = dias[index].querySelector('a');
-      diaA.innerText = diaSemana < 10 ? '0' + diaSemana : diaSemana;
-      diaA.href = '#slide-' + diaSemana;
-      dias[index].className += ' dia__ativo';
+      if (i <= hoje) {
+        dias[index].className += ' dia__inativo';
+        dias[index].innerText = diaSemana < 10 ? '0' + diaSemana : diaSemana;
+      } else {
+        dias[index].className += ' dia__ativo';
+        let diaA = dias[index].querySelector('a');
+        diaA.innerText = diaSemana < 10 ? '0' + diaSemana : diaSemana;
+        diaA.href = '#slide-' + diaSemana;
+      }
       diaSemana++;
     }
   }

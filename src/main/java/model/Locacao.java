@@ -7,6 +7,24 @@ public class Locacao {
   private int id;
   private String status;
   private Date dataLocacao, dataDevolucao, dataColeta;
+  private String horarioColeta;
+
+  public String getHorarioColeta() {
+    return horarioColeta;
+  }
+
+  public void setHorarioColeta(String horarioColeta) {
+    this.horarioColeta = horarioColeta;
+  }
+
+  public ArrayList<Livro> getLivro() {
+    return livro;
+  }
+
+  public void setLivro(ArrayList<Livro> livro) {
+    this.livro = livro;
+  }
+
   private Usuario aluno;
   private Usuario bibliotecario;
   private ArrayList<Livro> livro;

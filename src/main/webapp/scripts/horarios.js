@@ -22,11 +22,11 @@ function calcularHorarios(inicio, fim, intervalo) {
 function listarHorarios(horarios) {
   let formsHorarios = document.getElementsByClassName('form-horarios');
   
-  let i = 1;
+  let i = date.getDate();
   for (const formHorarios of formsHorarios) {
     let selector = '#form-horarios-' + i + ' .horarios';
     let divHorarios = document.querySelector(selector);
-    
+
     // se tiver horarios, os remove
     if (divHorarios.childElementCount > 0) {
       divHorarios.innerHTML = '';
