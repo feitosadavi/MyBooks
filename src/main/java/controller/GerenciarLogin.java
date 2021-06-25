@@ -135,12 +135,10 @@ public class GerenciarLogin extends HttpServlet {
     try {
       if (usuario != null && usuario.getId() > 0) {
         Map<String, String> verificacao = verificarPendencias(usuario.getId());
-  
         if (verificacao != null) {
           if (verificacao.get("pendencia").equals("true")) {
-            usuario.setStatus(0);
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            usuarioDAO.gravar(usuario);
+            usuarioDAO.alterarStatus(0);
             
             mensagem = verificacao.get("mensagem");
           }
@@ -153,7 +151,6 @@ public class GerenciarLogin extends HttpServlet {
       mensagem = "Erro interno do servidor";
     }
     if (mensagem != null) {
-      System.out.println("mensagem");
       request.getSession().setAttribute("mensagem", mensagem);
     }
   }
@@ -172,9 +169,8 @@ public class GerenciarLogin extends HttpServlet {
       ArrayList<Boolean> pendencias = new ArrayList<>();
       for (Locacao locacao : locacoes) {
         int dataDevolucao = construirData(locacao.getDataDevolucao().toString());
-        
         if (dataHoje > dataDevolucao) {
-          if (locacao.getStatus().equals("confirmada")) {
+          if (locacao.getStatus().equals("confirmado")) {
             pendencias.add(true);
             mensagem = "Devolva os livro alugados para continuar utilizando a biblioteca!";
             

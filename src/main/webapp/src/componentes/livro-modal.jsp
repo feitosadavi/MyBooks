@@ -6,7 +6,9 @@
 <%
   Usuario usuario = (Usuario) request.getSession().getAttribute("ulogado");
   Map<String, Object> livrosLocados = null;
+  
   try {
+    UsuarioDAO usuarioDAO = new UsuarioDAO();
     livrosLocados = usuarioDAO.getLivrosLocados(usuario.getId());
   } catch (Exception e) {
     e.printStackTrace();
@@ -36,7 +38,7 @@
         <img src="${pageContext.request.contextPath}/imagens/fotosLivro/${livro.capa}"
           alt="capa do livro"
           class="modal-capa align-self-center">
-        <c:if test="${sessionScope.ulogado.perfil.nome == 'admin'}">
+        <c:if test="${sessionScope.ulogado.status == 1 && sessionScope.ulogado.perfil.nome == 'admin' || sessionScope.ulogado.perfil.nome == 'Aluno'}">
           <c:choose>
             <c:when test="${sessionScope.ulogado.status == 0}">
               <p class="text-center text-secondary p-2">Voce nao pode realizar locacoes enquanto estiver inativo.</p>

@@ -15,12 +15,12 @@
     <div id="referencia" class="col-sm-8">
 
       <%@include file="/src/componentes/mensagem.jsp"%>
-      <%@include file="/src/componentes/carrinho.jsp"%>
+<%--      <%@include file="/src/componentes/carrinho.jsp"%>--%>
 
       <h2 class="titulo mt-4 mb-4">Livros</h2>
 
       <c:if test="${sessionScope.ulogado.perfil.nome.equals('Bibliotecario')}" >
-        <a href="${pageContext.request.contextPath}/src/livros/cadastrar-livro.jsp" class="btn btn-primary">Novo Livro</a>
+        <a href="${pageContext.request.contextPath}/src/livros/cadastrar-livro.jsp" class="btn btn-outline-mybooks">Novo Livro</a>
       </c:if>
 
       <%@include file="/src/componentes/filtro.jsp"%>

@@ -33,12 +33,10 @@
 }
 
 #toggler {
-	position: fixed;
+	/*position: fixed;*/
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	right:5vw;
-	top:12vh;
 	font-size: 1.5rem;
 	border-radius: 100%;
 	background-color: var(--roxo-claro);

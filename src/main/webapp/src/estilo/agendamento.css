@@ -9,12 +9,10 @@
   align-content: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(225, 220, 220);
 }
 
 .calendario {
   display: flex;
-  margin-top: 5rem;
   width: 50rem;
   height: 30rem;
 }
@@ -60,6 +58,7 @@
   background-color: #fff;
   padding: 1rem;
   flex: 3;
+  box-shadow: 10px 13px 38px #636464;
 }
 
 .sidebar .slider {
@@ -77,6 +76,7 @@
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 
+  height: 60vh;
   /*
   scroll-snap-points-x: repeat(300px);
   scroll-snap-type: mandatory;
@@ -87,8 +87,7 @@
   height: 10px;
 }
 .sidebar .slider .slides::-webkit-scrollbar-thumb {
-  background: black;
-  border-radius: 10px;
+  background: var(--roxo-opaco-claro);
 }
 .sidebar .slider .slides::-webkit-scrollbar-track {
   background: transparent;
@@ -97,7 +96,7 @@
   scroll-snap-align: start;
   flex-shrink: 0;
   width: 100%;
-  height: 50rem;
+  height: 10rem;
   margin-right: 50px;
   border-radius: 10px;
   background-color: var(--roxo-claro);
@@ -204,4 +203,26 @@
 
 .dia__inativo {
   font-weight: 200;
+}
+
+@media screen and (max-width: 940px) {
+  /*.calendario__wrapper {*/
+  /*  display: flex;*/
+  /*  justify-content: center;*/
+  /*  align-content: center;*/
+  /*  width: 100vw;*/
+  /*  height: 100vh;*/
+  /*}*/
+
+  .calendario {
+    flex-direction: column;
+    max-width: 25rem;
+  }
+  .sidebar {
+    height: 25rem;
+  }
+
+  .sidebar .slider .slides {
+    height: 13rem;
+  }
 }

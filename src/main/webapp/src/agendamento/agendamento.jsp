@@ -18,8 +18,30 @@
 <%@include file="../componentes/navbar.jsp"%>
 <link href="${pageContext.request.contextPath}/src/estilo/agendamento.css" rel="stylesheet">
 
-<div class="calendario__wrapper d-flex">
-  <div class="calendario">
+<div class="calendario__wrapper d-flex flex-column justify-content-start align-items-center">
+  <div class="configuracoes mt-5 d-flex align-items-center justify-content-between gap-4">
+    <div class="d-flex gap-4">
+      <div class="d-flex flex-column">
+        <label class="text-secondary" for="inicio">HORÁRIO INICIAL</label>
+        <input type="time" value="10:00:00" class="form-control" id="inicio"> <!--dps tire o horários, pls-->
+      </div>
+      
+      <div class="d-flex flex-column">
+        <label class="text-secondary" for="fim">HORÁRIO FINAL</label>
+        <input type="time" value="23:00:00" class="form-control" id="fim">
+      </div>
+    </div>
+
+    <div class="d-flex">
+      <div class="d-flex flex-column">
+        <label class="text-secondary" for="intervalo">INTERVALO </label>
+        <input class="form-control" id="intervalo" value="15" placeholder="Ex: 30min">
+      </div>
+      <button onclick="gerarHorarios()" class="btn btn-outline-mybooks h-50 mt-3 ms-3">Ok</button>
+    </div>
+  </div>
+  
+  <div class="calendario mt-5">
     <div class="sidebar">
       <div class="slider">
         <div class="slides">
@@ -34,7 +56,7 @@
           <c:forEach var="dia" begin="${hoje}" end="${ultimoDiaDoMes}">
             <div id="slide-${dia}">
               <a>${dia}</a>
-              <button onclick="enviar()" class="btn btn-success">Enviar</button>
+              <button onclick="enviar()" class="btn btn-outline-info">Enviar</button>
               <div class="form-horarios">
                 <form id="form-horarios-${dia}" method="POST" action="gerenciar_agendamento.do">
                   <div class="horarios d-flex flex-column">
@@ -59,7 +81,8 @@
       <div onclick="selecionarTodos()" class="p-3">
         <label for="todos">Selecionar todos</label>
         <input type="checkbox"
-               id="todos">
+               id="todos"
+               class="form-check-inline">
       </div>
 
       <nav class="calendario__nav">
@@ -112,18 +135,6 @@
         </div>
       </c:forEach>
     </div>
-  </div>
-  
-  <div class="configuracoes d-flex flex-column justify-self-end">
-    <label>Selecione o horário inicial e final: </label>
-    <div class="d-flex justify-content-between">
-      <input type="time" value="10:00:00" id="inicio"> <!--dps tire o horários, pls-->
-      <input type="time" value="12:00:00" id="fim">
-    </div>
-    
-    <label for="intervalo">Selecione o intervalo entre os horários: </label>
-    <input id="intervalo" value="30" placeholder="Ex: 30min">
-    <button onclick="gerarHorarios()" class="btn btn-primary">Enviar</button>
   </div>
 
 </div>

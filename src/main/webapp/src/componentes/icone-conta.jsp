@@ -1,5 +1,5 @@
 <div id="container" onclick="abrirMenu()">
-  <img src="${pageContext.request.contextPath}/imagens/fotosUsuario/${sessionScope.ulogado.capa}" alt="Ícone do usuário" class="icone-usuario-navbar">
+  <img src="${pageContext.request.contextPath}/imagens/fotosUsuario/${sessionScope.ulogado.capa}" alt="ï¿½cone do usuï¿½rio" class="icone-usuario-navbar">
 </div>
 
 <script>
@@ -12,16 +12,17 @@
       div.id = 'mini-menu';
 
       let aConta = document.createElement('a');
-      aConta.text = 'Conta';
+      aConta.text = 'CONTA';
       aConta.href = '${pageContext.request.contextPath}/src/usuarios/minha-conta.jsp'
 
       let aSair = document.createElement('a');
-      aSair.text = 'Sair';
+      aSair.text = 'SAIR';
       aSair.href = '${pageContext.request.contextPath}/src/componentes/logoff.jsp';
 
       let wrapperIcone = document.createElement('div');
       wrapperIcone.id = 'wrapper-icone';
 
+      
       div.append(aConta);
       div.append(aSair);
       wrapperIcone.append(div);
@@ -45,16 +46,22 @@
   }
   #mini-menu {
     position: absolute;
+    top: .3rem;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     min-width: 5rem;
     min-height:6rem;
     max-width: 8rem;
     max-height: 9rem;
     border-radius: .5rem;
-    justify-content: center;
     align-items: center;
-    background-color: rgba(170,173,158);
-    z-index: 1000;
+    border: 1px solid var(--roxo-claro);
+    background-color: #fff;
+    z-index: 99999;
+  }
+  #mini-menu a {
+    color: var(--preto-fosco);
+    text-decoration: none;
   }
 </style>

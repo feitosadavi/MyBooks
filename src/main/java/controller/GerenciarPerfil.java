@@ -75,7 +75,7 @@ public class GerenciarPerfil extends HttpServlet {
     
     Enumeration<String> parameterNames = request.getParameterNames();
 
-    String mensagem;
+    String mensagem = "";
     
     String[] fields = {nome};
     String[] fieldNames = {"nome"};
@@ -96,6 +96,10 @@ public class GerenciarPerfil extends HttpServlet {
           int idParsed = Integer.parseInt(id);
           perfil.setId(idParsed);
 
+          if (!parameterNames.hasMoreElements()) {
+            mensagem = "Gravado sucesso";
+          }
+          
           // Crio um array com os menus do sistema
           while (parameterNames.hasMoreElements()) {
             try {
@@ -107,10 +111,13 @@ public class GerenciarPerfil extends HttpServlet {
                 String[] arr = valorMenu.split("#");
                 idMenu = Integer.parseInt(arr[0]);
                 perfilDAO.desvincular(idMenu, idParsed);
+                mensagem = "Menu desvinculado com sucesso";
               } else {
                 idMenu = Integer.parseInt(valorMenu);
                 perfilDAO.vincular(idMenu, idParsed);
+                mensagem = "Menu vinculado com sucesso";
               }
+              
 
             } catch (Exception e) {
               e.printStackTrace();
@@ -120,7 +127,7 @@ public class GerenciarPerfil extends HttpServlet {
       }
       
       perfil.setNome(nome);
-      mensagem = perfilDAO.gravar(perfil) ? "Gravado com sucesso" : "Erro ao gravar no banco de dados";
+      mensagem = perfilDAO.gravar(perfil) ? mensagem : "Erro interno do servidor";
 
     } catch (Exception e) {
       e.printStackTrace();

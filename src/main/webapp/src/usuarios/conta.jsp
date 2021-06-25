@@ -23,7 +23,7 @@
           <div class="foto-conta-container">
             <div class="card-title-mybooks ms-3 mt-1">
               <div class="card-title-decoration bg-azul-escuro"></div>
-              <h3 class="text-white">Admin</h3>
+              <h3 class="text-white">${usuario.perfil.nome}</h3>
             </div>
           </div>
 
@@ -44,7 +44,7 @@
               
               <c:choose>
                 <c:when test="${sessionScope.ulogado.perfil.nome == 'Bibliotecario'}">
-                  <form action="/gerenciar_usuario.do?acao=alterar_status" method="POST">
+                  <form action="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar_status" method="POST">
                     <input name="id" type="text" value="${usuario.id}" hidden>
                     <div class="d-flex justify-content-between gap-4">
                       <select name="status" id="status" class="form-select">

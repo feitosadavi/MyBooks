@@ -16,7 +16,7 @@
         <div class="foto-conta-container">
           <div class="card-title-mybooks ms-3 mt-1">
             <div class="card-title-decoration bg-azul-escuro"></div>
-            <h3 class="text-white">Admin</h3>
+            <h3 class="text-white">${usuario.perfil.nome}</h3>
           </div>
         </div>
 

@@ -36,7 +36,14 @@
               </c:if>
             </c:forEach>
           </ul>
-          <%@include file="/src/componentes/icone-conta.jsp"%>
+          
+          <div class="icones-direita">
+            ${sessionScope.perfil.nome.equals('admin')}
+            <c:if test="${sessionScope.perfil.nome.equals('admin') || sessionScope.perfil.nome.equals('Aluno')}">
+              <%@include file="/src/componentes/carrinho.jsp"%>
+            </c:if>  
+            <%@include file="/src/componentes/icone-conta.jsp"%>
+          </div>
         </c:when>
         <c:otherwise>
           <a href="${pageContext.request.contextPath}/src/login/form-login.jsp" class="nav-link ms-auto">Login</a>

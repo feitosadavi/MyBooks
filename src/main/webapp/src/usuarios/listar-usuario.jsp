@@ -20,7 +20,6 @@
 
       <%@include file="../componentes/campo-pesquisa.jsp"%>
 
-      <jsp:useBean class="model.UsuarioDAO" id="usuarioDAO" />
         <c:forEach var="usuario" items="${usuarioDAO.list}">
           <c:choose>
             <c:when test="${param.conta.equals('ativa') && usuario.status == 1}">
@@ -30,8 +29,6 @@
             <c:when test="${param.conta.equals('inativa') && usuario.status == 0}">
               <%@include file="../componentes/usuario-card.jsp"%>
             </c:when>
-
-            
             
             <c:when test="${param.conta.equals('todos') || param.conta == null || param.conta.equals('')}">
               <%@include file="../componentes/usuario-card.jsp"%>

@@ -76,7 +76,6 @@ public class GerenciarUsuario extends HttpServlet {
     String acao = request.getParameter("acao");
     String mensagem = null;
     
-    
     try {
       UsuarioDAO usuarioDAO = new UsuarioDAO();
 
@@ -85,8 +84,6 @@ public class GerenciarUsuario extends HttpServlet {
         	Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
         	if (aluno.getStatus() == 1) { // se o usuário estiver ativado		
         		String dataColeta = request.getParameter("dataColeta");
-        		
-        		System.out.println(dataColeta);
         		
 //          	ArrayList<String> carrinho  = (ArrayList<String>) request.getSession().getAttribute("carrinho");
 //        		ArrayList<Integer> livrosId = new ArrayList<Integer>();

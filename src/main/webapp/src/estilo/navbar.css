@@ -39,3 +39,9 @@
   cursor: pointer;
   z-index: 9999;
 }
+
+.icones-direita {
+  display: flex;
+  align-self: end;
+  gap: .5rem;
+}

@@ -14,6 +14,11 @@
 <%@include file="../componentes/head.jsp"%>
 
 <body>
+<script>
+  $(document).ready( function () {
+    $('#table_id').DataTable();
+  } );
+</script>
 <%@include file="../componentes/navbar.jsp"%>
   <div class="container">
   
@@ -30,7 +35,7 @@
         <%@include file="../componentes/campo-pesquisa.jsp"%>
 
   
-        <table class="table table-hover table-striped table-bordered display mt-4 text-center">
+        <table id="table-id" class="table table-hover table-striped table-bordered display mt-4 text-center">
           <thead>
           <tr>
             <th scope="col">id</th>

@@ -46,6 +46,7 @@ function listarHorarios(horarios) {
       input.id = 'horario-' + horario + '-' + formHorarios.parentElement.id;
       // input.name = 'horario';
       input.value = i + ',' + horario;
+      input.className = 'form-check-inline';
       
       div.append(input);
       div.append(label);
