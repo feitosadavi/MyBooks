@@ -1,7 +1,7 @@
+<%@ page import="model.Horario" %>
 <%@ page import="model.Data" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.time.YearMonth" %>
-<%@ page import="model.Horario" %>
 <jsp:useBean class="model.DataDAO" id="dataDAO"/>
 
 <%

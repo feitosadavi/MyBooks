@@ -62,7 +62,7 @@ public class GerenciarLogin extends HttpServlet {
           mensagem = "Logado com sucesso";
           request.getSession().setAttribute("ulogado", usuario);
           request.getSession().setAttribute("mensagem", mensagem);
-          response.sendRedirect(request.getContextPath() + "/");
+          response.sendRedirect(request.getContextPath() + "/src/livros/listar-livro.jsp");
           return;
         }
       }

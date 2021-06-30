@@ -49,21 +49,15 @@
           <jsp:useBean class="model.MenuDAO" id="modelDAO"/>
           <tbody>
           <c:forEach var="menu" items="${modelDAO.list}">
-            <tr>
-              <th scope="row">${menu.id}</th>
-              <td>${menu.nome}</td>
-              <td>${menu.link}</td>
-              <td>${menu.exibir == 1 ? "Sim" : "Não"}</td>
-              <td>
-                <a class="btn btn-outline-info" href="${pageContext.request.contextPath}/gerenciar_menu.do?acao=alterar&id=${menu.id}">
-                  <img src="${pageContext.request.contextPath}/imagens/editar.svg" alt="caneta dentro de um quadrado verde">
-                </a>
+            <c:choose>
+              <c:when test="${param.get('pesquisa') != null && menu.nome.toLowerCase().contains(param.get('pesquisa').toLowerCase())}">
+                <%@include file="../menus/menu-tr.jsp"%>
+              </c:when>
 
-                <button class="btn btn-outline-danger" onclick="confirmarExclusao('${menu.nome}', '/projetojava3_war_exploded/gerenciar_menu.do?acao=deletar&id='+'${menu.id}')">
-                  <img src="${pageContext.request.contextPath}/imagens/lixeira.svg" alt="lixeira dentro de um quadrado vermelho">
-                </button>
-              </td>
-            </tr>
+              <c:when test="${param.get('pesquisa') == null}">
+                <%@include file="../menus/menu-tr.jsp"%>
+              </c:when>
+            </c:choose>
           </c:forEach>
           </tbody>
         </table>

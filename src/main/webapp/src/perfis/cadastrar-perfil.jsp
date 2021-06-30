@@ -1,9 +1,4 @@
-<%-- 
-    Document   : index
-    Created on : 27/03/2021, 18:55:40
-    Author     : eu
---%>
-
+<%@ page import="controller.GerenciarLogin" %>
 <%
 
   if (!GerenciarLogin.verificarAcesso(request, response)) {

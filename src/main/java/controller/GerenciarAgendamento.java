@@ -20,7 +20,6 @@ public class GerenciarAgendamento extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String agendamento = request.getParameter("agendamento");
-    
   }
 
   @Override

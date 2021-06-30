@@ -6,7 +6,6 @@
 
 <body>
 
-
 <%@include file="../componentes/navbar.jsp"%>
 
 <div class="container">
@@ -15,7 +14,6 @@
     <div id="referencia" class="col-sm-8">
 
       <%@include file="/src/componentes/mensagem.jsp"%>
-<%--      <%@include file="/src/componentes/carrinho.jsp"%>--%>
 
       <h2 class="titulo mt-4 mb-4">Livros</h2>
 
@@ -23,22 +21,34 @@
         <a href="${pageContext.request.contextPath}/src/livros/cadastrar-livro.jsp" class="btn btn-outline-mybooks">Novo Livro</a>
       </c:if>
 
-      <%@include file="/src/componentes/filtro.jsp"%>
-
-
       <%@include file="../componentes/campo-pesquisa.jsp"%>
       
       <div class="d-flex gap-4">
         <jsp:useBean class="model.LivroDAO" id="livroDAO" />
         <c:forEach var="livro" items="${livroDAO.list}">
-          <div class="mt-5">
-            <a data-bs-toggle="modal"
-               data-bs-target="#livro-info-${livro.id}">
-              <img class="thumb-livro"
-                   src="${pageContext.request.contextPath}/imagens/fotosLivro/${livro.capa}"
-                   alt="capa do livro">
-            </a>
-          </div>
+          <c:choose>
+            <c:when test="${param.get('pesquisa') != null && livro.nome.toLowerCase().contains(param.get('pesquisa').toLowerCase())}">
+              <div class="mt-5">
+                <a data-bs-toggle="modal"
+                   data-bs-target="#livro-info-${livro.id}">
+                  <img class="thumb-livro"
+                       src="${pageContext.request.contextPath}/imagens/fotosLivro/${livro.capa}"
+                       alt="capa do livro">
+                </a>
+              </div>
+            </c:when>
+
+            <c:when test="${param.get('pesquisa') == null}">
+              <div class="mt-5">
+                <a data-bs-toggle="modal"
+                   data-bs-target="#livro-info-${livro.id}">
+                  <img class="thumb-livro"
+                       src="${pageContext.request.contextPath}/imagens/fotosLivro/${livro.capa}"
+                       alt="capa do livro">
+                </a>
+              </div>
+            </c:when>
+          </c:choose>
           <%@include file="../componentes/livro-modal.jsp"%>
         </c:forEach>
       </div>

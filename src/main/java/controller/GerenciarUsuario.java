@@ -1,9 +1,5 @@
 package controller;
 
-import model.Livro;
-import model.LivroDAO;
-import model.Locacao;
-import model.LocacaoDAO;
 import model.Perfil;
 import model.PerfilDAO;
 import model.Usuario;
@@ -32,9 +28,7 @@ public class GerenciarUsuario extends HttpServlet {
     String mensagem = null;
     try {
       UsuarioDAO usuarioDAO = new UsuarioDAO();
-
       if (acao.equals("deletar")) {
-
         if (GerenciarLogin.verificarAcesso(request, response)) {
           mensagem = usuarioDAO.deletar(id) ? "Deletado com sucesso!" : "Erro ao deletar";
 
@@ -75,39 +69,62 @@ public class GerenciarUsuario extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String acao = request.getParameter("acao");
     String mensagem = null;
-    
+    Usuario ulogado = (Usuario) request.getSession().getAttribute("ulogado");
+
     try {
       UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-      if (acao != null && acao.equals("alugar")) {
-        if (GerenciarLogin.verificarAcesso(request, response)) {
-        	Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
-        	if (aluno.getStatus() == 1) { // se o usuário estiver ativado		
-        		String dataColeta = request.getParameter("dataColeta");
-        		
-//          	ArrayList<String> carrinho  = (ArrayList<String>) request.getSession().getAttribute("carrinho");
-//        		ArrayList<Integer> livrosId = new ArrayList<Integer>();
-//        		for (String livroIdString : carrinho) {
-//        			livrosId.add(Integer.parseInt(livroIdString));
-//        		}
-//            this.alugar(livrosId, aluno);
-//            
-//            request.getSession().removeAttribute("carrinho");
-            response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
-        	}
-        }    
-      } else if (acao != null && acao.equals("alterar_status")) {
-        String status = request.getParameter("status");
-        String id = request.getParameter("id");
+      if (acao != null) {
+        if (acao.equals("alterar")) {
+          String email = request.getParameter("email");
+          if (email != null) {
+            ulogado.setEmail(email);
+            if (usuarioDAO.gravar(ulogado)) {
+              mensagem = "Email alterado com sucesso";
+            } else {
+              mensagem = "Erro ao alterar o email. Tente novamente!";
+            }
+          } else {
+            mensagem = "Email inválido";
+          }
+          request.getSession().setAttribute("mensagem", mensagem);
+          response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
+          return;
+          
+        } else if (acao.equals("alterar_status")) {
+          String status = request.getParameter("status");
+          String id = request.getParameter("id");
 
-        if (usuarioDAO.alterarStatus(Integer.parseInt(status))) {
-          mensagem = "Status do usuário alterado com sucesso";
-        } else {
-          mensagem = "Erro ao alterar status";
+          if (usuarioDAO.alterarStatus(Integer.parseInt(status))) {
+            mensagem = "Status do usuário alterado com sucesso";
+          } else {
+            mensagem = "Erro ao alterar status";
+          }
+          request.getSession().setAttribute("mensagem", mensagem);
+          response.sendRedirect(request.getContextPath() + "/src/usuarios/conta.jsp?id=" + id);
+          return;
+          
+        } else if (acao.equals("alterar_senha")) {
+          String senhaAtual = request.getParameter("senha_atual");
+          String senhaNova = request.getParameter("senha_nova");
+          
+          String senhaAtualHasheada = Hasher.criarHash(senhaAtual, new byte[128 / 8], 1000, 256);
+          if (senhaAtualHasheada != null && senhaAtualHasheada.equals(ulogado.getSenha())) {
+            String senhaNovaHasheada = Hasher.criarHash(senhaNova, new byte[128 / 8], 1000, 256);
+            ulogado.setSenha(senhaNovaHasheada);
+            if (usuarioDAO.gravar(ulogado)) {
+              mensagem = "Senha alterada com sucesso";
+            } else {
+              mensagem = "Erro ao alterar senha. Tente novamente!";
+            }
+          } else {
+            mensagem = "Senha atual incorreta";
+          }
+          
+          request.getSession().setAttribute("mensagem", mensagem);
+          response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
+          return;
         }
-        request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/usuarios/conta.jsp?id=" + id);
-        return;
         
       } else {
         String id = request.getParameter("id");
@@ -147,10 +164,6 @@ public class GerenciarUsuario extends HttpServlet {
             
           } else if (!capaNova.isEmpty()) { // se o usuário escolheu uma nova foto de perfil
             usuario.setCapa(novoNomeDoArquivoCapa);
-            
-            if (id != null && !id.isEmpty()) { // se for editar
-              //GerenciadorDeArquivos.procurarArquivo(nomeDoArquivoCapa, request);
-            } 
             GerenciadorDeArquivos.uploadImagem(novoNomeDoArquivoCapa, conteudoDoArquivoCapa, "fotosUsuario");
           }
         
@@ -168,7 +181,6 @@ public class GerenciarUsuario extends HttpServlet {
           usuario.setNome(nome);
           usuario.setEmail(email);
           usuario.setMatricula(Integer.parseInt(matricula));
-          
        
           PerfilDAO perfilDAO = new PerfilDAO();
           Perfil perfil = perfilDAO.getById(Integer.parseInt(idPerfil));
@@ -185,42 +197,6 @@ public class GerenciarUsuario extends HttpServlet {
     request.getSession().setAttribute("mensagem", mensagem);
     response.sendRedirect(request.getContextPath() + "/src/usuarios/listar-usuario.jsp");
 
-  }
-  
-  private boolean alugar (ArrayList<Integer> idLivros, Usuario aluno) throws Exception {
-  	try {
-  		java.util.Date dataHoje = new java.util.Date();
-//  		SimpleDateFormat spdf = new SimpleDateFormat("dd-MM-yyyy");
-//  		String dataHojeString = spdf.format(dataHoje);
-//  		Date date1 = spdf.parse(dataHojeString);
-  		
-  		Locacao locacao = new Locacao();
-  		java.sql.Date dataHojeSQL = new java.sql.Date(dataHoje.getTime());
-  		locacao.setDataLocacao(dataHojeSQL);
-  		
-  		java.util.Date dataDevolucao = new java.util.Date();
-  		dataDevolucao.setDate(dataHoje.getDate() + 10);
-  		java.sql.Date dataDevolucaoSQL = new java.sql.Date(dataDevolucao.getTime());
-  		
-  		locacao.setDataDevolucao(dataDevolucaoSQL);
-  		locacao.setAluno(aluno);
-  		
-  		ArrayList<Livro> livros = new ArrayList<Livro>();
-  		for (int idLivro : idLivros) {
-  			LivroDAO livroDAO = new LivroDAO();
-    		Livro livro = livroDAO.getById(idLivro);
-    		livros.add(livro);
-  		}
-  		locacao.setLivros(livros);
-  		
-  		LocacaoDAO locacaoDAO = new LocacaoDAO();
-    	locacaoDAO.gravar(locacao);
-    	
-  		return true;
-  	} catch (Exception e) {
-  		e.printStackTrace();
-  		return false;
-  	}
   }
 }
 

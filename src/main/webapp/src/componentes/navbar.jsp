@@ -1,5 +1,5 @@
-<%@ page import="controller.GerenciarLogin" %>
 <%@ page import="model.Usuario" %>
+<%@ page import="controller.GerenciarLogin" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
   Usuario ulogado =  GerenciarLogin.autenticar(request, response);
@@ -38,8 +38,7 @@
           </ul>
           
           <div class="icones-direita">
-            ${sessionScope.perfil.nome.equals('admin')}
-            <c:if test="${sessionScope.perfil.nome.equals('admin') || sessionScope.perfil.nome.equals('Aluno')}">
+            <c:if test="${sessionScope.ulogado.perfil.nome.equals('Aluno')}">
               <%@include file="/src/componentes/carrinho.jsp"%>
             </c:if>  
             <%@include file="/src/componentes/icone-conta.jsp"%>

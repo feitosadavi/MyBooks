@@ -25,36 +25,49 @@ public class GerenciarLocacao extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     this.request = request;
     
-    String idLocacao = request.getParameter("idLocacao");
-    String idLivro = request.getParameter("idLivro");
+    int idLocacao = Integer.parseInt(request.getParameter("idLocacao"));
+    int idLivro = Integer.parseInt(request.getParameter("idLivro"));
+    Usuario ulogado = (Usuario) request.getSession().getAttribute("ulogado");
+    System.out.println(ulogado);
+    int idConta = ulogado.getId();
+    
     String mensagem = null;
     String acao = request.getParameter("acao");
-    String idConta = request.getParameter("idConta");
     String status = request.getParameter("statusLocacao");
 
     try {
-      System.out.println(acao);
       if (acao != null && acao.equals("alterar_status")) {
-        System.out.println("alterar status");
-        System.out.println(idLocacao);
-        System.out.println(status);
-        if (this.alterarStatus(status, Integer.parseInt(idLocacao))) {
+        if (this.alterarStatus(status, idLocacao)) {
           mensagem = "Status da locacao alterado com sucesso";
         } else {
           mensagem = "Erro ao alterar status";
         }
         request.getSession().setAttribute("mensagem", mensagem);
         response.sendRedirect(request.getContextPath() + "/src/usuarios/conta.jsp?id=" + idConta);
-        return;
+      } else if (acao != null && acao.equals("cancelar")) {
+        LocacaoDAO locacaoDAO = new LocacaoDAO();
+        LivroDAO livroDAO = new LivroDAO();
+        
+        Livro livro = livroDAO.getById(idLivro);
+        ArrayList<Livro> livros = locacaoDAO.getLivrosDaLocacaoPorId(idLocacao);
+        
+        if (livros.size() > 1) { // se a locação tiver mais de um livro
+          System.out.println("Deletar um livro");
+          locacaoDAO.deletar(idLocacao, idLivro, false); // remove apenas um livro, não a locação
+          mensagem = "Livro removido da locação com sucesso";
+        } else {
+          System.out.println("Deletar locação");
+          locacaoDAO.deletar(idLocacao, idLivro, true); // remove apenas um livro, não a locação
+          mensagem = "Locação cancelada com sucesso";
+        }
+
       }
-      
     } catch (Exception e) {
       e.printStackTrace();
       mensagem = "Erro interno do servidor!";
     }
-    
-//    request.getSession().setAttribute("mensagem", mensagem);
-//    response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
+    request.getSession().setAttribute("mensagem", mensagem);
+    response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
   }
   
   @Override
@@ -74,7 +87,6 @@ public class GerenciarLocacao extends HttpServlet {
       String[] fieldNames = {"dataColeta"};
 
       Usuario aluno = (Usuario) request.getSession().getAttribute("ulogado");
-      if (aluno.getStatus() == 1) mensagem = "Usuários inativos não podem alugar livros";
 
       ArrayList<Integer> livrosId = new ArrayList<Integer>();
       for (int i = 0; i < livrosIdJSON.length(); i++) {
@@ -83,16 +95,14 @@ public class GerenciarLocacao extends HttpServlet {
       }
 
       mensagem = this.alugar(livrosId, aluno, dataColetaDate, horarioColeta);
-
       request.getSession().removeAttribute("carrinho");
-    
-      request.getSession().setAttribute("mensagem", mensagem);
-      response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
     } catch (Exception e) {
       e.printStackTrace();
       mensagem = "Erro ao executar";
     }
-      
+    
+    request.getSession().setAttribute("mensagem", mensagem);
+    response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
   }
   
   private boolean alterarStatus(String status, int idLocacao) {

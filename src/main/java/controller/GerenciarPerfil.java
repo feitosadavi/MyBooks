@@ -96,7 +96,9 @@ public class GerenciarPerfil extends HttpServlet {
           int idParsed = Integer.parseInt(id);
           perfil.setId(idParsed);
 
-          if (!parameterNames.hasMoreElements()) {
+          if (parameterNames.hasMoreElements()) {
+            mensagem = "Perfil alterado com sucesso";
+          } else {
             mensagem = "Gravado sucesso";
           }
           
@@ -111,11 +113,9 @@ public class GerenciarPerfil extends HttpServlet {
                 String[] arr = valorMenu.split("#");
                 idMenu = Integer.parseInt(arr[0]);
                 perfilDAO.desvincular(idMenu, idParsed);
-                mensagem = "Menu desvinculado com sucesso";
               } else {
                 idMenu = Integer.parseInt(valorMenu);
                 perfilDAO.vincular(idMenu, idParsed);
-                mensagem = "Menu vinculado com sucesso";
               }
               
 

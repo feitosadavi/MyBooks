@@ -1,11 +1,3 @@
-<%@ page import="model.MenuDAO" %>
-<%@ page import="model.Menu" %>
-<%@ page import="java.util.ArrayList" %><%-- 
-    Document   : index
-    Created on : 27/03/2021, 18:55:40
-    Author     : eu
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 

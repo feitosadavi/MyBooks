@@ -1,4 +1,3 @@
-<%@page import="model.LocacaoDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -27,14 +26,18 @@
           </div>
           <div class="foto-thumb hover-thumb">
             <img src="${pageContext.request.contextPath}/imagens/fotosUsuario/${usuario.capa}"
-                 alt="">
+                 alt="foto do usuário">
           </div>
-
         </div>
         <div class="info-complementar">
-          <p>${usuario.email}</p>
-          <p>${usuario.status == 0 ? "Inativo" : "Ativo"}</p>
-          <p>${usuario.matricula}</p>
+          <form action="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar" method="POST">
+            <input name="email" type="email" value="${usuario.email}">
+            <p>${usuario.status == 0 ? "Inativo" : "Ativo"}</p>
+            <p>${usuario.matricula}</p>
+            <button type="submit" class="btn btn-dark bg-azul-escuro w-100 mt-4">Enviar Alteração</button>
+          </form>
+          <hr>
+          <a href="./alterar-senha.jsp">Alterar Senha</a>
         </div>
       </div>
     </section>
@@ -70,7 +73,7 @@
     
               <div class="card-footer">
                 <button class="btn btn-outline-danger"
-                        onclick="confirmarExclusao('${livro.nome}', '/projetojava3_war_exploded/gerenciar_locacao.do?idLocacao='+'${locacoes.id}&idLivro=${livro.id}')">
+                        onclick="confirmarExclusao('${livro.nome}', '/projetojava3_war_exploded/gerenciar_locacao.do?acao=cancelar&idLocacao='+'${locacoes.id}&idLivro=${livro.id}')">
                   <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
                        alt="lixeira dentro de um quadrado vermelho">
                 </button>
