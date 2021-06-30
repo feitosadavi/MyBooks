@@ -1,8 +1,8 @@
-function confirmarExclusao(nome, acao) {
+function confirmarExclusao(path, acao) {
   let alert = document.createElement("div");
   alert.className = "alert alert-warning";
   alert.id = "delete-alert";
-  alert.innerText = "Realmente deseja" + acao +"?";
+  alert.innerText = "Realmente deseja " + acao +"?";
 
   let btn = document.createElement("button");
   btn.className = "btn btn-outline-danger ms-2";

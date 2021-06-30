@@ -12,6 +12,10 @@
   align-self: center;
 }
 
+.navbar-brand svg {
+  transform: scale(.7);
+}
+
 .btn-pesquisa {
   display: flex !important;
   justify-content: center;

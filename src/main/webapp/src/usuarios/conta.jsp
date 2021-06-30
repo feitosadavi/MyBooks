@@ -39,19 +39,19 @@
 
           </div>
           <div class="info-complementar row">
-            <div class="col-8">
-              <p>${usuario.email}</p>
+            <div class="col-12">
+              <p class="">${usuario.email}</p>
               
               <c:choose>
                 <c:when test="${sessionScope.ulogado.perfil.nome == 'Bibliotecario'}">
                   <form action="${pageContext.request.contextPath}/gerenciar_usuario.do?acao=alterar_status" method="POST">
                     <input name="id" type="text" value="${usuario.id}" hidden>
-                    <div class="d-flex justify-content-between gap-4">
-                      <select name="status" id="status" class="form-select">
+                    <div class="d-flex justify-content-between gap-2 mb-3">
+                      <select name="status" id="status" class="">
                         <option value="1" ${usuario.status == 1 ? "selected" : null}>Ativo</option>
                         <option value="0" ${usuario.status == 0 ? "selected" : null}>Inativo</option>
                       </select>
-                      <button class="btn btn-outline-mybooks">Ok</button>
+                      <button class="btn btn-dark bg-azul-escuro w-100">Ok</button>
                     </div>
                   </form>
                 </c:when>
@@ -110,7 +110,7 @@
 
               <div class="card-footer">
                 <button class="btn btn-outline-danger"
-                        onclick="confirmarExclusao('$locacao.livro.nome}', '/projetojava3_war_exploded/gerenciar_locacao.do?id='+'${locacao.id}')">
+                        onclick="confirmarExclusao('/projetojava3_war_exploded/gerenciar_locacao.do?id='+'${locacao.id}', 'excluir ${locacao.livro.nome}?')">
                   <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
                        alt="lixeira dentro de um quadrado vermelho">
                 </button>

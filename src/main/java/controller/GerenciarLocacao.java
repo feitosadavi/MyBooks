@@ -28,7 +28,6 @@ public class GerenciarLocacao extends HttpServlet {
     int idLocacao = Integer.parseInt(request.getParameter("idLocacao"));
     int idLivro = Integer.parseInt(request.getParameter("idLivro"));
     Usuario ulogado = (Usuario) request.getSession().getAttribute("ulogado");
-    System.out.println(ulogado);
     int idConta = ulogado.getId();
     
     String mensagem = null;
@@ -52,14 +51,13 @@ public class GerenciarLocacao extends HttpServlet {
         ArrayList<Livro> livros = locacaoDAO.getLivrosDaLocacaoPorId(idLocacao);
         
         if (livros.size() > 1) { // se a locação tiver mais de um livro
-          System.out.println("Deletar um livro");
           locacaoDAO.deletar(idLocacao, idLivro, false); // remove apenas um livro, não a locação
           mensagem = "Livro removido da locação com sucesso";
         } else {
-          System.out.println("Deletar locação");
           locacaoDAO.deletar(idLocacao, idLivro, true); // remove apenas um livro, não a locação
           mensagem = "Locação cancelada com sucesso";
         }
+        livroDAO.atualizarEstoque(livro.getEstoque() + 1, livro.getId());
 
       }
     } catch (Exception e) {

@@ -18,7 +18,7 @@
 
     <div class="card-footer">
       <button class="btn btn-outline-danger"
-              onclick="confirmarExclusao('${usuario.nome}', '/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}')">
+              onclick="confirmarExclusao('/projetojava3_war_exploded/gerenciar_usuario.do?acao=deletar&id='+'${usuario.id}', 'excluir o(a) ${usuario.nome}')">
         <img src="${pageContext.request.contextPath}/imagens/lixeira.svg"
              alt="lixeira dentro de um quadrado vermelho">
       </button>

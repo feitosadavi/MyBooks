@@ -1,9 +1,6 @@
 package controller;
 
-import model.Perfil;
-import model.PerfilDAO;
-import model.Usuario;
-import model.UsuarioDAO;
+import model.*;
 import utils.GerenciadorDeArquivos;
 import utils.Hasher;
 import utils.Validacao;
@@ -30,6 +27,16 @@ public class GerenciarUsuario extends HttpServlet {
       UsuarioDAO usuarioDAO = new UsuarioDAO();
       if (acao.equals("deletar")) {
         if (GerenciarLogin.verificarAcesso(request, response)) {
+          LocacaoDAO locacaoDAO = new LocacaoDAO();
+          ArrayList<Locacao> locacoes =  locacaoDAO.getHistoricoLocacoesPorUsuario(id);
+          
+          // desvinculo as locações
+          for (Locacao locacao : locacoes) {
+            for (Livro livro : locacao.getLivros()) {
+              locacaoDAO.deletar(locacao.getId(), livro.getId(), false);
+            }
+            locacaoDAO.deletar(locacao.getId(), 0, true);
+          }
           mensagem = usuarioDAO.deletar(id) ? "Deletado com sucesso!" : "Erro ao deletar";
 
           request.getSession().setAttribute("mensagem", mensagem);

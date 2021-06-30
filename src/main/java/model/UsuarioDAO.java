@@ -161,11 +161,19 @@ public class UsuarioDAO extends DatabaseDAO {
 
   public boolean deletar (int id) throws Exception {
     try {
-      String SQL = "DELETE FROM usuarios WHERE id=?";
+      String SQL = "DELETE FROM locacoes WHERE idUsuario=?;";
+      String SQL2 = "DELETE FROM usuarios WHERE id=?";
+      
       this.connect();
+      
       PreparedStatement pstm = conn.prepareStatement(SQL);
       pstm.setInt(1, id);
       pstm.execute();
+      
+      pstm = conn.prepareStatement(SQL2);
+      pstm.setInt(1, id);
+      pstm.execute();
+      
       this.disconnect();
 
       return true;
