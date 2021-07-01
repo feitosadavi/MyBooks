@@ -59,35 +59,34 @@ public class LocacaoDAO extends DatabaseDAO {
     return livros;
   }
   
-//  public ArrayList<Locacao> getHistoricoLocacoes (int idUsuario) throws Exception {
-//  	String SQL = "SELECT * FROM locacoes WHERE idUsuario = ?";
-//		this.connect();
-//		PreparedStatement pstm = conn.prepareStatement(SQL);
-//		pstm.setInt(1, idUsuario);
-//		ResultSet rs = pstm.executeQuery();
-//		
-//		ArrayList<Locacao> locacoes = new ArrayList<Locacao>();
-//		while (rs.next()) {
-//			Locacao locacao = new Locacao();
-//			locacao.setId(rs.getInt("id"));
-//			locacao.setDataLocacao(rs.getDate("dataLocacao"));
-//			locacao.setDataDevolucao(rs.getDate("dataDevolucao"));
-//			locacao.setStatus(rs.getString("status"));
-//      locacao.setHorarioColeta(rs.getString("horarioColeta"));
-//
-//      UsuarioDAO alunoDAO = new UsuarioDAO();
-//			Usuario aluno = alunoDAO.getById(rs.getInt("idUsuario"));
-//			locacao.setAluno(aluno);
-//			
-//			UsuarioDAO bibliotecarioDAO  = new UsuarioDAO();
-//			Usuario bibliotecario = bibliotecarioDAO.getById(rs.getInt("idBibliotecario"));
-//			locacao.setBibliotecario(bibliotecario);
-//			
-//			locacoes.add(locacao);
-//		}
-//		this.disconnect();
-//		return locacoes;  		
-//  }
+  public ArrayList<Locacao> getHistoricoLocacoes () throws Exception {
+  	String SQL = "SELECT * FROM locacoes";
+		this.connect();
+		Statement stm = conn.createStatement();
+		ResultSet rs = stm.executeQuery(SQL);
+
+		ArrayList<Locacao> locacoes = new ArrayList<Locacao>();
+		while (rs.next()) {
+			Locacao locacao = new Locacao();
+			locacao.setId(rs.getInt("id"));
+			locacao.setDataLocacao(rs.getDate("dataLocacao"));
+			locacao.setDataDevolucao(rs.getDate("dataDevolucao"));
+			locacao.setStatus(rs.getString("status"));
+      locacao.setHorarioColeta(rs.getString("horarioColeta"));
+
+      UsuarioDAO alunoDAO = new UsuarioDAO();
+			Usuario aluno = alunoDAO.getById(rs.getInt("idUsuario"));
+			locacao.setAluno(aluno);
+
+			UsuarioDAO bibliotecarioDAO  = new UsuarioDAO();
+			Usuario bibliotecario = bibliotecarioDAO.getById(rs.getInt("idBibliotecario"));
+			locacao.setBibliotecario(bibliotecario);
+
+			locacoes.add(locacao);
+		}
+		this.disconnect();
+		return locacoes;  		
+  }
 	
   public ArrayList<Locacao> getHistoricoLocacoesPorUsuario (int idUsuario) throws Exception {
   	String SQL = "SELECT * FROM locacoes WHERE idUsuario = ?";
