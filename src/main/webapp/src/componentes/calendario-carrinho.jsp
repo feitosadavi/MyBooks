@@ -19,7 +19,14 @@
   <div class="sidebar d-flex flex-column">
     <div class="slider">
       <div class="slides">
-        <c:forEach var="dia" begin="1" end="${diasNoMes}">
+        <%
+          int hoje = date.getDate();
+          YearMonth yearMonthObject = YearMonth.of(date.getYear(), date.getMonth()+1);
+          int ultimoDiaDoMes = yearMonthObject.lengthOfMonth();
+          pageContext.setAttribute("hoje", hoje);
+          pageContext.setAttribute("ultimoDiaDoMes", ultimoDiaDoMes);
+        %>
+        <c:forEach var="dia" begin="${hoje}" end="${ultimoDiaDoMes}">
           <%
             Data data = new Data();
 
@@ -28,6 +35,7 @@
               data = dataDAO.getPorData(dia + "");
             }   catch (Exception ignored) {}
             pageContext.setAttribute("horarios", data.getHorarios());
+            
           %>
           
           <div class="d-flex align-items-center justify-content-center gap-4" id="slide-${dia}">
@@ -181,6 +189,10 @@
   }
   
   function enviar(locacao) {
+    setTimeout(() => {
+      window.location.replace('${pageContext.request.contextPath}/src/usuarios/minha-conta.jsp')
+    }, 500)
+    
     const url = 'http://localhost:8080/projetojava3_war_exploded/gerenciar_locacao.do';
     (async () => {
       await fetch(url, {

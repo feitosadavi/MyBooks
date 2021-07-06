@@ -56,9 +56,9 @@
           <c:forEach var="dia" begin="${hoje}" end="${ultimoDiaDoMes}">
             <div id="slide-${dia}">
               <a>${dia}</a>
-              <button onclick="enviar()" class="btn btn-outline-info">Enviar</button>
               <div class="form-horarios">
-                <form id="form-horarios-${dia}" method="POST" action="gerenciar_agendamento.do">
+                <button onclick="enviar()" class="btn btn-outline-info">Enviar</button>
+                <form id="form-horarios-${dia}" method="POST" action="${pageContext.request.contextPath}/gerenciar_agendamento.do">
                   <div class="horarios d-flex flex-column">
                     <c:forEach var="horario" items="${sessionScope.horarios}">
                       <div class="horario-wrapper">
@@ -157,6 +157,8 @@
   for (let dia of dias) {
     dia.ondblclick = selecionarUm;
   }
+  console.log("Primeiro dia do mes: ", primeiroDiaDoMes)
+  
   comecarNo(primeiroDiaDoMes, dias, diasDoMes);
   preencherAntes(primeiroDiaDoMes, diasMesAnterior);
   

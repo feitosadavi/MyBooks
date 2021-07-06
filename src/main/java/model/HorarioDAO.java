@@ -88,16 +88,30 @@ public class HorarioDAO extends DatabaseDAO {
       return false;
     }
   }
+  
+  private void deletarDatasHorarios() throws Exception {
+    try {
+      String SQL = "DELETE FROM datas_horarios;";
+
+      this.connect();
+      Statement stm = conn.prepareStatement(SQL);
+      stm.execute(SQL);
+      
+      this.disconnect();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   public void deletarTodos () throws Exception {
     try {
-      String SQL = "DELETE FROM datas_horarios;";
-      String SQL2 = "DELETE FROM horarios;";
+      this.deletarDatasHorarios();
       
+      String SQL = "DELETE FROM horarios;";
       this.connect();
-      Statement stm = conn.createStatement();
+      PreparedStatement stm = conn.prepareStatement(SQL);
       stm.execute(SQL);
-      stm.execute(SQL2);
       this.disconnect();
 
     } catch (Exception e) {

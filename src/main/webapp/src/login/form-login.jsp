@@ -31,7 +31,7 @@
                    class="form-control form-mybooks mb-3"
                    placeholder="Sua senha"
                    required>
-            <p class="text-secondary">Não possui uma conta?
+            <p class="text-white">Não possui uma conta?
               <a href="${pageContext.request.contextPath}/src/usuarios/cadastrar-usuario.jsp">Cadastre-se</a>
             </p>
           </div>

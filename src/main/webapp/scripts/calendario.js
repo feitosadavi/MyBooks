@@ -4,7 +4,6 @@
 
   let date = new Date();
   let hoje = date.getDate();
-
 /*
 * FUNCÕES PARA A CONSTRUÇÃO DO CALENDÁRIO
 * */
@@ -13,17 +12,21 @@
 function comecarNo(dia, dias, diasDoMes) {
   let diaSemana = 1;
   dia = dia === 0 ? 7 : dia; // A classe Date do js define o domingo como 0, mas no html o domingo é o º7 elemento
-
+  console.log("dia: ", dia)
   for (let i = 0; i < diasDoMes + dia; i++) {
     if (i === dia){
       preencherAntes(dia);
     }
-
     let index = i === 0 ? 0 : i - 1;
     if (i >= dia) {
-      if (i <= hoje) {
+      console.log("i: ", i)
+      console.log("hoje: ", hoje);
+      console.log("index: ", index)
+      if (index <= hoje) {
+        console.log("menor")
         dias[index].className += ' dia__inativo';
         dias[index].innerText = diaSemana < 10 ? '0' + diaSemana : diaSemana;
+        
       } else {
         dias[index].className += ' dia__ativo';
         let diaA = dias[index].querySelector('a');

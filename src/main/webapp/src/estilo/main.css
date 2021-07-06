@@ -148,13 +148,17 @@ code {
   z-index: 1000;
 }
 
+.nav-logo {
+  text-decoration: none;
+}
+
 .logo {
   letter-spacing: .5rem;
+  color: white;
 }
 
 .logo span {
   background-color: var(--roxo-claro);
-  color: white;
   border-radius: .3rem;
 }
 

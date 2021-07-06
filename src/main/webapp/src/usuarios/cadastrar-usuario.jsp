@@ -16,7 +16,7 @@
 
   <div class="row">
     <div class="col-4 col-lg-7">
-      <h1 class="display-6 mt-2 ms-2 logo">My<span>Books</span></h1>
+      <h1 class="display-6 mt-2 ms-2 logo"><p class="text-dark">My</p><span>Books</span></h1>
     </div>
 
     <div id="referencia" class="col-12 col-lg-5 form-container-cadastro d-flex flex-column justify-content-start align-items-center">
@@ -53,14 +53,16 @@
           <div class="col">
             <input class="form-control form-mybooks"
                    name="matricula"
-                   placeholder="Sua matrícula">
+                   placeholder="Sua matrícula"
+                   type="number">
           </div>
         </div>
 
 
         <input class="form-control form-mybooks mb-3"
                name="email"
-               placeholder="Seu email">
+               placeholder="Seu email"
+               type="email">
 
         <input class="form-control form-mybooks mb-3"
                name="senha"

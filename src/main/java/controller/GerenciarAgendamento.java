@@ -33,6 +33,8 @@ public class GerenciarAgendamento extends HttpServlet {
       HorarioDAO horarioDAO = new HorarioDAO();
       
       horarioDAO.deletarTodos();
+      DataDAO dataDAO = new DataDAO();
+      dataDAO.deletar(0); // deleta tudo antes de gravar os novos
       for (int i = 0; i < horariosTotais.length(); i++) {
         String hora = (String) horariosTotais.get(i);
 
@@ -44,8 +46,6 @@ public class GerenciarAgendamento extends HttpServlet {
         horarioDAO.gravar(horario);
       }
       
-      DataDAO dataDAO = new DataDAO();
-      dataDAO.deletar(0); // deleta tudo antes de gravar os novos
 
       Date date = new Date();
       for (int i = date.getDate(); i < dias.length(); i++) {
@@ -78,5 +78,6 @@ public class GerenciarAgendamento extends HttpServlet {
       e.printStackTrace();
     }
     request.getSession().setAttribute("mensagem", mensagem);
+    response.sendRedirect(request.getContextPath() + "/src/livros/listar-livro.jsp");
   }
 }

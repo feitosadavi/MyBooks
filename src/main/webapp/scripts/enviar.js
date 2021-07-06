@@ -31,9 +31,8 @@ function enviar() {
   // informo no objeto se o dia está disponível ou não
   for (let diaElemento of dias) {
     let dia = diaElemento.innerText[0] === '0' ? diaElemento.innerText.replace('0', '') : diaElemento.innerText;
-    agendamentos.dias[dia].status = diaElemento.className.includes('selecionado') ? 1 : 0
+    agendamentos.dias[dia].status = diaElemento.className.includes('selecionado') ? 1 : 0;
   }
-
   const url = 'http://localhost:8080/projetojava3_war_exploded/gerenciar_agendamento.do';
   (async () => {
     await fetch(url, {
@@ -46,4 +45,7 @@ function enviar() {
     });
 
   })();
+  setTimeout(() => {
+    window.location.href = '/projetojava3_war_exploded/src/livros/listar-livro.jsp';
+  }, 500);
 }

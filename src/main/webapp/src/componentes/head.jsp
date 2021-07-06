@@ -7,7 +7,7 @@
     content="Uma livraria para aluguel de livros escolares"
   />
   
-  <link rel="icon" href="${pageContext.request.contextPath}/imagens/logo.svg">
+  <link rel="icon" href="${pageContext.request.contextPath}/imagens/mybooks.svg">
   <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/src/estilo/main.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/src/estilo/navbar.css" rel="stylesheet">

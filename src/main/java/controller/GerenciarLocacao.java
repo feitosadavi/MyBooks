@@ -26,11 +26,11 @@ public class GerenciarLocacao extends HttpServlet {
     this.request = request;
     
     int idLocacao = Integer.parseInt(request.getParameter("idLocacao"));
-    int idLivro = Integer.parseInt(request.getParameter("idLivro"));
     Usuario ulogado = (Usuario) request.getSession().getAttribute("ulogado");
     int idConta = ulogado.getId();
     
     String mensagem = null;
+    String path = "";
     String acao = request.getParameter("acao");
     String status = request.getParameter("statusLocacao");
 
@@ -42,11 +42,13 @@ public class GerenciarLocacao extends HttpServlet {
           mensagem = "Erro ao alterar status";
         }
         request.getSession().setAttribute("mensagem", mensagem);
-        response.sendRedirect(request.getContextPath() + "/src/usuarios/conta.jsp?id=" + idConta);
+        path = request.getContextPath() + "/src/usuarios/conta.jsp?id=" + idConta;
+        
       } else if (acao != null && acao.equals("cancelar")) {
         LocacaoDAO locacaoDAO = new LocacaoDAO();
         LivroDAO livroDAO = new LivroDAO();
         
+        int idLivro = Integer.parseInt(request.getParameter("idLivro"));
         Livro livro = livroDAO.getById(idLivro);
         ArrayList<Livro> livros = locacaoDAO.getLivrosDaLocacaoPorId(idLocacao);
         
@@ -58,14 +60,14 @@ public class GerenciarLocacao extends HttpServlet {
           mensagem = "Locação cancelada com sucesso";
         }
         livroDAO.atualizarEstoque(livro.getEstoque() + 1, livro.getId());
-
+        path = request.getContextPath() + "/src/usuarios/minha-conta.jsp";
       }
     } catch (Exception e) {
       e.printStackTrace();
       mensagem = "Erro interno do servidor!";
     }
     request.getSession().setAttribute("mensagem", mensagem);
-    response.sendRedirect(request.getContextPath() + "/src/usuarios/minha-conta.jsp");
+    response.sendRedirect(path);
   }
   
   @Override
@@ -94,6 +96,8 @@ public class GerenciarLocacao extends HttpServlet {
 
       mensagem = this.alugar(livrosId, aluno, dataColetaDate, horarioColeta);
       request.getSession().removeAttribute("carrinho");
+      request.getSession().setAttribute("mensagem", mensagem);
+
     } catch (Exception e) {
       e.printStackTrace();
       mensagem = "Erro ao executar";

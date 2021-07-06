@@ -10,6 +10,13 @@
 <%@include file="../componentes/head.jsp"
 %>
 
+<style>
+  #preview-container {
+    border-radius: 10%;
+    height: 6rem;
+  }
+</style>
+
 <body>
 
 <%@include file="../componentes/navbar.jsp"%>
@@ -17,15 +24,8 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-4 col-lg-7">
-      <h1 class="display-6 mt-2 ms-2 logo">My<span>Books</span></h1>
-    </div>
-
-    <div id="referencia" class="col-12 col-lg-5 form-container-cadastro d-flex flex-column justify-content-start align-items-center">
+    <div id="referencia" class="col-12 col-lg-5 form-container-cadastro d-flex flex-column justify-content-center align-items-start">
       <%@include file="../componentes/mensagem.jsp"%>
-      <img src="${pageContext.request.contextPath}/imagens/garota-lendo-livro.svg"
-           class="me-auto"
-           alt="desenho de uma garota lendo um garota lendo livro">
 
       <form class="form"
             action="${pageContext.request.contextPath}/gerenciar_livro.do"
@@ -50,15 +50,15 @@
           <div class="col">
             <input class="form-control form-mybooks"
                    name="nome"
-                   placeholder="Seu nome">
+                   placeholder="Nome do livro">
           </div>
           <div class="col">
             <input class="form-control form-mybooks"
                    name="lancamento"
-                   placeholder="Data de lançamento">
+                   placeholder="Data de lançamento"
+                   type="number">
           </div>
         </div>
-
 
         <input class="form-control form-mybooks mb-3"
                name="genero"
@@ -68,12 +68,14 @@
           <div class="col">
             <input class="form-control form-mybooks"
                    name="paginas"
-                   placeholder="Qtd. pág.">
+                   placeholder="Qtd. pág."
+                   type="number">
           </div>
           <div class="col">
             <input class="form-control form-mybooks"
                    name="estoque"
-                   placeholder="Qtd. em estoque">
+                   placeholder="Qtd. em estoque"
+                   type="number">
           </div>
         </div>
 
