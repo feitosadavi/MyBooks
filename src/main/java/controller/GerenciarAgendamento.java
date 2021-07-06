@@ -68,6 +68,7 @@ public class GerenciarAgendamento extends HttpServlet {
 
         });
         data.setHorarios(horarios);
+        System.out.println(data);
         dataDAO.gravar(data);
       }
       

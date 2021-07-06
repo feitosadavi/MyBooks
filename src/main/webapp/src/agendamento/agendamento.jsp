@@ -147,7 +147,7 @@
 
   let dias = document.getElementsByClassName('dia');
   let urlParams = new URLSearchParams(window.location.search); // parâmetros da url
-  let mes = urlParams.get('mes') ? urlParams.get('mes') : date.getMonth() + 1 ;
+  let mes = urlParams.get('mes');
   let primeiroDiaDoMes = getPrimeiroDiaDoMes(mes);
   let mesAnterior = Number(mes) === 0 ? 11 : mes - 1;
   let data = new Date();

@@ -22,7 +22,7 @@ function comecarNo(dia, dias, diasDoMes) {
       console.log("i: ", i)
       console.log("hoje: ", hoje);
       console.log("index: ", index)
-      if (index <= hoje) {
+      if (index <= hoje - 1) {
         console.log("menor")
         dias[index].className += ' dia__inativo';
         dias[index].innerText = diaSemana < 10 ? '0' + diaSemana : diaSemana;

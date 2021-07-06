@@ -137,6 +137,7 @@ public class DataDAO extends DatabaseDAO {
   
   public boolean gravar (Data data) throws Exception {
     try {
+      System.out.println(data);
       String SQL;
       this.connect();
       if (data.getId() == 0) {
